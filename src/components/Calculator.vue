@@ -51,7 +51,7 @@
                   <div class="col-5">
                     <div class="input-group">
                       <input class="form-control" type="text" :name="name" :id="name" v-model="nutritionalInfo[name]">
-                      <span class="input-group-text col-4" >{{ getUnit(name) }}</span>
+                      <span class="input-group-text col-4">{{ getUnit(name) }}</span>
                     </div>
                   </div>
                 </div>
@@ -81,22 +81,44 @@
       </div>
     </div>
     <div class="result-container" v-if="result">
+      <hr>
       <h2>Ergebnisse</h2>
-      <h3>Zusammenfassung</h3>
-      <div class="summary">
-        <div>
-        </div>
-        <div>
+      <div class="row summary">
+        <div class="col-md-3 col-xs-12">
 
+          <nav class="nav flex-column result-nav">
+            <a class="nav-link border border-primary link-primary"
+               aria-current="page" href="#">Score: {{result.letterScore}} ({{ result.totalScore }}P)</a>
+          </nav>
+
+          <h5 class="mt-2">Negative Inhaltsstoffe</h5>
+          <nav class="nav flex-column result-nav">
+            <a v-for="(value, name) in result.negatives" :key="name" class="nav-link border border-danger link-danger"
+               href="#">{{ displayNames(name) }}: {{nutritionalInfo[name]}} {{getUnit(name)}} <span class="badge bg-danger fs-6 float-end">&plus;&nbsp;{{
+                value
+              }}</span></a>
+          </nav>
+          <h5 class="mt-2">Positive Inhaltsstoffe</h5>
+          <nav class="nav flex-column result-nav">
+            <a v-for="(value, name) in result.positives" :key="name" class="nav-link border border-success link-success"
+               aria-current="page" href="#">{{ displayNames(name) }}: {{nutritionalInfo[name]}} {{getUnit(name)}} <span class="badge bg-success fs-6 float-end">&minus;&nbsp;{{
+                value
+              }}</span> </a>
+          </nav>
+        </div>
+        <div class="col-auto results-content" data-bs-spy="scroll" data-bs-target="#list-example" data-bs-offset="0">
+          <h3>Score</h3>
+          <div class="text-start fs-1">
+            {{ result.letterScore }}
+          </div>
+          <h3>Negative Inhaltsstoffe</h3>
+          <Scale :data="value" :name="displayNames(name)" :scale="currentScale.n[name]"
+                 v-for="(value, name) in result.negatives" :key="name" :is-positive="false"/>
+          <h3>Positive Inhaltsstoffe</h3>
+          <Scale :data="value" :name="displayNames(name)" :scale="currentScale.p[name]"
+                 v-for="(value, name) in result.positives" :key="name" :is-positive="true"/>
         </div>
       </div>
-
-      <h3>Negative Inhaltsstoffe</h3>
-      <Scale :data="value" :name="displayNames(name)" :scale="currentScale.n[name]"
-             v-for="(value, name) in result.negatives" :key="name" :is-positive="false"/>
-      <h3>Positive Inhaltsstoffe</h3>
-      <Scale :data="value" :name="displayNames(name)" :scale="currentScale.p[name]"
-             v-for="(value, name) in result.positives" :key="name" :is-positive="true"/>
       <pre>{{ result }}</pre>
     </div>
   </div>
@@ -192,6 +214,21 @@ export default {
 
 p {
   text-align: left;
+}
+
+.result-nav > a:first-child {
+  border-top-left-radius: 2%;
+  border-top-right-radius: 2%;
+}
+
+.result-nav > a:last-child {
+  border-bottom-left-radius: 2%;
+  border-bottom-right-radius: 2%;
+}
+
+.results-content {
+  height: 100vh;
+  overflow-y: scroll;
 }
 
 .result-container {

@@ -1,6 +1,7 @@
 <template>
   <div class="result">
     <div>{{ name }}</div>
+
     <div class="scale">
       <div class="scale-child" v-for="n in totalSections" :key="n" :style="'background-color: ' + colorCodes[n]">
             <span :class="classes(n-1)">
@@ -31,6 +32,7 @@ export default {
     totalSections() {
       return this.scale.length
     },
+
     colorCodes() {
       let colors = []
       const hue = 255
