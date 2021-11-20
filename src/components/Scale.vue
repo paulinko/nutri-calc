@@ -1,12 +1,25 @@
 <template>
   <div class="result">
     <div>{{ name }}</div>
+    <div class="gauge-row">
+      <div class="left-container">
+        <Arrow :gradient-id="shortName + 'leftArrow'" :color-start="gaugeLower" :color-end="gaugeLower"></Arrow>
+        <div class="text-center">-2g von 3 Punkte entfernt</div>
+      </div>
+      <div class="gauge-container">
+        <Gauge :positive="isPositive" :lower-color="gaugeLower" :upper-color="gaugeUpper" :percent="25"></Gauge>
+      </div>
+      <div class="right-container">
+        <Arrow :gradient-id="shortName + 'rightArrow'" :color-start="gaugeUpper" :color-end="gaugeUpper"></Arrow>
+        <div class="text-center">+2g von 5 Punkten entfernt</div>
+      </div>
+    </div>
+
 
     <div class="scale">
       <div class="scale-child" v-for="n in totalSections" :key="n" :style="'background-color: ' + colorCodes[n]">
             <span :class="classes(n-1)">
               {{ scores[n - 1] }}
-
             </span>
       </div>
     </div>
@@ -17,13 +30,25 @@
 
 const TotalLength = 300
 
+import Arrow from "@/components/Arrow";
+import Gauge from "@/components/Gauge";
+
+
 export default {
   name: "Scale",
+  components: {Arrow, Gauge},
   props: {
     data: Number,
     scale: Array,
     name: String,
-    isPositive: Boolean,
+    shortName: String,
+    isPositive: Boolean
+  },
+  data() {
+    return {
+      gaugeLower: String,
+      gaugeUpper: String
+    }
   },
   computed: {
     sectionLength() {
@@ -63,10 +88,42 @@ export default {
     scores() {
       console.log(this.scale.map((elem) => elem[elem.length - 1]))
       return this.scale.map((elem) => elem[elem.length - 1])
+    },
+
+    nextColor() {
+      let i = this.scores.indexOf(this.data)
+      if (i >= 0 && (i++) < (this.scores.length)) {
+        return this.colorCodes[i]
+      } else {
+        return this.colorCodes[0]
+      }
+    },
+
+    previousColor() {
+      let i = this.scores.indexOf(this.data)
+      if (i > 0) {
+        return this.colorCodes[i - 1]
+      } else {
+        return this.colorCodes[0]
+      }
     }
   },
   mounted() {
+    const green = '#67ff00'
+    const yellow = '#ffd200'
+    const red = '#ff7f00'
+    let lower = ''
+    let upper = ''
+    if (this.data / this.scale.length < 0.5) {
+      upper = yellow
+      lower = (this.isPositive) ? red : green
+    } else {
+      upper = (this.isPositive) ? green : red
+      lower = yellow
+    }
 
+    this.gaugeUpper = upper
+    this.gaugeLower = lower
   },
   methods: {
     toHexCode(red, green, blue) {
@@ -131,5 +188,22 @@ export default {
 
 .result {
   margin-top: 1vh;
+}
+
+.gauge-container {
+  max-width: 50%;
+}
+
+.left-container, .right-container {
+  width: 10%;
+}
+
+.right-container > svg {
+  transform: rotate(180deg);
+}
+
+.gauge-row {
+  display: flex;
+  justify-content: center;
 }
 </style>

@@ -41,7 +41,7 @@
         <div class="tab-pane fade show active">
           <form>
             <div class="row mt-3">
-              <div class="col-md-3">
+              <div class="col-lg-3 col-md-6">
                 <h4>Negative Inhaltsstoffe</h4>
                 <div v-for="(value, name) in currentTable.nutriprops.n" :key="name" class="row g-2">
                   <div class="col-auto flex-grow-1">
@@ -56,7 +56,7 @@
                   </div>
                 </div>
               </div>
-              <div class="col-md-3">
+              <div class="col-lg-3 col-md-6">
                 <h4>Positive Inhaltsstoffe</h4>
                 <div v-for="(value, name) in currentTable.nutriprops.p" :key="name" class="row g-2">
                   <div class="col-auto flex-grow-1">
@@ -106,17 +106,17 @@
               }}</span> </a>
           </nav>
         </div>
-        <div class="col-auto results-content" data-bs-spy="scroll" data-bs-target="#list-example" data-bs-offset="0">
+        <div class="col-md-9 results-content" data-bs-spy="scroll" data-bs-target="#list-example" data-bs-offset="0">
           <h3>Score</h3>
           <div class="text-start fs-1">
             {{ result.letterScore }}
           </div>
           <h3>Negative Inhaltsstoffe</h3>
           <Scale :data="value" :name="displayNames(name)" :scale="currentScale.n[name]"
-                 v-for="(value, name) in result.negatives" :key="name" :is-positive="false"/>
+                 v-for="(value, name) in result.negatives" :key="name" :is-positive="false" :short-name="name" />
           <h3>Positive Inhaltsstoffe</h3>
           <Scale :data="value" :name="displayNames(name)" :scale="currentScale.p[name]"
-                 v-for="(value, name) in result.positives" :key="name" :is-positive="true"/>
+                 v-for="(value, name) in result.positives" :key="name" :is-positive="true" :short-name="name" />
         </div>
       </div>
       <pre>{{ result }}</pre>
@@ -128,7 +128,6 @@
 
 import Scale from "@/components/Scale";
 import {GeneralTable, FatsTable, CheeseTable, DrinksTable, getUnit} from "@/libs/tables";
-
 
 const displayNames = {
   kJ: 'kJ',
