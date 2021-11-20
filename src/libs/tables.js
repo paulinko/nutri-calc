@@ -43,7 +43,7 @@ const GeneralTable = {
             [31, 36, 7],
             [36, 40, 8],
             [40, 45, 9],
-            [Infinity, 10]
+            [45,Infinity, 10]
 
         ],
         satFats: [ //G2
@@ -70,7 +70,7 @@ const GeneralTable = {
             [630, 720, 7],
             [720, 810, 8],
             [810, 900, 9],
-            [Infinity, 10]
+            [900,Infinity, 10]
         ]
         },
         p: {

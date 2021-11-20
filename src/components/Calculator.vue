@@ -113,10 +113,10 @@
           </div>
           <h3>Negative Inhaltsstoffe</h3>
           <Scale :data="value" :name="displayNames(name)" :scale="currentScale.n[name]"
-                 v-for="(value, name) in result.negatives" :key="name" :is-positive="false" :short-name="name" />
+                 v-for="(value, name) in result.negatives" :key="name" :is-positive="false" :short-name="name" :unit="getUnit(name)" />
           <h3>Positive Inhaltsstoffe</h3>
           <Scale :data="value" :name="displayNames(name)" :scale="currentScale.p[name]"
-                 v-for="(value, name) in result.positives" :key="name" :is-positive="true" :short-name="name" />
+                 v-for="(value, name) in result.positives" :key="name" :is-positive="true" :short-name="name" :unit="getUnit(name)" />
         </div>
       </div>
       <pre>{{ result }}</pre>

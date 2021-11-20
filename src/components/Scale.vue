@@ -7,7 +7,7 @@
         <div class="text-center">-2g von 3 Punkte entfernt</div>
       </div>
       <div class="gauge-container">
-        <Gauge :positive="isPositive" :lower-color="gaugeLower" :upper-color="gaugeUpper" :percent="25"></Gauge>
+        <Gauge :positive="isPositive" :lower-color="gaugeLower" :upper-color="gaugeUpper" :percent="55"></Gauge>
       </div>
       <div class="right-container">
         <Arrow :gradient-id="shortName + 'rightArrow'" :color-start="gaugeUpper" :color-end="gaugeUpper"></Arrow>
@@ -15,12 +15,15 @@
       </div>
     </div>
 
-
+    <span class="toggler" @click="showAllDetails()" v-if="!showAll">Grenzwerte anzeigen</span>
+    <span class="toggler" @click="hideAllDetails()" v-else>Grenzwerte ausblenden</span>
     <div class="scale">
-      <div class="scale-child" v-for="n in totalSections" :key="n" :style="'background-color: ' + colorCodes[n]">
-            <span :class="classes(n-1)">
-              {{ scores[n - 1] }}
-            </span>
+      <div class="scale-child" v-for="n in totalSections" :key="n"
+           :style="'background-color: ' + colorCodes[n]" @click="toggleDetailsOfScore(n)">
+        <span class="score-details"  v-if="isSelectedScore(n)">{{
+            getRangeString(n)
+          }}</span>
+        <span v-else :class="classes(n-1)">{{ scores[n - 1] }}</span>
       </div>
     </div>
   </div>
@@ -42,12 +45,15 @@ export default {
     scale: Array,
     name: String,
     shortName: String,
-    isPositive: Boolean
+    isPositive: Boolean,
+    unit: String
   },
   data() {
     return {
       gaugeLower: String,
-      gaugeUpper: String
+      gaugeUpper: String,
+      detailsSelectedScoreIndex: Number,
+      showAll: false
     }
   },
   computed: {
@@ -124,6 +130,8 @@ export default {
 
     this.gaugeUpper = upper
     this.gaugeLower = lower
+
+    this.detailsSelectedScoreIndex = -1
   },
   methods: {
     toHexCode(red, green, blue) {
@@ -138,6 +146,46 @@ export default {
         return classList + ' actual-score'
       }
       return classList
+    },
+
+    isSelectedScore(i) {
+      return (this.detailsSelectedScoreIndex === i) || this.showAll
+    },
+
+    lowerBound(i) {
+      return this.scale[i - 1][0]
+    },
+
+    upperBound(i) {
+      return this.scale[i - 1][1]
+    },
+
+    getRangeString(i) {
+      let lowerBound = this.scale[i - 1][0]
+      let upperBound = this.scale[i - 1][1]
+      if (lowerBound === -Infinity) {
+        return `< ${upperBound}${this.unit}`
+      } else if (upperBound === Infinity) {
+        return `> ${lowerBound}${this.unit}`
+      }
+
+      return `${lowerBound}${this.unit} - ${upperBound}${this.unit}`
+    },
+
+    toggleDetailsOfScore(i) {
+      if (this.detailsSelectedScoreIndex === i) {
+        this.detailsSelectedScoreIndex = -1
+      } else {
+        this.detailsSelectedScoreIndex = i
+      }
+    },
+
+    showAllDetails() {
+      this.detailsSelectedScoreIndex = -1
+      this.showAll = true
+    },
+    hideAllDetails() {
+      this.showAll = false
     }
   }
 }
@@ -165,6 +213,7 @@ export default {
   max-height: 10vw;
   color: #0000007F;
   max-width: 10%;
+  cursor: pointer;
   /*color: #FFFFFF;*/
 }
 
@@ -205,5 +254,13 @@ export default {
 .gauge-row {
   display: flex;
   justify-content: center;
+}
+
+.score-details {
+  text-align: center;
+}
+
+.toggler {
+  cursor: pointer;
 }
 </style>
