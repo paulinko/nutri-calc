@@ -1,17 +1,18 @@
 <template>
   <div class="result">
-    <div>{{ name }}</div>
+    <h4>{{ name }}: {{ value }}{{ unit }}</h4>
     <div class="gauge-row">
-      <div class="left-container">
+      <div class="left-container" v-if="!isLowest">
         <Arrow :gradient-id="shortName + 'leftArrow'" :color-start="gaugeLower" :color-end="gaugeLower"></Arrow>
-        <div class="text-center">-2g von 3 Punkte entfernt</div>
+        <div class="text-center">{{lowerBound - value}}{{unit}} von {{data - 1 }} Punkte entfernt</div>
       </div>
       <div class="gauge-container">
-        <Gauge :positive="isPositive" :lower-color="gaugeLower" :upper-color="gaugeUpper" :percent="55"></Gauge>
+        <Gauge :positive="isPositive" :lower-color="gaugeLower" :upper-color="gaugeUpper"
+               :percent="fractal * 100"></Gauge>
       </div>
-      <div class="right-container">
+      <div class="right-container" v-if="!isHighest">
         <Arrow :gradient-id="shortName + 'rightArrow'" :color-start="gaugeUpper" :color-end="gaugeUpper"></Arrow>
-        <div class="text-center">+2g von 5 Punkten entfernt</div>
+        <div class="text-center">+{{upperBound - value}}{{unit}} von {{data  + 1}} Punkten entfernt</div>
       </div>
     </div>
 
@@ -20,7 +21,8 @@
     <div class="scale">
       <div class="scale-child" v-for="n in totalSections" :key="n"
            :style="'background-color: ' + colorCodes[n]" @click="toggleDetailsOfScore(n)">
-        <span class="score-details"  v-if="isSelectedScore(n)">{{
+        <div class="marker" v-if="value && isActualScore(n-1)" :style="'left:' + fractal*100 + '%;'"></div>
+        <span class="score-details" v-if="isSelectedScore(n)">{{
             getRangeString(n)
           }}</span>
         <span v-else :class="classes(n-1)">{{ scores[n - 1] }}</span>
@@ -42,6 +44,8 @@ export default {
   components: {Arrow, Gauge},
   props: {
     data: Number,
+    fractal: Number,
+    value: Number,
     scale: Array,
     name: String,
     shortName: String,
@@ -53,7 +57,11 @@ export default {
       gaugeLower: String,
       gaugeUpper: String,
       detailsSelectedScoreIndex: Number,
-      showAll: false
+      showAll: false,
+      isHighest: false,
+      isLowest: false,
+      upperBound: Number,
+      lowerBound: Number
     }
   },
   computed: {
@@ -131,6 +139,17 @@ export default {
     this.gaugeUpper = upper
     this.gaugeLower = lower
 
+    let scoreData = this.getScoreDataFromTable(this.data)
+    this.lowerBound = scoreData[0]
+    this.upperBound = scoreData[1]
+
+    if (!isFinite(this.lowerBound)) {
+      this.isLowest = true;
+    }
+    if (!isFinite(this.upperBound)) {
+      this.isHighest = true;
+    }
+
     this.detailsSelectedScoreIndex = -1
   },
   methods: {
@@ -140,9 +159,14 @@ export default {
       green = (red > 255) ? 255 : green
       return '#' + red.toString(16).padStart(2, '0') + green.toString(16).padStart(2, '0') + blue.toString(16).padStart(2, '0')
     },
+
+    isActualScore(i) {
+      return this.data === this.scores[i]
+    },
+
     classes(i) {
       let classList = 'scale-item-score'
-      if (this.data === this.scores[i]) {
+      if (this.isActualScore(i)) {
         return classList + ' actual-score'
       }
       return classList
@@ -152,12 +176,8 @@ export default {
       return (this.detailsSelectedScoreIndex === i) || this.showAll
     },
 
-    lowerBound(i) {
-      return this.scale[i - 1][0]
-    },
-
-    upperBound(i) {
-      return this.scale[i - 1][1]
+    getScoreDataFromTable(score) {
+      return this.scale.find((row) => row[row.length - 1] === score)
     },
 
     getRangeString(i) {
@@ -214,6 +234,7 @@ export default {
   color: #0000007F;
   max-width: 10%;
   cursor: pointer;
+  position: relative;
   /*color: #FFFFFF;*/
 }
 
@@ -237,6 +258,7 @@ export default {
 
 .result {
   margin-top: 1vh;
+  margin-bottom: 5vh;
 }
 
 .gauge-container {
@@ -262,5 +284,15 @@ export default {
 
 .toggler {
   cursor: pointer;
+}
+
+.marker {
+  height: 100%;
+  position: absolute;
+  z-index: 1000;
+  border-left: 3px solid #00F7;
+  top: 0;
+  left: 125px;
+  width: 0;
 }
 </style>

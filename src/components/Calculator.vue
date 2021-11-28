@@ -88,34 +88,34 @@
 
           <nav class="nav flex-column result-nav">
             <a class="nav-link border border-primary link-primary"
-               aria-current="page" href="#">Score: {{result.letterScore}} ({{ result.totalScore }}P)</a>
+               aria-current="page" href="#">Score: {{result.letterScore.points}} ({{ result.totalScore }}P)</a>
           </nav>
 
           <h5 class="mt-2">Negative Inhaltsstoffe</h5>
           <nav class="nav flex-column result-nav">
             <a v-for="(value, name) in result.negatives" :key="name" class="nav-link border border-danger link-danger"
                href="#">{{ displayNames(name) }}: {{nutritionalInfo[name]}} {{getUnit(name)}} <span class="badge bg-danger fs-6 float-end">&plus;&nbsp;{{
-                value
+                value.points
               }}</span></a>
           </nav>
           <h5 class="mt-2">Positive Inhaltsstoffe</h5>
           <nav class="nav flex-column result-nav">
             <a v-for="(value, name) in result.positives" :key="name" class="nav-link border border-success link-success"
                aria-current="page" href="#">{{ displayNames(name) }}: {{nutritionalInfo[name]}} {{getUnit(name)}} <span class="badge bg-success fs-6 float-end">&minus;&nbsp;{{
-                value
+                value.points
               }}</span> </a>
           </nav>
         </div>
         <div class="col-md-9 results-content" data-bs-spy="scroll" data-bs-target="#list-example" data-bs-offset="0">
           <h3>Score</h3>
           <div class="text-start fs-1">
-            {{ result.letterScore }}
+            {{ result.letterScore.points }}
           </div>
           <h3>Negative Inhaltsstoffe</h3>
-          <Scale :data="value" :name="displayNames(name)" :scale="currentScale.n[name]"
+          <Scale :data="value.points" :fractal="value.fractal" :value="value.value" :name="displayNames(name)" :scale="currentScale.n[name]"
                  v-for="(value, name) in result.negatives" :key="name" :is-positive="false" :short-name="name" :unit="getUnit(name)" />
           <h3>Positive Inhaltsstoffe</h3>
-          <Scale :data="value" :name="displayNames(name)" :scale="currentScale.p[name]"
+          <Scale :data="value.points" :fractal="value.fractal" :value="value.value" :name="displayNames(name)" :scale="currentScale.p[name]"
                  v-for="(value, name) in result.positives" :key="name" :is-positive="true" :short-name="name" :unit="getUnit(name)" />
         </div>
       </div>

@@ -18,8 +18,8 @@
            A 25 25, 0, 0, 1, 75 51
            Z" fill="white"/>
     <path :d="tachoNeedlePath" stroke="black"/>
-<!--    <path d="M 50 50-->
-<!--           L 50 0 " stroke="black"/>-->
+    <!--    <path d="M 50 50-->
+    <!--           L 50 0 " stroke="black"/>-->
   </svg>
 </template>
 
@@ -40,29 +40,34 @@ export default {
     return {
       bestColor: '#3aff00',
       middleColor: '#ffff00',
-      worstColor: '#ff7f00',
-      tachoX: 0,
-      tachoY: 0,
+      worstColor: '#ff7f00'
     };
   },
 
-  mounted() {
-    const radius = 50
-    let angle = this.percent * (Math.PI / 100)
-    let coordinates = this.polarToCartesian(angle, radius)
-    console.log( 'coords',coordinates)
-    console.log( 'angle',angle)
-    this.tachoX = 50 - coordinates[0]
-    this.tachoY = 50 - coordinates[1]
-  },
   computed: {
     gradientId() {
       return this.positive ? 'positiveGaugeGradient' : 'negativeGaugeGradient'
     },
-    tachoNeedlePath(){
+    tachoNeedlePath() {
       return `M 50 50
            L ${this.tachoX} ${this.tachoY}`
-    }
+    },
+    tachoX() {
+      const radius = 50
+      let angle = this.percent * (Math.PI / 100)
+      let coordinates = this.polarToCartesian(angle, radius)
+      console.log('coords', coordinates)
+      console.log('angle', angle)
+      return 50 - coordinates[0]
+    },
+    tachoY() {
+      const radius = 50
+      let angle = this.percent * (Math.PI / 100)
+      let coordinates = this.polarToCartesian(angle, radius)
+      console.log('coords', coordinates)
+      console.log('angle', angle)
+      return 50 - coordinates[1]
+    },
   },
   methods: {
     polarToCartesian(angle, r) {
