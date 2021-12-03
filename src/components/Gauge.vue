@@ -4,12 +4,6 @@
     <defs>
       <Gradient :id="gradientId" :color-start="lowerColor"
                 :color-end="upperColor"></Gradient>
-
-      <!--      <Gradient v-if="positive" :id="gradientId" :color-start="worstColor" :color-middle="middleColor"-->
-      <!--                :color-end="bestColor"></Gradient>-->
-
-      <!--      <Gradient v-else :id="gradientId" :color-start="bestColor" :color-middle="middleColor"-->
-      <!--                :color-end="worstColor"></Gradient>-->
     </defs>
     <path d="M 0 50
            A 50 50, 0, 0, 1, 100 50
@@ -18,8 +12,6 @@
            A 25 25, 0, 0, 1, 75 51
            Z" fill="white"/>
     <path :d="tachoNeedlePath" stroke="black"/>
-    <!--    <path d="M 50 50-->
-    <!--           L 50 0 " stroke="black"/>-->
   </svg>
 </template>
 

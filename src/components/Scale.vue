@@ -64,6 +64,7 @@ export default {
       lowerBound: Number
     }
   },
+  emits: ['colors-calculated'],
   computed: {
     sectionLength() {
       return TotalLength / this.totalSections;
@@ -93,7 +94,9 @@ export default {
         colors = colors.reverse()
       }
 
-      console.log(colors, this.totalSections)
+      console.log('colorsemit',  colors[this.currentScoreIndex])
+      this.$emit('colors-calculated', colors[this.currentScoreIndex])
+
       return colors
     },
     lowerLimits() {
@@ -102,6 +105,10 @@ export default {
     scores() {
       console.log(this.scale.map((elem) => elem[elem.length - 1]))
       return this.scale.map((elem) => elem[elem.length - 1])
+    },
+
+    currentScoreIndex(){
+      return this.scores.indexOf(this.data)
     },
 
     nextColor() {

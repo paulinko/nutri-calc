@@ -87,23 +87,25 @@
         <div class="col-md-3 col-xs-12">
 
           <nav class="nav flex-column result-nav">
-            <a class="nav-link border border-primary link-primary"
-               aria-current="page" href="#">Score: {{result.letterScore.points}} ({{ result.totalScore }}P)</a>
+            <a class="nav-link link-primary"
+               aria-current="page" href="#">Score: {{ result.letterScore.points }} ({{ result.totalScore }}P)</a>
           </nav>
 
           <h5 class="mt-2">Negative Inhaltsstoffe</h5>
-          <nav class="nav flex-column result-nav">
-            <a v-for="(value, name) in result.negatives" :key="name" class="nav-link border border-danger link-danger"
-               href="#">{{ displayNames(name) }}: {{nutritionalInfo[name]}} {{getUnit(name)}} <span class="badge bg-danger fs-6 float-end">&plus;&nbsp;{{
+          <nav class="nav flex-column result-nav negative">
+            <a v-for="(value, name) in result.negatives" :key="name" class="nav-link link-danger"
+               href="#">{{ displayNames(name) }}: {{ nutritionalInfo[name] }} {{ getUnit(name) }} <span
+                class="badge fs-6 float-end text-black-50 score-badge" :style="getColorForProp(name)" >&plus;&nbsp;{{
                 value.points
               }}</span></a>
           </nav>
           <h5 class="mt-2">Positive Inhaltsstoffe</h5>
-          <nav class="nav flex-column result-nav">
-            <a v-for="(value, name) in result.positives" :key="name" class="nav-link border border-success link-success"
-               aria-current="page" href="#">{{ displayNames(name) }}: {{nutritionalInfo[name]}} {{getUnit(name)}} <span class="badge bg-success fs-6 float-end">&minus;&nbsp;{{
-                value.points
-              }}</span> </a>
+          <nav class="nav flex-column result-nav positive">
+            <a v-for="(value, name) in result.positives" :key="name" class="nav-link link-success"
+               aria-current="page" href="#">{{ displayNames(name) }}: {{ nutritionalInfo[name] }} {{ getUnit(name) }}
+              <span class="badge fs-6 text-black-50 float-end score-badge" :style="getColorForProp(name)">&minus;&nbsp;{{
+                  value.points
+                }}</span> </a>
           </nav>
         </div>
         <div class="col-md-9 results-content" data-bs-spy="scroll" data-bs-target="#list-example" data-bs-offset="0">
@@ -112,11 +114,17 @@
             {{ result.letterScore.points }}
           </div>
           <h3>Negative Inhaltsstoffe</h3>
-          <Scale :data="value.points" :fractal="value.fractal" :value="value.value" :name="displayNames(name)" :scale="currentScale.n[name]"
-                 v-for="(value, name) in result.negatives" :key="name" :is-positive="false" :short-name="name" :unit="getUnit(name)" />
+          <Scale  @colors-calculated="appendPropColor($event, name)"
+                  :data="v.points" :fractal="v.fractal" :value="v.value" :name="displayNames(name)"
+                 :scale="currentScale.n[name]"
+                 v-for="(v, name) in result.negatives" :key="name" :is-positive="false" :short-name="name"
+                 :unit="getUnit(name)"/>
           <h3>Positive Inhaltsstoffe</h3>
-          <Scale :data="value.points" :fractal="value.fractal" :value="value.value" :name="displayNames(name)" :scale="currentScale.p[name]"
-                 v-for="(value, name) in result.positives" :key="name" :is-positive="true" :short-name="name" :unit="getUnit(name)" />
+          <Scale @colors-calculated="appendPropColor($event, name)"
+                 :data="value.points" :fractal="value.fractal" :value="value.value" :name="displayNames(name)"
+                 :scale="currentScale.p[name]"
+                 v-for="(value, name) in result.positives" :key="name" :is-positive="true" :short-name="name"
+                 :unit="getUnit(name)"/>
         </div>
       </div>
       <pre>{{ result }}</pre>
@@ -168,8 +176,7 @@ export default {
     definedPositives() {
       console.log(this.result.positives)
       return this.result.positives.filter((e) => this.currentScale[e] !== undefined)
-    }
-    ,
+    },
     definedNegatives() {
       return this.result.positives.filter((e) => this.currentScale[e] !== undefined)
     }
@@ -186,6 +193,7 @@ export default {
         oil: 0,
         goodStuff: 0,
       },
+      colors: {},
       result: null,
       mode: 'general',
       tableNames: ['general', 'fats', 'drinks', 'cheese']
@@ -202,6 +210,20 @@ export default {
     },
     getUnit(nutriProp) {
       return getUnit(nutriProp)
+    },
+    appendPropColor(color,prop) {
+      console.log('app',prop)
+      console.log('colors',this.colors)
+      this.colors[prop] = color
+    },
+    log(n) {
+      console.log('l', n)
+    },
+    getColorForProp(prop) {
+      console.log('getColorsForProp' + prop)
+      let rv =  (this.colors[prop]) ? 'background-color: ' + this.colors[prop] : ''
+      console.log(rv)
+      return rv
     }
 
   }
@@ -215,14 +237,32 @@ p {
   text-align: left;
 }
 
-.result-nav > a:first-child {
-  border-top-left-radius: 2%;
-  border-top-right-radius: 2%;
+
+.result-nav  > a {
+  /*border-left: 1px solid #dee2e6;*/
+  border-bottom: 2px solid #dee2e605;
+  /*border-right: 1px solid #dee2e6;*/
 }
+/*.result-nav > a:first-child {*/
+/*  border-top: 1px solid #dee2e6;*/
+/*  border-top-left-radius: 0.25em;*/
+/*  border-top-right-radius: 0.25em;*/
+/*}*/
 
 .result-nav > a:last-child {
-  border-bottom-left-radius: 2%;
-  border-bottom-right-radius: 2%;
+  /*border-bottom: 1px solid #dee2e6;*/
+  border-bottom: none;
+  border-bottom-left-radius: 0.25em;
+  border-bottom-right-radius: 0.25em;
+}
+
+.result-nav.negative > a {
+  border-color: #FF000042;
+
+}
+
+.result-nav.positive > a {
+  border-color: #43BD3F45;
 }
 
 .results-content {
@@ -233,5 +273,9 @@ p {
 .result-container {
   width: 100%;
   margin: 2vh auto auto;
+}
+
+.score-badge {
+  box-shadow: 0 0 0.2em #bbb;
 }
 </style>
