@@ -1,10 +1,10 @@
 <template>
   <div class="result">
-    <h4>{{ name }}: {{ value }}{{ unit }}</h4>
+    <h4>{{ name }}: {{ value }}{{ unit }} <Badge :badge-data="getBadgeData()" :is-positive="isPositive"></Badge></h4>
     <div class="gauge-row">
       <div class="left-container" v-if="!isLowest">
         <Arrow :gradient-id="shortName + 'leftArrow'" :color-start="gaugeLower" :color-end="gaugeLower"></Arrow>
-        <div class="text-center">{{lowerBound - value}}{{unit}} von {{data - 1 }} Punkte entfernt</div>
+        <div class="text-center">{{ lowerBound - value }}{{ unit }} von {{ data - 1 }} Punkte entfernt</div>
       </div>
       <div class="gauge-container">
         <Gauge :positive="isPositive" :lower-color="gaugeLower" :upper-color="gaugeUpper"
@@ -12,7 +12,7 @@
       </div>
       <div class="right-container" v-if="!isHighest">
         <Arrow :gradient-id="shortName + 'rightArrow'" :color-start="gaugeUpper" :color-end="gaugeUpper"></Arrow>
-        <div class="text-center">+{{upperBound - value}}{{unit}} von {{data  + 1}} Punkten entfernt</div>
+        <div class="text-center">+{{ upperBound - value }}{{ unit }} von {{ data + 1 }} Punkten entfernt</div>
       </div>
     </div>
 
@@ -37,11 +37,12 @@ const TotalLength = 300
 
 import Arrow from "@/components/Arrow";
 import Gauge from "@/components/Gauge";
+import Badge from "@/components/Badge";
 
 
 export default {
   name: "Scale",
-  components: {Arrow, Gauge},
+  components: {Badge, Arrow, Gauge},
   props: {
     data: Number,
     fractal: Number,
@@ -61,7 +62,8 @@ export default {
       isHighest: false,
       isLowest: false,
       upperBound: Number,
-      lowerBound: Number
+      lowerBound: Number,
+      badgeData: Object
     }
   },
   emits: ['colors-calculated'],
@@ -94,9 +96,6 @@ export default {
         colors = colors.reverse()
       }
 
-      console.log('colorsemit',  colors[this.currentScoreIndex])
-      this.$emit('colors-calculated', colors[this.currentScoreIndex])
-
       return colors
     },
     lowerLimits() {
@@ -107,7 +106,7 @@ export default {
       return this.scale.map((elem) => elem[elem.length - 1])
     },
 
-    currentScoreIndex(){
+    currentScoreIndex() {
       return this.scores.indexOf(this.data)
     },
 
@@ -213,6 +212,17 @@ export default {
     },
     hideAllDetails() {
       this.showAll = false
+    },
+    getBadgeData() {
+      let badgeData = {
+        value: this.data,
+        percentage: this.fractal * 100,
+        color: this.colorCodes[this.currentScoreIndex]
+      }
+      console.log(badgeData)
+      this.$emit('colors-calculated', badgeData)
+
+      return badgeData
     }
   }
 }

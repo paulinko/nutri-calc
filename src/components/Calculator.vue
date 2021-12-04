@@ -94,18 +94,16 @@
           <h5 class="mt-2">Negative Inhaltsstoffe</h5>
           <nav class="nav flex-column result-nav negative">
             <a v-for="(value, name) in result.negatives" :key="name" class="nav-link link-danger"
-               href="#">{{ displayNames(name) }}: {{ nutritionalInfo[name] }} {{ getUnit(name) }} <span
-                class="badge fs-6 float-end text-black-50 score-badge" :style="getColorForProp(name)" >&plus;&nbsp;{{
-                value.points
-              }}</span></a>
+               href="#">{{ displayNames(name) }}: {{ nutritionalInfo[name] }} {{ getUnit(name) }}
+              <Badge v-if="getColorForProp(name)" classes="float-end" :badge-data="getColorForProp(name)" :is-positive="false"></Badge>
+            </a>
           </nav>
           <h5 class="mt-2">Positive Inhaltsstoffe</h5>
           <nav class="nav flex-column result-nav positive">
             <a v-for="(value, name) in result.positives" :key="name" class="nav-link link-success"
                aria-current="page" href="#">{{ displayNames(name) }}: {{ nutritionalInfo[name] }} {{ getUnit(name) }}
-              <span class="badge fs-6 text-black-50 float-end score-badge" :style="getColorForProp(name)">&minus;&nbsp;{{
-                  value.points
-                }}</span> </a>
+              <Badge v-if="getColorForProp(name)" :classes="'float-end'" :badge-data="getColorForProp(name)" :is-positive="true"></Badge>
+            </a>
           </nav>
         </div>
         <div class="col-md-9 results-content" data-bs-spy="scroll" data-bs-target="#list-example" data-bs-offset="0">
@@ -135,12 +133,19 @@
 <script>
 
 import Scale from "@/components/Scale";
+import Badge from "@/components/Badge";
+
 import {GeneralTable, FatsTable, CheeseTable, DrinksTable, getUnit} from "@/libs/tables";
+
+const inputDisplayNames = {
+  ratioSatFats: 'Fette (gesamt)'
+}
 
 const displayNames = {
   kJ: 'kJ',
   sugar: 'Zucker',
   satFats: 'gesättigte Fette',
+  ratioSatFats: 'gesamte Fette',
   sodium: 'Salz',
   protein: 'Protein',
   fiber: 'Ballaststoffe',
@@ -153,7 +158,7 @@ const displayNames = {
 
 export default {
   name: 'Calculator',
-  components: {Scale},
+  components: {Scale, Badge},
   computed: {
     currentTable() {
       console.log(GeneralTable)
@@ -206,7 +211,7 @@ export default {
     },
 
     displayNames(prop) {
-      return displayNames[prop]
+      return inputDisplayNames[prop] ?? displayNames[prop]
     },
     getUnit(nutriProp) {
       return getUnit(nutriProp)
@@ -220,10 +225,8 @@ export default {
       console.log('l', n)
     },
     getColorForProp(prop) {
-      console.log('getColorsForProp' + prop)
-      let rv =  (this.colors[prop]) ? 'background-color: ' + this.colors[prop] : ''
-      console.log(rv)
-      return rv
+      console.log('getColorsForProp' , prop)
+      return this.colors[prop] ?? null
     }
 
   }
@@ -273,9 +276,5 @@ p {
 .result-container {
   width: 100%;
   margin: 2vh auto auto;
-}
-
-.score-badge {
-  box-shadow: 0 0 0.2em #bbb;
 }
 </style>
