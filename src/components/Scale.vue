@@ -1,6 +1,8 @@
 <template>
   <div class="result">
-    <h4>{{ name }}: {{ value }}{{ unit }} <Badge :badge-data="getBadgeData()" :is-positive="isPositive"></Badge></h4>
+    <h4>{{ name }}: {{ value }}{{ unit }}
+      <Badge :badge-data="getBadgeData()" :is-positive="isPositive"></Badge>
+    </h4>
     <div class="gauge-row">
       <div class="left-container" v-if="!isLowest">
         <Arrow :gradient-id="shortName + 'leftArrow'" :color-start="gaugeLower" :color-end="gaugeLower"></Arrow>
@@ -39,6 +41,9 @@ import Arrow from "@/components/Arrow";
 import Gauge from "@/components/Gauge";
 import Badge from "@/components/Badge";
 
+const green = '#67ff00'
+const yellow = '#ffd200'
+const red = '#ff7f00'
 
 export default {
   name: "Scale",
@@ -55,14 +60,8 @@ export default {
   },
   data() {
     return {
-      gaugeLower: String,
-      gaugeUpper: String,
       detailsSelectedScoreIndex: Number,
       showAll: false,
-      isHighest: false,
-      isLowest: false,
-      upperBound: Number,
-      lowerBound: Number,
       badgeData: Object
     }
   },
@@ -126,36 +125,34 @@ export default {
       } else {
         return this.colorCodes[0]
       }
+    },
+    inFirstHalf() {
+      return (this.data / this.scale.length < 0.5)
+    },
+    gaugeLower() {
+      return this.inFirstHalf ? ((this.isPositive) ? red : green) : yellow
+    },
+    gaugeUpper() {
+      return this.inFirstHalf ? yellow : ((this.isPositive) ? green : red)
+    },
+    tableDataScore() {
+      return this.getScoreDataFromTable(this.data)
+    },
+    lowerBound() {
+      return this.tableDataScore[0]
+    },
+    upperBound() {
+      return this.tableDataScore[1]
+    },
+    isLowest() {
+      return !isFinite(this.lowerBound)
+    },
+    isHighest() {
+      return !isFinite(this.upperBound)
     }
+
   },
   mounted() {
-    const green = '#67ff00'
-    const yellow = '#ffd200'
-    const red = '#ff7f00'
-    let lower = ''
-    let upper = ''
-    if (this.data / this.scale.length < 0.5) {
-      upper = yellow
-      lower = (this.isPositive) ? red : green
-    } else {
-      upper = (this.isPositive) ? green : red
-      lower = yellow
-    }
-
-    this.gaugeUpper = upper
-    this.gaugeLower = lower
-
-    let scoreData = this.getScoreDataFromTable(this.data)
-    this.lowerBound = scoreData[0]
-    this.upperBound = scoreData[1]
-
-    if (!isFinite(this.lowerBound)) {
-      this.isLowest = true;
-    }
-    if (!isFinite(this.upperBound)) {
-      this.isHighest = true;
-    }
-
     this.detailsSelectedScoreIndex = -1
   },
   methods: {

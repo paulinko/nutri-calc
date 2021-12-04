@@ -11,14 +11,13 @@ function getResult(value, row) {
     }
 
     return {
-        value: value,
-        fractal: fractal,
+        value,
+        fractal,
         points: row[2]
     }
 }
 
 function getPoints(table, value) {
-    value = parseInt(value)
     for (const row of table) {
         if (row.length === 3) {
             if (value > row[0] && value <= row[1]) {
@@ -113,7 +112,7 @@ const GeneralTable = {
                 [-Infinity, 40, 0],
                 [40, 60, 1],
                 [60, 80, 2],
-                [80, Infinity, 3],
+                [80, Infinity, 5],
             ],
         }
     },
@@ -135,15 +134,15 @@ const GeneralTable = {
 
         const protValue = getPoints(this.nutriprops.p.protein, nutirInfo.protein);
         const fiberValue = getPoints(this.nutriprops.p.fiber, nutirInfo.fiber);
-        const goodStuff = getPoints(this.nutriprops.p.goodStuff, nutirInfo.oil);
+        const goodStuff = getPoints(this.nutriprops.p.goodStuff, nutirInfo.goodStuff);
 
         const badScore = kjValue.points + sugarValue.points + satFatsValue.points + sodiumValue.points;
-        const applyProtein = (badScore.points < 11 || (badScore.points >= 11 && goodStuff.points === 5));
+        const applyProtein = (badScore < 11 || (badScore >= 11 && goodStuff.points === 5));
 
         let totalScore = badScore - goodStuff.points - fiberValue.points;
 
         if (applyProtein) {
-            totalScore -= protValue
+            totalScore -= protValue.points
         }
 
         return {

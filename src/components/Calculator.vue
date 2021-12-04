@@ -50,7 +50,7 @@
                   </div>
                   <div class="col-5">
                     <div class="input-group">
-                      <input class="form-control" type="text" :name="name" :id="name" v-model="nutritionalInfo[name]">
+                      <input class="form-control" type="text" :name="name" :id="name" v-model.number="nutritionalInfo[name]">
                       <span class="input-group-text col-4">{{ getUnit(name) }}</span>
                     </div>
                   </div>
@@ -83,37 +83,46 @@
     <div class="result-container" v-if="result">
       <hr>
       <h2>Ergebnisse</h2>
+      <div class="row score-row">
+        <div class="col-md-2">
+          <h3>Score</h3>
+          <div class="text-start score-result">
+            <div >
+              <span :class="'score ' + result.letterScore.points ">
+              {{ result.letterScore.points }}
+              </span>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-10">
+          <ResultChart v-if="resultColors" :colors="resultColors" :result-data="result">
+          </ResultChart>
+        </div>
+      </div>
+      <h2>Details</h2>
       <div class="row summary">
         <div class="col-md-3 col-xs-12">
-
-          <nav class="nav flex-column result-nav">
-            <a class="nav-link link-primary"
-               aria-current="page" href="#">Score: {{ result.letterScore.points }} ({{ result.totalScore }}P)</a>
-          </nav>
-
           <h5 class="mt-2">Negative Inhaltsstoffe</h5>
           <nav class="nav flex-column result-nav negative">
             <a v-for="(value, name) in result.negatives" :key="name" class="nav-link link-danger"
-               href="#">{{ displayNames(name) }}: {{ nutritionalInfo[name] }} {{ getUnit(name) }}
-              <Badge v-if="getColorForProp(name)" classes="float-end" :badge-data="getColorForProp(name)" :is-positive="false"></Badge>
+               href="#">{{ displayNames(name) }}: {{ nutritionalInfo[name].toLocaleString() }} {{ getUnit(name) }}
+              <Badge v-if="getColorForProp(name)" classes="float-end" :badge-data="getColorForProp(name)"
+                     :is-positive="false"></Badge>
             </a>
           </nav>
           <h5 class="mt-2">Positive Inhaltsstoffe</h5>
           <nav class="nav flex-column result-nav positive">
             <a v-for="(value, name) in result.positives" :key="name" class="nav-link link-success"
                aria-current="page" href="#">{{ displayNames(name) }}: {{ nutritionalInfo[name] }} {{ getUnit(name) }}
-              <Badge v-if="getColorForProp(name)" :classes="'float-end'" :badge-data="getColorForProp(name)" :is-positive="true"></Badge>
+              <Badge v-if="getColorForProp(name)" :classes="'float-end'" :badge-data="getColorForProp(name)"
+                     :is-positive="true"></Badge>
             </a>
           </nav>
         </div>
         <div class="col-md-9 results-content" data-bs-spy="scroll" data-bs-target="#list-example" data-bs-offset="0">
-          <h3>Score</h3>
-          <div class="text-start fs-1">
-            {{ result.letterScore.points }}
-          </div>
           <h3>Negative Inhaltsstoffe</h3>
-          <Scale  @colors-calculated="appendPropColor($event, name)"
-                  :data="v.points" :fractal="v.fractal" :value="v.value" :name="displayNames(name)"
+          <Scale @colors-calculated="appendPropColor($event, name)"
+                 :data="v.points" :fractal="v.fractal" :value="v.value" :name="displayNames(name)"
                  :scale="currentScale.n[name]"
                  v-for="(v, name) in result.negatives" :key="name" :is-positive="false" :short-name="name"
                  :unit="getUnit(name)"/>
@@ -134,31 +143,14 @@
 
 import Scale from "@/components/Scale";
 import Badge from "@/components/Badge";
+import ResultChart from "@/components/ResultChart";
 
+import {GetDisplayNames, GetInputDisplayNames} from "@/libs/Strings";
 import {GeneralTable, FatsTable, CheeseTable, DrinksTable, getUnit} from "@/libs/tables";
-
-const inputDisplayNames = {
-  ratioSatFats: 'Fette (gesamt)'
-}
-
-const displayNames = {
-  kJ: 'kJ',
-  sugar: 'Zucker',
-  satFats: 'gesättigte Fette',
-  ratioSatFats: 'gesamte Fette',
-  sodium: 'Salz',
-  protein: 'Protein',
-  fiber: 'Ballaststoffe',
-  goodStuff: 'Vollkorn etc.',
-  cheese: 'Milchprodukte',
-  general: 'Allgemein',
-  fats: 'Öle',
-  drinks: 'Getränke'
-}
 
 export default {
   name: 'Calculator',
-  components: {Scale, Badge},
+  components: {Scale, Badge, ResultChart},
   computed: {
     currentTable() {
       console.log(GeneralTable)
@@ -178,12 +170,13 @@ export default {
     currentScale() {
       return this.currentTable.nutriprops;
     },
-    definedPositives() {
-      console.log(this.result.positives)
-      return this.result.positives.filter((e) => this.currentScale[e] !== undefined)
-    },
-    definedNegatives() {
-      return this.result.positives.filter((e) => this.currentScale[e] !== undefined)
+    resultColors() {
+      const allColorsPresent = (Object.keys(this.result.negatives).length + Object.keys(this.result.positives).length) ===
+          Object.keys(this.colors).length
+      if (allColorsPresent) {
+        return this.colors
+      }
+      return null;
     }
   },
   data() {
@@ -206,26 +199,23 @@ export default {
   },
   methods: {
     calculateScore() {
-      console.log(this.nutritionalInfo)
+      this.result = null
+      this.colors = {}
       this.result = this.currentTable.calculateScore(this.nutritionalInfo)
     },
-
+    inputDisplayNames(prop) {
+      return GetInputDisplayNames(prop)
+    },
     displayNames(prop) {
-      return inputDisplayNames[prop] ?? displayNames[prop]
+      return GetDisplayNames(prop)
     },
     getUnit(nutriProp) {
       return getUnit(nutriProp)
     },
-    appendPropColor(color,prop) {
-      console.log('app',prop)
-      console.log('colors',this.colors)
+    appendPropColor(color, prop) {
       this.colors[prop] = color
     },
-    log(n) {
-      console.log('l', n)
-    },
     getColorForProp(prop) {
-      console.log('getColorsForProp' , prop)
       return this.colors[prop] ?? null
     }
 
@@ -241,11 +231,12 @@ p {
 }
 
 
-.result-nav  > a {
+.result-nav > a {
   /*border-left: 1px solid #dee2e6;*/
   border-bottom: 2px solid #dee2e605;
   /*border-right: 1px solid #dee2e6;*/
 }
+
 /*.result-nav > a:first-child {*/
 /*  border-top: 1px solid #dee2e6;*/
 /*  border-top-left-radius: 0.25em;*/
@@ -277,4 +268,39 @@ p {
   width: 100%;
   margin: 2vh auto auto;
 }
+
+.score {
+  padding: 1.2rem;
+  border-radius: 0.5rem;
+  color: white;
+  background-color: gray;
+  font-size: 8rem;
+  padding-bottom: 0rem;
+
+}
+
+.score.A {
+  background-color: #008043;
+}
+
+.score.B {
+  background-color: #85b931;
+}
+
+.score.C {
+  background-color: #f2c011;
+}
+
+.score.D {
+  background-color: #e37c13;
+}
+
+.score.E {
+  background-color: #d9411a;
+}
+
+.score-row {
+  margin-bottom: 4em;
+}
+
 </style>
