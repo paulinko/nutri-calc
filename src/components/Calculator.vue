@@ -33,7 +33,7 @@
         <li class="nav-item" role="presentation" v-for="tableName in tableNames" :key="tableName">
           <button :class="'nav-link ' + ((mode === tableName) ? 'active' : '')" id="general-tab"
                   @click="mode = tableName" type="button"
-                  role="tab" aria-controls="" aria-selected="true">{{ displayNames(tableName) }}
+                  role="tab" aria-controls="" aria-selected="true">{{ inputDisplayNames(tableName) }}
           </button>
         </li>
       </ul>
@@ -45,7 +45,7 @@
                 <h4>Negative Inhaltsstoffe</h4>
                 <div v-for="(value, name) in currentTable.nutriprops.n" :key="name" class="row g-2">
                   <div class="col-auto flex-grow-1">
-                    <label class="col-form-label" :for="name">{{ displayNames(name) }}</label>
+                    <label class="col-form-label" :for="name">{{ inputDisplayNames(name) }}</label>
 
                   </div>
                   <div class="col-5">
@@ -60,7 +60,7 @@
                 <h4>Positive Inhaltsstoffe</h4>
                 <div v-for="(value, name) in currentTable.nutriprops.p" :key="name" class="row g-2">
                   <div class="col-auto flex-grow-1">
-                    <label class="col-form-label" :for="name">{{ displayNames(name) }}</label>
+                    <label class="col-form-label" :for="name">{{ inputDisplayNames(name) }}</label>
                   </div>
                   <div class="col-4">
                     <div class="input-group">
@@ -125,12 +125,14 @@
                  :data="v.points" :fractal="v.fractal" :value="v.value" :name="displayNames(name)"
                  :scale="currentScale.n[name]"
                  v-for="(v, name) in result.negatives" :key="name" :is-positive="false" :short-name="name"
+                 :was-used-in-calculation="wasUsedInCalculation(name)"
                  :unit="getUnit(name)"/>
           <h3>Positive Inhaltsstoffe</h3>
           <Scale @colors-calculated="appendPropColor($event, name)"
                  :data="value.points" :fractal="value.fractal" :value="value.value" :name="displayNames(name)"
                  :scale="currentScale.p[name]"
                  v-for="(value, name) in result.positives" :key="name" :is-positive="true" :short-name="name"
+                 :was-used-in-calculation="wasUsedInCalculation(name)"
                  :unit="getUnit(name)"/>
         </div>
       </div>
@@ -207,7 +209,7 @@ export default {
       return GetInputDisplayNames(prop)
     },
     displayNames(prop) {
-      return GetDisplayNames(prop)
+      return GetDisplayNames(prop, this.wasUsedInCalculation(prop))
     },
     getUnit(nutriProp) {
       return getUnit(nutriProp)
@@ -217,6 +219,9 @@ export default {
     },
     getColorForProp(prop) {
       return this.colors[prop] ?? null
+    },
+    wasUsedInCalculation(prop) {
+      return (prop !== 'protein' || this.result.applyProtein)
     }
 
   }

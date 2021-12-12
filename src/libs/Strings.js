@@ -22,7 +22,10 @@ function GetInputDisplayNames(prop) {
   return InputDisplayNames[prop] ?? DisplayNames[prop]
 }
 
-function GetDisplayNames(prop) {
+function GetDisplayNames(prop, wasUsed= true) {
+  if (!wasUsed) {
+    return DisplayNames[prop] + '(nicht gewertet)'
+  }
   return DisplayNames[prop]
 }
 

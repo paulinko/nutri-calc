@@ -9,7 +9,7 @@
         <div class="text-center">{{ lowerBound - value }}{{ unit }} von {{ data - 1 }} Punkte entfernt</div>
       </div>
       <div class="gauge-container">
-        <Gauge :positive="isPositive" :lower-color="gaugeLower" :upper-color="gaugeUpper"
+        <Gauge :positive="isPositive" :lower-color="gaugeLower" :upper-color="gaugeUpper" :gradient-id="gradientId"
                :percent="fractal * 100"></Gauge>
       </div>
       <div class="right-container" v-if="!isHighest">
@@ -23,7 +23,7 @@
     <div class="scale">
       <div class="scale-child" v-for="n in totalSections" :key="n"
            :style="'background-color: ' + colorCodes[n]" @click="toggleDetailsOfScore(n)">
-        <div class="marker" v-if="value && isActualScore(n-1)" :style="'left:' + fractal*100 + '%;'"></div>
+        <div class="marker" v-if="showBar && isActualScore(n-1)" :style="'left:' + fractal*100 + '%;'"></div>
         <span class="score-details" v-if="isSelectedScore(n)">{{
             getRangeString(n)
           }}</span>
@@ -56,7 +56,8 @@ export default {
     name: String,
     shortName: String,
     isPositive: Boolean,
-    unit: String
+    unit: String,
+    wasUsedInCalculation: Boolean
   },
   data() {
     return {
@@ -109,6 +110,14 @@ export default {
       return this.scores.indexOf(this.data)
     },
 
+    showBar(){
+      return !((this.value === 0) || (this.isHighest && this.fractal === 1))
+    },
+
+    gradientId(){
+      return this.shortName + 'GaugeGradient'
+    },
+
     nextColor() {
       let i = this.scores.indexOf(this.data)
       if (i >= 0 && (i++) < (this.scores.length)) {
@@ -127,9 +136,13 @@ export default {
       }
     },
     inFirstHalf() {
-      return (this.data / this.scale.length < 0.5)
+      console.log(this.name,'idxOf',this.scores.indexOf(this.data))
+      console.log((this.scores.indexOf(this.data) < (this.scores.length * 0.5)))
+      return (this.scores.indexOf(this.data) < (this.scores.length * 0.5))
     },
     gaugeLower() {
+      console.log('ifh', this.inFirstHalf)
+
       return this.inFirstHalf ? ((this.isPositive) ? red : green) : yellow
     },
     gaugeUpper() {
@@ -214,7 +227,7 @@ export default {
       let badgeData = {
         value: this.data,
         percentage: this.fractal * 100,
-        color: this.colorCodes[this.currentScoreIndex]
+        color: this.colorCodes[this.currentScoreIndex] + ((this.wasUsedInCalculation) ? 'FF' : '77')
       }
       console.log(badgeData)
       this.$emit('colors-calculated', badgeData)

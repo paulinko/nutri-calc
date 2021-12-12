@@ -26,7 +26,8 @@ export default {
     positive: Boolean,
     upperColor: String,
     lowerColor: String,
-    percent: Number
+    percent: Number,
+    gradientId: String
   },
   data() {
     return {
@@ -37,9 +38,6 @@ export default {
   },
 
   computed: {
-    gradientId() {
-      return this.positive ? 'positiveGaugeGradient' : 'negativeGaugeGradient'
-    },
     tachoNeedlePath() {
       return `M 50 50
            L ${this.tachoX} ${this.tachoY}`

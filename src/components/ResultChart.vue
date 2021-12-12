@@ -26,11 +26,17 @@ export default {
       }
       let sign = (this.resultData.negatives[prop]) ? 1 : -1
       return sign * points
+    },
+    wasUsedInCalculation(prop) {
+      return (prop !== 'protein' || this.resultData.applyProtein)
+    },
+    getDisplayNames(prop) {
+      return GetDisplayNames(prop, this.wasUsedInCalculation(prop))
     }
   },
   mounted() {
     let d = [...Object.keys(this.resultData.negatives), ...Object.keys(this.resultData.positives)]
-    let labels = d.map(GetDisplayNames);
+    let labels = d.map(this.getDisplayNames);
     let dataset = {
       data: d.map(this.getPoints),
       backgroundColor: d.map(this.getColor),

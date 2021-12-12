@@ -1,14 +1,15 @@
-function getResult(value, row) {
+function getResult(value, row, representativeSpan) {
     let fractal = null
     let upper = row[1]
-    let lower = null
-    if (upper !== Infinity) {
-        lower = (row[0] === -Infinity) ? 0 : row[0]
-        let diff = upper - lower
-        let relativeValue = value - lower
-        fractal = relativeValue / diff
+    let lower = (row[0] === -Infinity) ? 0 : row[0]
+    let relativeValue = value - lower
 
+    let diff = representativeSpan;
+    if (upper !== Infinity) {
+        diff = upper - lower
     }
+
+    fractal = calculateFractal(relativeValue, diff)
 
     return {
         value,
@@ -17,11 +18,18 @@ function getResult(value, row) {
     }
 }
 
+function calculateFractal(relativeValue, diff) {
+    let fractal = relativeValue / diff
+    return (fractal < 1) ? fractal : 1;
+}
+
 function getPoints(table, value) {
+    let representativeSpanRow = table[table.length - 2]
+    let representativeSpan = representativeSpanRow[1] - representativeSpanRow[0]
     for (const row of table) {
         if (row.length === 3) {
             if (value > row[0] && value <= row[1]) {
-                return getResult(value, row)
+                return getResult(value, row, representativeSpan)
             }
         }
         if (row.length === 2) {
