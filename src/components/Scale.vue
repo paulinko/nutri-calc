@@ -1,12 +1,13 @@
 <template>
   <div class="result">
     <h4>{{ name }}: {{ value }}{{ unit }}
-      <Badge :badge-data="getBadgeData()" :is-positive="isPositive"></Badge>
+      <Badge :badge-data="getBadgeData()" :is-positive="isPositive" v-if="!hideBadge"></Badge>
     </h4>
     <div class="gauge-row">
       <div class="left-container" v-if="!isLowest">
         <Arrow :gradient-id="shortName + 'leftArrow'" :color-start="gaugeLower" :color-end="gaugeLower"></Arrow>
-        <div class="text-center">{{ lowerBound - value }}{{ unit }} von {{ data - 1 }} Punkte entfernt</div>
+        <div class="text-center">{{ lowerBound - value }}{{ unit }} von {{ previousScore }}{{ scoreUnit }} entfernt
+        </div>
       </div>
       <div class="gauge-container">
         <Gauge :positive="isPositive" :lower-color="gaugeLower" :upper-color="gaugeUpper" :gradient-id="gradientId"
@@ -14,13 +15,13 @@
       </div>
       <div class="right-container" v-if="!isHighest">
         <Arrow :gradient-id="shortName + 'rightArrow'" :color-start="gaugeUpper" :color-end="gaugeUpper"></Arrow>
-        <div class="text-center">+{{ upperBound - value }}{{ unit }} von {{ data + 1 }} Punkten entfernt</div>
+        <div class="text-center">+{{ upperBound - value }}{{ unit }} von {{ nextScore }}{{ scoreUnit }} entfernt</div>
       </div>
     </div>
 
     <span class="toggler" @click="showAllDetails()" v-if="!showAll">Grenzwerte anzeigen</span>
     <span class="toggler" @click="hideAllDetails()" v-else>Grenzwerte ausblenden</span>
-    <div class="scale">
+    <div :class="'scale ' + scaleClasses">
       <div class="scale-child" v-for="n in totalSections" :key="n"
            :style="'background-color: ' + colorCodes[n]" @click="toggleDetailsOfScore(n)">
         <div class="marker" v-if="showBar && isActualScore(n-1)" :style="'left:' + fractal*100 + '%;'"></div>
@@ -57,6 +58,25 @@ export default {
     shortName: String,
     isPositive: Boolean,
     unit: String,
+    scoreUnit: String,
+    scaleClasses: String,
+    hideBadge: {
+      default: false,
+      type: Boolean
+    },
+    green: {
+      default: green,
+      type: String
+    },
+    yellow: {
+      default: yellow,
+      type: String
+    },
+    red: {
+      default: red,
+      type: String
+    },
+    scoreColorsOverride: Array,
     wasUsedInCalculation: Boolean
   },
   data() {
@@ -76,6 +96,9 @@ export default {
     },
 
     colorCodes() {
+      if (this.scoreColorsOverride) {
+        return ['', ...this.scoreColorsOverride]
+      }
       let colors = []
       const hue = 255
       for (let i = 0; i <= this.totalSections; i++) {
@@ -106,15 +129,23 @@ export default {
       return this.scale.map((elem) => elem[elem.length - 1])
     },
 
+    previousScore() {
+      return this.scores[this.currentScoreIndex - 1]
+    },
+
+    nextScore() {
+      return this.scores[this.currentScoreIndex + 1]
+    },
+
     currentScoreIndex() {
       return this.scores.indexOf(this.data)
     },
 
-    showBar(){
+    showBar() {
       return !((this.value === 0) || (this.isHighest && this.fractal === 1))
     },
 
-    gradientId(){
+    gradientId() {
       return this.shortName + 'GaugeGradient'
     },
 
@@ -136,17 +167,17 @@ export default {
       }
     },
     inFirstHalf() {
-      console.log(this.name,'idxOf',this.scores.indexOf(this.data))
+      console.log(this.name, 'idxOf', this.scores.indexOf(this.data))
       console.log((this.scores.indexOf(this.data) < (this.scores.length * 0.5)))
       return (this.scores.indexOf(this.data) < (this.scores.length * 0.5))
     },
     gaugeLower() {
       console.log('ifh', this.inFirstHalf)
 
-      return this.inFirstHalf ? ((this.isPositive) ? red : green) : yellow
+      return this.inFirstHalf ? ((this.isPositive) ? this.red : this.green) : this.yellow
     },
     gaugeUpper() {
-      return this.inFirstHalf ? yellow : ((this.isPositive) ? green : red)
+      return this.inFirstHalf ? this.yellow : ((this.isPositive) ? this.green : this.red)
     },
     tableDataScore() {
       return this.getScoreDataFromTable(this.data)
@@ -225,7 +256,7 @@ export default {
     },
     getBadgeData() {
       let badgeData = {
-        value: this.data,
+        value: this.data + this.scoreUnit,
         percentage: this.fractal * 100,
         color: this.colorCodes[this.currentScoreIndex] + ((this.wasUsedInCalculation) ? 'FF' : '77')
       }
@@ -261,8 +292,13 @@ export default {
   color: #0000007F;
   max-width: 10%;
   cursor: pointer;
+  font-size: 16pt;
   position: relative;
   /*color: #FFFFFF;*/
+}
+
+.text-white > .scale-child {
+  color: #FFF !important;
 }
 
 .scale-child > span {
@@ -281,6 +317,10 @@ export default {
   font-size: xx-large;
   font-weight: bold;
   color: #000;
+}
+
+.text-white > .scale-child > .scale-item-score.actual-score {
+  color: #fff;
 }
 
 .result {
@@ -307,6 +347,8 @@ export default {
 
 .score-details {
   text-align: center;
+  font-size: 11pt;
+  z-index: 1001;
 }
 
 .toggler {

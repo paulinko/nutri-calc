@@ -50,7 +50,8 @@
                   </div>
                   <div class="col-5">
                     <div class="input-group">
-                      <input class="form-control" type="text" :name="name" :id="name" v-model.number="nutritionalInfo[name]">
+                      <input class="form-control" type="text" :name="name" :id="name"
+                             v-model.number="nutritionalInfo[name]">
                       <span class="input-group-text col-4">{{ getUnit(name) }}</span>
                     </div>
                   </div>
@@ -87,7 +88,7 @@
         <div class="col-md-2">
           <h3>Score</h3>
           <div class="text-start score-result">
-            <div >
+            <div>
               <span :class="'score ' + result.letterScore.points ">
               {{ result.letterScore.points }}
               </span>
@@ -95,8 +96,21 @@
           </div>
         </div>
         <div class="col-md-10">
+          <h3>Punkteverteilung</h3>
           <ResultChart v-if="resultColors" :colors="resultColors" :result-data="result">
           </ResultChart>
+          <Scale :data="result.letterScore.points" :fractal="result.letterScore.fractal" :value="result.letterScore.value" :name="displayNames('letterScore')"
+                 :scale="currentPointScale"
+                 :was-used-in-calculation="true"
+                 score-unit=""
+                 scale-classes=" text-white"
+                 red="#d9411a"
+                 green="#008043"
+                 yellow="#f2c011"
+                 short-name="letterScore"
+                 :score-colors-override="originalScoreColors"
+                 :hide-badge="true"
+                 :unit="' '+getUnit('letterScore')"/>
         </div>
       </div>
       <h2>Details</h2>
@@ -126,14 +140,18 @@
                  :scale="currentScale.n[name]"
                  v-for="(v, name) in result.negatives" :key="name" :is-positive="false" :short-name="name"
                  :was-used-in-calculation="wasUsedInCalculation(name)"
-                 :unit="getUnit(name)"/>
+                 :unit="getUnit(name)"
+                 score-unit="P"
+          />
           <h3>Positive Inhaltsstoffe</h3>
           <Scale @colors-calculated="appendPropColor($event, name)"
                  :data="value.points" :fractal="value.fractal" :value="value.value" :name="displayNames(name)"
                  :scale="currentScale.p[name]"
                  v-for="(value, name) in result.positives" :key="name" :is-positive="true" :short-name="name"
                  :was-used-in-calculation="wasUsedInCalculation(name)"
-                 :unit="getUnit(name)"/>
+                 :unit="getUnit(name)"
+                 score-unit="P"
+          />
         </div>
       </div>
       <pre>{{ result }}</pre>
@@ -172,6 +190,9 @@ export default {
     currentScale() {
       return this.currentTable.nutriprops;
     },
+    currentPointScale() {
+      return this.currentTable.pointsToScore;
+    },
     resultColors() {
       const allColorsPresent = (Object.keys(this.result.negatives).length + Object.keys(this.result.positives).length) ===
           Object.keys(this.colors).length
@@ -193,6 +214,7 @@ export default {
         oil: 0,
         goodStuff: 0,
       },
+      originalScoreColors: ['#008043', '#85b931', '#f2c011', '#e37c13', '#d9411a' ],
       colors: {},
       result: null,
       mode: 'general',

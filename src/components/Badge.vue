@@ -1,6 +1,6 @@
 <template>
     <span :class="calculatedClasses" :style="'background-color:' + badgeData.color">{{sign}}
-        {{badgeData.value}}P
+        {{badgeData.value}}
       <sup v-html="superscript"></sup></span>
 </template>
 

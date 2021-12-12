@@ -42,6 +42,23 @@ function getPoints(table, value) {
     return null;
 }
 
+const ProteinReasonNotApplied = 0;
+const ProteinReasonLowBadScore = 1;
+const ProteinReasonHighGoodStuffScore = 2;
+const ProteinReasonIsCheese = 3;
+
+function getApplyProtein(badScore, goodStuffValue) {
+    let applyProtein = (badScore < 11 || (badScore >= 11 && goodStuffValue.points === 5));
+    let reason = ProteinReasonNotApplied
+    if (applyProtein) {
+        reason = (badScore < 11) ? ProteinReasonLowBadScore : ProteinReasonHighGoodStuffScore;
+    }
+    return {
+         applyProtein,
+         reason
+    };
+}
+
 const GeneralTable = {
     nutriprops: {
         n: {
@@ -145,11 +162,11 @@ const GeneralTable = {
         const goodStuff = getPoints(this.nutriprops.p.goodStuff, nutirInfo.goodStuff);
 
         const badScore = kjValue.points + sugarValue.points + satFatsValue.points + sodiumValue.points;
-        const applyProtein = (badScore < 11 || (badScore >= 11 && goodStuff.points === 5));
+        const pCalc = getApplyProtein(badScore, goodStuff);
 
         let totalScore = badScore - goodStuff.points - fiberValue.points;
 
-        if (applyProtein) {
+        if (pCalc.applyProtein) {
             totalScore -= protValue.points
         }
 
@@ -166,7 +183,8 @@ const GeneralTable = {
                 goodStuff: goodStuff,
             },
             badScore,
-            applyProtein,
+            applyProtein: pCalc.applyProtein,
+            proteinAppliedReason: pCalc.reason,
             totalScore,
             letterScore: getPoints(this.pointsToScore, totalScore)
         }
@@ -271,12 +289,12 @@ const CheeseTable = {
 
         const protValue = getPoints(this.nutriprops.p.protein, value.protein);
         const fiberValue = getPoints(this.nutriprops.p.fiber, value.fiber);
-        const oilValue = getPoints(this.nutriprops.p.goodStuff, value.goodStuff);
+        const goodStuffValue = getPoints(this.nutriprops.p.goodStuff, value.goodStuff);
 
 
         const badScore = kjValue.points + sugarValue.points + satFatsValue.points + sodiumValue.points;
-        const goodStuff = protValue.points - oilValue.points - fiberValue.points
-        const totalScore = badScore - goodStuff;
+        const goodScore = protValue.points + goodStuffValue.points + fiberValue.points
+        const totalScore = badScore - goodScore;
 
         return {
             negatives: {
@@ -288,10 +306,11 @@ const CheeseTable = {
             positives: {
                 protein: protValue,
                 fiber: fiberValue,
-                goodStuff: goodStuff,
+                goodStuff: goodStuffValue,
             },
             badScore,
             applyProtein: true,
+            proteinAppliedReason: ProteinReasonIsCheese,
             totalScore,
             letterScore: getPoints(this.pointsToScore, totalScore)
         }
@@ -417,8 +436,8 @@ const FatsTable = {
 
 
         const badScore = kjValue.points + sugarValue.points + ratioValue.points + sodiumValue.points;
-        const applyProtein = (badScore < 11 || (badScore >= 11 && oilValue === 5));
-        const goodScore =  oilValue.points + fiberValue.points + ((applyProtein) ? protValue.points : 0)
+        const pCalc = getApplyProtein(badScore, oilValue)
+        const goodScore = oilValue.points + fiberValue.points + ((pCalc.applyProtein) ? protValue.points : 0)
 
         let totalScore = badScore - goodScore;
 
@@ -435,7 +454,8 @@ const FatsTable = {
                 oil: oilValue
             },
             badScore,
-            applyProtein,
+            applyProtein: pCalc.applyProtein,
+            proteinAppliedReason: pCalc.reason,
             totalScore,
             letterScore: getPoints(this.pointsToScore, totalScore)
         }
@@ -543,9 +563,9 @@ const DrinksTable = {
         const goodStuffValue = getPoints(this.nutriprops.p.goodStuff, data.goodStuff);
 
 
-        const badScore = kjValue.points + sugarValue .points+ satFatsValue.points + sodiumValue.points;
-        const applyProtein = (badScore < 11 || (badScore >= 11 && goodStuffValue === 5))
-        const goodScore = goodStuffValue.points + fiberValue.points + ((applyProtein) ? protValue.points : 0)
+        const badScore = kjValue.points + sugarValue.points + satFatsValue.points + sodiumValue.points;
+        const pCalc = getApplyProtein(badScore, goodStuffValue)
+        const goodScore = goodStuffValue.points + fiberValue.points + ((pCalc.applyProtein) ? protValue.points : 0)
 
         const totalScore = badScore - goodScore;
 
@@ -562,7 +582,8 @@ const DrinksTable = {
                 goodStuff: goodStuffValue,
             },
             badScore,
-            applyProtein: true,
+            applyProtein: pCalc.applyProtein,
+            proteinAppliedReason: pCalc.reason,
             totalScore,
             letterScore: getPoints(this.pointsToScore, totalScore)
         }
@@ -575,6 +596,8 @@ function getUnit(nutriProp) {
             return 'kJ'
         case 'sodium':
             return 'mg'
+        case 'letterScore':
+            return 'Punkte'
         default:
             return 'g'
     }

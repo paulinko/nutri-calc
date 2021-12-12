@@ -14,7 +14,8 @@ const DisplayNames = {
   cheese: 'Milchprodukte',
   general: 'Allgemein',
   fats: 'Öle',
-  drinks: 'Getränke'
+  drinks: 'Getränke',
+  letterScore: 'Gesamtpunktzahl'
 }
 
 
@@ -26,7 +27,7 @@ function GetDisplayNames(prop, wasUsed= true) {
   if (!wasUsed) {
     return DisplayNames[prop] + '(nicht gewertet)'
   }
-  return DisplayNames[prop]
+  return DisplayNames[prop] ?? prop
 }
 
 export {GetInputDisplayNames, GetDisplayNames};

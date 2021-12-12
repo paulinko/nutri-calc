@@ -11,8 +11,8 @@
     <path d="M 25 51
            A 25 25, 0, 0, 1, 75 51
            Z" fill="white"/>
-    <path fill="black" :d="tachoNeedleSemiCirclePath"></path>
-    <path :d="tachoNeedlePath" stroke="black"/>
+    <path fill="#333" :d="tachoNeedleSemiCirclePath"></path>
+    <path :d="tachoNeedlePath" stroke="#333" fill="#333"/>
   </svg>
 </template>
 
