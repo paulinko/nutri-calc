@@ -204,54 +204,54 @@ const CheeseTable = {
 
             ],
             satFats: [
-                [1, 0],
-                [2, 1],
-                [3, 2],
-                [4, 3],
-                [5, 4],
-                [6, 5],
-                [7, 6],
-                [8, 7],
-                [9, 8],
-                [10, 9],
+                [-Infinity, 1, 0],
+                [1, 2, 1],
+                [2, 3, 2],
+                [3, 4, 3],
+                [4, 5, 4],
+                [5, 6, 5],
+                [6, 7, 6],
+                [7, 8, 7],
+                [8, 9, 8],
+                [9, 10, 9],
                 [Infinity, 10],
             ],
             sodium: [
-                [90, 0],
-                [180, 1],
-                [270, 2],
-                [360, 3],
-                [450, 4],
-                [540, 5],
-                [630, 6],
-                [720, 7],
-                [810, 8],
-                [900, 9],
-                [Infinity, 10]
+                [-Infinity, 90, 0],
+                [90, 180, 1],
+                [180, 270, 2],
+                [270, 360, 3],
+                [360, 450, 4],
+                [450, 540, 5],
+                [540, 630, 6],
+                [630, 720, 7],
+                [720, 810, 8],
+                [810, 900, 9],
+                [900, Infinity, 10]
             ],
         },
         p: {
             protein: [
-                [1.6, 0],
-                [3.2, 1],
-                [4.8, 2],
-                [6.4, 3],
-                [8, 4],
-                [Infinity, 5],
+                [-Infinity, 1.6, 0],
+                [1.6, 3.2, 1],
+                [3.2, 4.8, 2],
+                [4.8, 6.4, 3],
+                [6.4, 8, 4],
+                [8, Infinity, 5],
             ],
             fiber: [
-                [0.9, 0],
-                [1.9, 1],
-                [2.8, 2],
-                [3.7, 3],
-                [4.7, 4],
-                [Infinity, 5],
+                [-Infinity, 0.9, 0],
+                [0.9, 1.9, 1],
+                [1.9, 2.8, 2],
+                [2.8, 3.7, 3],
+                [3.7, 4.7, 4],
+                [4.7, Infinity, 5],
             ],
             goodStuff: [
-                [40, 0],
-                [60, 1],
-                [80, 2],
-                [Infinity, 5],
+                [-Infinity, 40, 0],
+                [40, 60, 1],
+                [60, 80, 2],
+                [80, Infinity, 5],
             ]
         }
     },
@@ -264,14 +264,14 @@ const CheeseTable = {
     ],
 
     calculateScore: function (value) {
-        const kjValue = getPoints(this.nutriprops.n.kJ, value);
-        const sugarValue = getPoints(this.nutriprops.n.sugar, value);
-        const satFatsValue = getPoints(this.nutriprops.n.satFats, value);
-        const sodiumValue = getPoints(this.nutriprops.n.sodium, value);
+        const kjValue = getPoints(this.nutriprops.n.kJ, value.kJ);
+        const sugarValue = getPoints(this.nutriprops.n.sugar, value.sugar);
+        const satFatsValue = getPoints(this.nutriprops.n.satFats, value.satFats);
+        const sodiumValue = getPoints(this.nutriprops.n.sodium, value.sodium);
 
-        const protValue = getPoints(this.nutriprops.p.protein, value);
-        const fiberValue = getPoints(this.nutriprops.p.fiber, value);
-        const oilValue = getPoints(this.nutriprops.p.goodStuff, value);
+        const protValue = getPoints(this.nutriprops.p.protein, value.protein);
+        const fiberValue = getPoints(this.nutriprops.p.fiber, value.fiber);
+        const oilValue = getPoints(this.nutriprops.p.goodStuff, value.goodStuff);
 
 
         const badScore = kjValue.points + sugarValue.points + satFatsValue.points + sodiumValue.points;
@@ -416,16 +416,11 @@ const FatsTable = {
         const oilValue = getPoints(this.nutriprops.p.goodStuff, data.goodStuff);
 
 
-        const badScore = kjValue + sugarValue + ratioValue + sodiumValue;
+        const badScore = kjValue.points + sugarValue.points + ratioValue.points + sodiumValue.points;
+        const applyProtein = (badScore < 11 || (badScore >= 11 && oilValue === 5));
+        const goodScore =  oilValue.points + fiberValue.points + ((applyProtein) ? protValue.points : 0)
 
-        let totalScore = 0;
-        let applyProtein = (badScore < 11 || (badScore >= 11 && oilValue === 5));
-
-        if (applyProtein) {
-            totalScore = badScore - protValue - oilValue - fiberValue;
-        } else {
-            totalScore = badScore - oilValue - fiberValue;
-        }
+        let totalScore = badScore - goodScore;
 
         return {
             negatives: {
@@ -448,81 +443,87 @@ const FatsTable = {
 }
 
 const DrinksTable = {
-    kJ: [
-        [-Infinity, 0, 0],
-        [0, 30, 1],
-        [30, 60, 2],
-        [60, 90, 3],
-        [90, 120, 4],
-        [120, 150, 5],
-        [150, 180, 6],
-        [180, 210, 7],
-        [210, 240, 8],
-        [240, 270, 9],
-        [270, Infinity, 10],
-    ],
-    sugar: [
-        [-Infinity, 0, 0],
-        [0, 1.5, 1],
-        [1.5, 3, 2],
-        [3, 4.5],
-        [4.5, 6],
-        [6, 7.5],
-        [7.5, 9],
-        [9, 10.5],
-        [10.5, 12],
-        [12, 13.5],
-        [13.5, Infinity]
+    nutriprops: {
+        n: {
+            kJ: [
+                [-Infinity, 0, 0],
+                [0, 30, 1],
+                [30, 60, 2],
+                [60, 90, 3],
+                [90, 120, 4],
+                [120, 150, 5],
+                [150, 180, 6],
+                [180, 210, 7],
+                [210, 240, 8],
+                [240, 270, 9],
+                [270, Infinity, 10],
+            ],
+            sugar: [
+                [-Infinity, 0, 0],
+                [0, 1.5, 1],
+                [1.5, 3, 2],
+                [3, 4.5, 3],
+                [4.5, 6, 4],
+                [6, 7.5, 5],
+                [7.5, 9, 6],
+                [9, 10.5, 7],
+                [10.5, 12, 8],
+                [12, 13.5, 9],
+                [13.5, Infinity, 10]
 
-    ],
-    satFats: [
-        [1, 0],
-        [2, 1],
-        [3, 2],
-        [4, 3],
-        [5, 4],
-        [6, 5],
-        [7, 6],
-        [8, 7],
-        [9, 8],
-        [10, 9],
-        [Infinity, 10],
-    ],
-    sodium: [
-        [90, 0],
-        [180, 1],
-        [270, 2],
-        [360, 3],
-        [450, 4],
-        [540, 5],
-        [630, 6],
-        [720, 7],
-        [810, 8],
-        [900, 9],
-        [Infinity, 10]
-    ],
-    protein: [
-        [1.6, 0],
-        [3.2, 1],
-        [4.8, 2],
-        [6.4, 3],
-        [8, 4],
-        [Infinity, 5],
-    ],
-    fiber: [
-        [0.9, 0],
-        [1.9, 1],
-        [2.8, 2],
-        [3.7, 3],
-        [4.7, 4],
-        [Infinity, 5],
-    ],
-    goodStuff: [
-        [40, 0],
-        [60, 2],
-        [80, 4],
-        [Infinity, 10],
-    ],
+            ],
+            satFats: [
+                [-Infinity, 1, 0],
+                [1, 2, 1],
+                [2, 3, 2],
+                [3, 4, 3],
+                [4, 5, 4],
+                [5, 6, 5],
+                [6, 7, 6],
+                [7, 8, 7],
+                [8, 9, 8],
+                [9, 10, 9],
+                [10, Infinity, 10],
+            ],
+            sodium: [
+                [-Infinity, 90, 0],
+                [90, 180, 1],
+                [180, 270, 2],
+                [270, 360, 3],
+                [360, 450, 4],
+                [450, 540, 5],
+                [540, 630, 6],
+                [630, 720, 7],
+                [720, 810, 8],
+                [810, 900, 9],
+                [900, Infinity, 10]
+            ],
+        },
+        p: {
+            protein: [
+                [-Infinity, 1.6, 0],
+                [1.6, 3.2, 1],
+                [3.2, 4.8, 2],
+                [4.8, 6.4, 3],
+                [6.4, 8, 4],
+                [8, Infinity, 5],
+            ],
+            fiber: [
+                [-Infinity, 0.9, 0],
+                [0.9, 1.9, 1],
+                [1.9, 2.8, 2],
+                [2.8, 3.7, 3],
+                [3.7, 4.7, 4],
+                [4.7, Infinity, 5],
+            ],
+            goodStuff: [
+                [-Infinity, 40, 0],
+                [40, 60, 2],
+                [60, 80, 4],
+                [80, Infinity, 10],
+            ]
+        }
+    },
 
     pointsToScore: [
         [-Infinity, 2, 'B'],
@@ -532,27 +533,39 @@ const DrinksTable = {
     ],
 
     calculateScore: function (data) {
-        const kjValue = getPoints(this.kJ, data.kJ);
-        const sugarValue = getPoints(this.sugar, data.sugar);
-        const sodiumValue = getPoints(this.sodium, data.sodium);
-        const satFatsValue = getPoints(this.satFats, data.satFats);
+        const kjValue = getPoints(this.nutriprops.n.kJ, data.kJ);
+        const sugarValue = getPoints(this.nutriprops.n.sugar, data.sugar);
+        const sodiumValue = getPoints(this.nutriprops.n.sodium, data.sodium);
+        const satFatsValue = getPoints(this.nutriprops.n.satFats, data.satFats);
 
-        const protValue = getPoints(this.protein, data.protein);
-        const fiberValue = getPoints(this.fiber, data.fiber);
-        const oilValue = getPoints(this.goodStuff, data.oil);
+        const protValue = getPoints(this.nutriprops.p.protein, data.protein);
+        const fiberValue = getPoints(this.nutriprops.p.fiber, data.fiber);
+        const goodStuffValue = getPoints(this.nutriprops.p.goodStuff, data.goodStuff);
 
 
-        const badScore = kjValue + sugarValue + satFatsValue + sodiumValue;
+        const badScore = kjValue.points + sugarValue .points+ satFatsValue.points + sodiumValue.points;
+        const applyProtein = (badScore < 11 || (badScore >= 11 && goodStuffValue === 5))
+        const goodScore = goodStuffValue.points + fiberValue.points + ((applyProtein) ? protValue.points : 0)
 
-        let totalScore = 0;
+        const totalScore = badScore - goodScore;
 
-        if (badScore < 11 || (badScore >= 11 && oilValue === 5)) {
-            totalScore = badScore - protValue - oilValue - fiberValue;
-        } else {
-            totalScore = badScore - oilValue - fiberValue;
+        return {
+            negatives: {
+                kJ: kjValue,
+                sugar: sugarValue,
+                satFats: satFatsValue,
+                sodium: sodiumValue
+            },
+            positives: {
+                protein: protValue,
+                fiber: fiberValue,
+                goodStuff: goodStuffValue,
+            },
+            badScore,
+            applyProtein: true,
+            totalScore,
+            letterScore: getPoints(this.pointsToScore, totalScore)
         }
-
-        return totalScore
     }
 }
 

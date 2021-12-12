@@ -11,6 +11,7 @@
     <path d="M 25 51
            A 25 25, 0, 0, 1, 75 51
            Z" fill="white"/>
+    <path fill="black" :d="tachoNeedleSemiCirclePath"></path>
     <path :d="tachoNeedlePath" stroke="black"/>
   </svg>
 </template>
@@ -33,14 +34,24 @@ export default {
     return {
       bestColor: '#3aff00',
       middleColor: '#ffff00',
-      worstColor: '#ff7f00'
+      worstColor: '#ff7f00',
+      innerCircleRadius: 6,
+      middleX: 50,
+      middleY: 50,
+      shiftDown: 1,
+      gaugeThickness: 6,
     };
   },
 
   computed: {
     tachoNeedlePath() {
-      return `M 50 50
-           L ${this.tachoX} ${this.tachoY}`
+            return `M ${this.tachoXStart} ${this.tachoYStart}
+           L ${this.tachoX} ${this.tachoY} L ${this.tachoXEndt } ${this.tachoYEnd} Z`
+    },
+    tachoNeedleSemiCirclePath(){
+      return `M ${ this.middleX - this.innerCircleRadius} ${this.middleY + this.shiftDown}
+           A  5, 5, 0, 0, 1, ${this.middleX + this.innerCircleRadius } ${this.middleY + this.shiftDown}
+           Z`
     },
     tachoX() {
       const radius = 50
@@ -53,6 +64,38 @@ export default {
     tachoY() {
       const radius = 50
       let angle = this.percent * (Math.PI / 100)
+      let coordinates = this.polarToCartesian(angle, radius)
+      console.log('coords', coordinates)
+      console.log('angle', angle)
+      return 50 - coordinates[1]
+    },
+    tachoXStart() {
+      const radius = this.innerCircleRadius-1
+      let angle = (this.percent -this.gaugeThickness) * (Math.PI/ 100)
+      let coordinates = this.polarToCartesian(angle, radius)
+      console.log('coords', coordinates)
+      console.log('angle', angle)
+      return 50 - coordinates[0]
+    },
+    tachoYStart() {
+      const radius = this.innerCircleRadius -1
+      let angle = (this.percent-this.gaugeThickness) * (Math.PI/ 100)
+      let coordinates = this.polarToCartesian(angle, radius)
+      console.log('coords', coordinates)
+      console.log('angle', angle)
+      return 50 - coordinates[1]
+    },
+    tachoXEndt() {
+      const radius = this.innerCircleRadius - 1
+      let angle = (this.percent + this.gaugeThickness)  * (Math.PI/ 100)
+      let coordinates = this.polarToCartesian(angle, radius)
+      console.log('coords', coordinates)
+      console.log('angle', angle)
+      return 50 - coordinates[0]
+    },
+    tachoYEnd() {
+      const radius = this.innerCircleRadius - 1
+      let angle = (this.percent + this.gaugeThickness) * (Math.PI / 100)
       let coordinates = this.polarToCartesian(angle, radius)
       console.log('coords', coordinates)
       console.log('angle', angle)
