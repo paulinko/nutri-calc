@@ -15,6 +15,7 @@ const DisplayNames = {
   general: 'Allgemein',
   fats: 'Öle',
   drinks: 'Getränke',
+  name: 'Name',
   letterScore: 'Gesamtpunktzahl'
 }
 

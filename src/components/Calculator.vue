@@ -40,13 +40,19 @@
       <div class="tab-content">
         <div class="tab-pane fade show active">
           <form>
-            <div class="row mt-3">
+            <div class="row my-3">
+              <div class="col-md-4">
+                <label class="col-form-label" for="name">{{ inputDisplayNames('name') }}</label>
+                <input class="form-control" type="text" name="name" id="productName"
+                       v-model="name" >
+              </div>
+            </div>
+            <div class="row">
               <div class="col-lg-3 col-md-6">
                 <h4>Negative Inhaltsstoffe</h4>
                 <div v-for="(value, name) in currentTable.nutriprops.n" :key="name" class="row g-2">
                   <div class="col-auto flex-grow-1">
                     <label class="col-form-label" :for="name">{{ inputDisplayNames(name) }}</label>
-
                   </div>
                   <div class="col-5">
                     <div class="input-group">
@@ -83,7 +89,7 @@
     </div>
     <div class="result-container" v-if="result">
       <hr>
-      <h2>Ergebnisse</h2>
+      <h2>Ergebnisse für {{result.name}}</h2>
       <div class="row score-row">
         <div class="col-md-2">
           <h3>Score</h3>
@@ -99,18 +105,6 @@
           <h3>Punkteverteilung</h3>
           <ResultChart v-if="resultColors" :colors="resultColors" :result-data="result">
           </ResultChart>
-          <Scale :data="result.letterScore.points" :fractal="result.letterScore.fractal" :value="result.letterScore.value" :name="displayNames('letterScore')"
-                 :scale="currentPointScale"
-                 :was-used-in-calculation="true"
-                 score-unit=""
-                 scale-classes=" text-white"
-                 red="#d9411a"
-                 green="#008043"
-                 yellow="#f2c011"
-                 short-name="letterScore"
-                 :score-colors-override="originalScoreColors"
-                 :hide-badge="true"
-                 :unit="' '+getUnit('letterScore')"/>
         </div>
       </div>
       <h2>Details</h2>
@@ -134,6 +128,19 @@
           </nav>
         </div>
         <div class="col-md-9 results-content" data-bs-spy="scroll" data-bs-target="#list-example" data-bs-offset="0">
+          <Scale :data="result.letterScore.points" :fractal="result.letterScore.fractal"
+                 :value="result.letterScore.value" :name="displayNames('letterScore')"
+                 :scale="currentPointScale"
+                 :was-used-in-calculation="true"
+                 score-unit=""
+                 scale-classes=" text-white"
+                 red="#d9411a"
+                 green="#008043"
+                 yellow="#f2c011"
+                 short-name="letterScore"
+                 :score-colors-override="originalScoreColors"
+                 :hide-badge="true"
+                 :unit="' '+getUnit('letterScore')"/>
           <h3>Negative Inhaltsstoffe</h3>
           <Scale @colors-calculated="appendPropColor($event, name)"
                  :data="v.points" :fractal="v.fractal" :value="v.value" :name="displayNames(name)"
@@ -214,7 +221,7 @@ export default {
         oil: 0,
         goodStuff: 0,
       },
-      originalScoreColors: ['#008043', '#85b931', '#f2c011', '#e37c13', '#d9411a' ],
+      originalScoreColors: ['#008043', '#85b931', '#f2c011', '#e37c13', '#d9411a'],
       colors: {},
       result: null,
       mode: 'general',
@@ -226,6 +233,8 @@ export default {
       this.result = null
       this.colors = {}
       this.result = this.currentTable.calculateScore(this.nutritionalInfo)
+      this.result.mode = this.mode
+      this.result.name = this.name || this.getDisplayNames(this.mode)
     },
     inputDisplayNames(prop) {
       return GetInputDisplayNames(prop)

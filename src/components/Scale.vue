@@ -4,18 +4,22 @@
       <Badge :badge-data="getBadgeData()" :is-positive="isPositive" v-if="!hideBadge"></Badge>
     </h4>
     <div class="gauge-row">
-      <div class="left-container" v-if="!isLowest">
-        <Arrow :gradient-id="shortName + 'leftArrow'" :color-start="gaugeLower" :color-end="gaugeLower"></Arrow>
-        <div class="text-center">{{ lowerBound - value }}{{ unit }} von {{ previousScore }}{{ scoreUnit }} entfernt
+      <div class="left-container">
+        <div v-if="!isLowest">
+          <Arrow :gradient-id="shortName + 'leftArrow'" :color-start="gaugeLower" :color-end="gaugeLower"></Arrow>
+          <div class="text-center">{{ lowerBound - value }}{{ unit }} von {{ previousScore }}{{ scoreUnit }} entfernt
+          </div>
         </div>
       </div>
       <div class="gauge-container">
         <Gauge :positive="isPositive" :lower-color="gaugeLower" :upper-color="gaugeUpper" :gradient-id="gradientId"
                :percent="fractal * 100"></Gauge>
       </div>
-      <div class="right-container" v-if="!isHighest">
-        <Arrow :gradient-id="shortName + 'rightArrow'" :color-start="gaugeUpper" :color-end="gaugeUpper"></Arrow>
-        <div class="text-center">+{{ upperBound - value }}{{ unit }} von {{ nextScore }}{{ scoreUnit }} entfernt</div>
+      <div class="right-container" >
+        <div v-if="!isHighest">
+          <Arrow :gradient-id="shortName + 'rightArrow'" :color-start="gaugeUpper" :color-end="gaugeUpper"></Arrow>
+          <div class="text-center">+{{ upperBound - value }}{{ unit }} von {{ nextScore }}{{ scoreUnit }} entfernt</div>
+        </div>
       </div>
     </div>
 
@@ -230,6 +234,10 @@ export default {
     getRangeString(i) {
       let lowerBound = this.scale[i - 1][0]
       let upperBound = this.scale[i - 1][1]
+      if (lowerBound === -Infinity && upperBound === -Infinity) {
+        return 'n/a'
+      }
+
       if (lowerBound === -Infinity) {
         return `< ${upperBound}${this.unit}`
       } else if (upperBound === Infinity) {
@@ -336,7 +344,7 @@ export default {
   width: 10%;
 }
 
-.right-container > svg {
+.right-container > div > svg {
   transform: rotate(180deg);
 }
 
@@ -349,6 +357,7 @@ export default {
   text-align: center;
   font-size: 11pt;
   z-index: 1001;
+  padding: 3px;
 }
 
 .toggler {

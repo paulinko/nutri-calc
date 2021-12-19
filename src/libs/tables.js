@@ -546,6 +546,7 @@ const DrinksTable = {
     },
 
     pointsToScore: [
+        [-Infinity, -Infinity, 'A'],
         [-Infinity, 2, 'B'],
         [3, 5, 'C'],
         [5, 9, 'D'],
