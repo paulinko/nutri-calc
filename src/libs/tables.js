@@ -432,12 +432,12 @@ const FatsTable = {
 
         const protValue = getPoints(this.nutriprops.p.protein, data.protein);
         const fiberValue = getPoints(this.nutriprops.p.fiber, data.fiber);
-        const oilValue = getPoints(this.nutriprops.p.goodStuff, data.goodStuff);
+        const goodStuffValue = getPoints(this.nutriprops.p.goodStuff, data.goodStuff);
 
 
         const badScore = kjValue.points + sugarValue.points + ratioValue.points + sodiumValue.points;
-        const pCalc = getApplyProtein(badScore, oilValue)
-        const goodScore = oilValue.points + fiberValue.points + ((pCalc.applyProtein) ? protValue.points : 0)
+        const pCalc = getApplyProtein(badScore, goodStuffValue)
+        const goodScore = goodStuffValue.points + fiberValue.points + ((pCalc.applyProtein) ? protValue.points : 0)
 
         let totalScore = badScore - goodScore;
 
@@ -451,7 +451,7 @@ const FatsTable = {
             positives: {
                 protein: protValue,
                 fiber: fiberValue,
-                oil: oilValue
+                goodStuff: goodStuffValue
             },
             badScore,
             applyProtein: pCalc.applyProtein,
@@ -597,6 +597,8 @@ function getUnit(nutriProp) {
             return 'kJ'
         case 'sodium':
             return 'mg'
+        case 'ratioSatFats':
+            return '%'
         case 'letterScore':
             return 'Punkte'
         default:

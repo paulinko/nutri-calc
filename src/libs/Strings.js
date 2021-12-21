@@ -7,7 +7,7 @@ const DisplayNames = {
   kcal: 'Kalorien',
   sugar: 'Zucker',
   satFats: 'gesättigte Fette',
-  ratioSatFats: 'gesamte Fette',
+  ratioSatFats: 'Anteil gesättigter Fette',
   sodium: 'Salz',
   protein: 'Protein',
   fiber: 'Ballaststoffe',

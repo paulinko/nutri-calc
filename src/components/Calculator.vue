@@ -114,7 +114,7 @@
           <h5 class="mt-2">Negative Inhaltsstoffe</h5>
           <nav class="nav flex-column result-nav negative">
             <a v-for="(value, name) in result.negatives" :key="name" class="nav-link link-danger"
-               href="#">{{ displayNames(name) }}: {{ nutritionalInfo[name].toLocaleString() }} {{ getUnit(name) }}
+               href="#">{{ displayNames(name) }}: {{ this.result.negatives[name].value.toLocaleString() }} {{ getUnit(name) }}
               <Badge v-if="getColorForProp(name)" classes="float-end" :badge-data="getColorForProp(name)"
                      :is-positive="false"></Badge>
             </a>
@@ -122,7 +122,7 @@
           <h5 class="mt-2">Positive Inhaltsstoffe</h5>
           <nav class="nav flex-column result-nav positive">
             <a v-for="(value, name) in result.positives" :key="name" class="nav-link link-success"
-               aria-current="page" href="#">{{ displayNames(name) }}: {{ nutritionalInfo[name] }} {{ getUnit(name) }}
+               aria-current="page" href="#">{{ displayNames(name) }}: {{ this.result.positives[name].value.toLocaleString() }} {{ getUnit(name) }}
               <Badge v-if="getColorForProp(name)" :classes="'float-end'" :badge-data="getColorForProp(name)"
                      :is-positive="true"></Badge>
             </a>
@@ -241,6 +241,7 @@ export default {
         fiber: 0,
         oil: 0,
         goodStuff: 0,
+        ratioSatFats: 0,
       },
       name: GetPlaceholderText('general'),
       originalScoreColors: ['#008043', '#85b931', '#f2c011', '#e37c13', '#d9411a'],
@@ -255,6 +256,7 @@ export default {
       this.result = null
       this.colors = {}
       this.result = this.currentTable.calculateScore(this.nutritionalInfo)
+      console.log('result',this.result)
       this.result.mode = this.mode
       this.result.name = this.name || this.getDisplayNames(this.mode)
     },
@@ -282,7 +284,6 @@ export default {
     wasUsedInCalculation(prop) {
       return (prop !== 'protein' || this.result.applyProtein)
     }
-
   }
 }
 </script>
@@ -296,19 +297,10 @@ p {
 
 
 .result-nav > a {
-  /*border-left: 1px solid #dee2e6;*/
   border-bottom: 2px solid #dee2e605;
-  /*border-right: 1px solid #dee2e6;*/
 }
 
-/*.result-nav > a:first-child {*/
-/*  border-top: 1px solid #dee2e6;*/
-/*  border-top-left-radius: 0.25em;*/
-/*  border-top-right-radius: 0.25em;*/
-/*}*/
-
 .result-nav > a:last-child {
-  /*border-bottom: 1px solid #dee2e6;*/
   border-bottom: none;
   border-bottom-left-radius: 0.25em;
   border-bottom-right-radius: 0.25em;
