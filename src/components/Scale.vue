@@ -40,6 +40,8 @@
 
 <script>
 
+import {GetInfoTexts} from "@/libs/Strings";
+
 const TotalLength = 300
 
 import Arrow from "@/components/Arrow";
@@ -272,6 +274,9 @@ export default {
       this.$emit('colors-calculated', badgeData)
 
       return badgeData
+    },
+    getInfoText(prop) {
+      return GetInfoTexts(prop)
     }
   }
 }

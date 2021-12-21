@@ -32,27 +32,25 @@
       <ul class="nav nav-tabs" id="myTab" role="tablist">
         <li class="nav-item" role="presentation" v-for="tableName in tableNames" :key="tableName">
           <button :class="'nav-link ' + ((mode === tableName) ? 'active' : '')" id="general-tab"
-                  @click="mode = tableName" type="button"
+                  @click="mode = tableName; name = getPlaceholderText(mode)" type="button"
                   role="tab" aria-controls="" aria-selected="true">{{ inputDisplayNames(tableName) }}
           </button>
         </li>
       </ul>
       <div class="tab-content">
-        <div class="tab-pane fade show active">
+        <div class="tab-pane fade show active py-3">
+          <h4>Berechnung für &nbsp;<input class="form-control  w-50 d-inline" title="Gib einen Namen für das Lebensmittel an" type="text" name="name" id="productName"
+                       v-model="name"> </h4>
+          <p>
+            {{ modeInfoText }}
+          </p>
           <form>
-            <div class="row my-3">
-              <div class="col-md-4">
-                <label class="col-form-label" for="name">{{ inputDisplayNames('name') }}</label>
-                <input class="form-control" type="text" name="name" id="productName"
-                       v-model="name" >
-              </div>
-            </div>
-            <div class="row">
+            <div class="row nutriprops-row">
               <div class="col-lg-3 col-md-6">
                 <h4>Negative Inhaltsstoffe</h4>
                 <div v-for="(value, name) in currentTable.nutriprops.n" :key="name" class="row g-2">
-                  <div class="col-auto flex-grow-1">
-                    <label class="col-form-label" :for="name">{{ inputDisplayNames(name) }}</label>
+                  <div class="col-7 flex-grow-1">
+                    <label class="col-form-label" :for="name" :title="getInputInfoText(name)">{{ inputDisplayNames(name) }}</label>
                   </div>
                   <div class="col-5">
                     <div class="input-group">
@@ -67,7 +65,7 @@
                 <h4>Positive Inhaltsstoffe</h4>
                 <div v-for="(value, name) in currentTable.nutriprops.p" :key="name" class="row g-2">
                   <div class="col-auto flex-grow-1">
-                    <label class="col-form-label" :for="name">{{ inputDisplayNames(name) }}</label>
+                    <label class="col-form-label" :for="name" :title="getInputInfoText(name)">{{ inputDisplayNames(name) }}</label>
                   </div>
                   <div class="col-4">
                     <div class="input-group">
@@ -77,9 +75,12 @@
                   </div>
                 </div>
               </div>
+              <div class="col-lg-2 d-md-block d-xs-none ms-5">
+                <img :src="currentImage" alt="">
+              </div>
             </div>
           </form>
-          <div class="row mt-3">
+          <div :class="'row mt-3 ' + classesCalcElem ">
             <div class="col-md-6">
               <button class="btn btn-success btn-lg" @click="calculateScore()">Score berechnen</button>
             </div>
@@ -89,7 +90,7 @@
     </div>
     <div class="result-container" v-if="result">
       <hr>
-      <h2>Ergebnisse für {{result.name}}</h2>
+      <h2>Ergebnisse für <span class="fst-italic">{{ result.name }}</span></h2>
       <div class="row score-row">
         <div class="col-md-2">
           <h3>Score</h3>
@@ -172,7 +173,7 @@ import Scale from "@/components/Scale";
 import Badge from "@/components/Badge";
 import ResultChart from "@/components/ResultChart";
 
-import {GetDisplayNames, GetInputDisplayNames} from "@/libs/Strings";
+import {GetDisplayNames, GetInputDisplayNames, GetInputInfoTexts, GetInfoTexts, GetPlaceholderText} from "@/libs/Strings";
 import {GeneralTable, FatsTable, CheeseTable, DrinksTable, getUnit} from "@/libs/tables";
 
 export default {
@@ -180,7 +181,6 @@ export default {
   components: {Scale, Badge, ResultChart},
   computed: {
     currentTable() {
-      console.log(GeneralTable)
       switch (this.mode) {
         case 'general':
           return GeneralTable
@@ -193,6 +193,24 @@ export default {
         default:
           return GeneralTable
       }
+    },
+    currentImage() {
+      const PATH = '/img/';
+      switch (this.mode) {
+        case 'general':
+          return `${PATH}sandwich.svg`
+        case 'fats':
+          return `${PATH}butter.svg`
+        case 'cheese':
+          return `${PATH}cheese-wedge.svg`
+        case 'drinks':
+          return `${PATH}cup.svg`
+        default:
+          return `${PATH}sandwich.svg`
+      }
+    },
+    classesCalcElem(){
+      return (this.result) ? '' : ' result-hidden'
     },
     currentScale() {
       return this.currentTable.nutriprops;
@@ -207,7 +225,10 @@ export default {
         return this.colors
       }
       return null;
-    }
+    },
+    modeInfoText() {
+      return GetInfoTexts(this.mode)
+    },
   },
   data() {
     return {
@@ -221,6 +242,7 @@ export default {
         oil: 0,
         goodStuff: 0,
       },
+      name: GetPlaceholderText('general'),
       originalScoreColors: ['#008043', '#85b931', '#f2c011', '#e37c13', '#d9411a'],
       colors: {},
       result: null,
@@ -244,6 +266,12 @@ export default {
     },
     getUnit(nutriProp) {
       return getUnit(nutriProp)
+    },
+    getInputInfoText(prop) {
+      return GetInputInfoTexts(prop)
+    },
+    getPlaceholderText(prop) {
+      return GetPlaceholderText(prop)
     },
     appendPropColor(color, prop) {
       this.colors[prop] = color
@@ -337,6 +365,18 @@ p {
 
 .score-row {
   margin-bottom: 4em;
+}
+
+.nutriprops-row {
+  min-height: 16em;
+}
+
+.result-hidden {
+  margin-bottom: 30vh;
+}
+
+.calc {
+  margin-bottom: 30vh;
 }
 
 </style>
