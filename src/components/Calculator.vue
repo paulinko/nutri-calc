@@ -39,8 +39,10 @@
       </ul>
       <div class="tab-content">
         <div class="tab-pane fade show active py-3">
-          <h4>Berechnung für &nbsp;<input class="form-control  w-50 d-inline" title="Gib einen Namen für das Lebensmittel an" type="text" name="name" id="productName"
-                       v-model="name"> </h4>
+          <h4>Berechnung für &nbsp;<input class="form-control  w-50 d-inline"
+                                          title="Gib einen Namen für das Lebensmittel an" type="text" name="name"
+                                          id="productName"
+                                          v-model="name"></h4>
           <p>
             {{ modeInfoText }}
           </p>
@@ -50,7 +52,9 @@
                 <h4>Negative Inhaltsstoffe</h4>
                 <div v-for="(value, name) in currentTable.nutriprops.n" :key="name" class="row g-2">
                   <div class="col-7 flex-grow-1">
-                    <label class="col-form-label" :for="name" :title="getInputInfoText(name)">{{ inputDisplayNames(name) }}</label>
+                    <label class="col-form-label" :for="name" :title="getInputInfoText(name)">{{
+                        inputDisplayNames(name)
+                      }}</label>
                   </div>
                   <div class="col-5">
                     <div class="input-group">
@@ -65,7 +69,9 @@
                 <h4>Positive Inhaltsstoffe</h4>
                 <div v-for="(value, name) in currentTable.nutriprops.p" :key="name" class="row g-2">
                   <div class="col-auto flex-grow-1">
-                    <label class="col-form-label" :for="name" :title="getInputInfoText(name)">{{ inputDisplayNames(name) }}</label>
+                    <label class="col-form-label" :for="name" :title="getInputInfoText(name)">{{
+                        inputDisplayNames(name)
+                      }}</label>
                   </div>
                   <div class="col-4">
                     <div class="input-group">
@@ -91,6 +97,8 @@
     <div class="result-container" v-if="result">
       <hr>
       <h2>Ergebnisse für <span class="fst-italic">{{ result.name }}</span></h2>
+      <h3>Kategorie: <img class="h-1"
+          :src="getImageForMode(result.mode)" alt=""> {{ displayNames(result.mode) }}</h3>
       <div class="row score-row">
         <div class="col-md-2">
           <h3>Score</h3>
@@ -106,6 +114,8 @@
           <h3>Punkteverteilung</h3>
           <ResultChart v-if="resultColors" :colors="resultColors" :result-data="result">
           </ResultChart>
+          <h3>Erklärung</h3>
+          <score-explanation :result="result"></score-explanation>
         </div>
       </div>
       <h2>Details</h2>
@@ -114,7 +124,8 @@
           <h5 class="mt-2">Negative Inhaltsstoffe</h5>
           <nav class="nav flex-column result-nav negative">
             <a v-for="(value, name) in result.negatives" :key="name" class="nav-link link-danger"
-               href="#">{{ displayNames(name) }}: {{ this.result.negatives[name].value.toLocaleString() }} {{ getUnit(name) }}
+               href="#">{{ displayNames(name) }}: {{ this.result.negatives[name].value.toLocaleString() }}
+              {{ getUnit(name) }}
               <Badge v-if="getColorForProp(name)" classes="float-end" :badge-data="getColorForProp(name)"
                      :is-positive="false"></Badge>
             </a>
@@ -122,7 +133,8 @@
           <h5 class="mt-2">Positive Inhaltsstoffe</h5>
           <nav class="nav flex-column result-nav positive">
             <a v-for="(value, name) in result.positives" :key="name" class="nav-link link-success"
-               aria-current="page" href="#">{{ displayNames(name) }}: {{ this.result.positives[name].value.toLocaleString() }} {{ getUnit(name) }}
+               aria-current="page" href="#">{{ displayNames(name) }}:
+              {{ this.result.positives[name].value.toLocaleString() }} {{ getUnit(name) }}
               <Badge v-if="getColorForProp(name)" :classes="'float-end'" :badge-data="getColorForProp(name)"
                      :is-positive="true"></Badge>
             </a>
@@ -172,13 +184,21 @@
 import Scale from "@/components/Scale";
 import Badge from "@/components/Badge";
 import ResultChart from "@/components/ResultChart";
+import ScoreExplanation from "@/components/ScoreExplanation";
 
-import {GetDisplayNames, GetInputDisplayNames, GetInputInfoTexts, GetInfoTexts, GetPlaceholderText} from "@/libs/Strings";
+import {
+  GetDisplayNames,
+  GetInputDisplayNames,
+  GetInputInfoTexts,
+  GetInfoTexts,
+  GetPlaceholderText
+} from "@/libs/Strings";
+
 import {GeneralTable, FatsTable, CheeseTable, DrinksTable, getUnit} from "@/libs/tables";
 
 export default {
   name: 'Calculator',
-  components: {Scale, Badge, ResultChart},
+  components: {Scale, Badge, ResultChart, ScoreExplanation},
   computed: {
     currentTable() {
       switch (this.mode) {
@@ -195,21 +215,9 @@ export default {
       }
     },
     currentImage() {
-      const PATH = '/img/';
-      switch (this.mode) {
-        case 'general':
-          return `${PATH}sandwich.svg`
-        case 'fats':
-          return `${PATH}butter.svg`
-        case 'cheese':
-          return `${PATH}cheese-wedge.svg`
-        case 'drinks':
-          return `${PATH}cup.svg`
-        default:
-          return `${PATH}sandwich.svg`
-      }
+      return this.getImageForMode(this.mode)
     },
-    classesCalcElem(){
+    classesCalcElem() {
       return (this.result) ? '' : ' result-hidden'
     },
     currentScale() {
@@ -256,7 +264,7 @@ export default {
       this.result = null
       this.colors = {}
       this.result = this.currentTable.calculateScore(this.nutritionalInfo)
-      console.log('result',this.result)
+      console.log('result', this.result)
       this.result.mode = this.mode
       this.result.name = this.name || this.getDisplayNames(this.mode)
     },
@@ -283,6 +291,21 @@ export default {
     },
     wasUsedInCalculation(prop) {
       return (prop !== 'protein' || this.result.applyProtein)
+    },
+    getImageForMode(mode) {
+      const PATH = '/img/';
+      switch (mode) {
+        case 'general':
+          return `${PATH}sandwich.svg`
+        case 'fats':
+          return `${PATH}butter.svg`
+        case 'cheese':
+          return `${PATH}cheese-wedge.svg`
+        case 'drinks':
+          return `${PATH}cup.svg`
+        default:
+          return `${PATH}sandwich.svg`
+      }
     }
   }
 }
@@ -318,11 +341,13 @@ p {
 .results-content {
   height: 100vh;
   overflow-y: scroll;
+  background-color: white;
 }
 
 .result-container {
   width: 100%;
   margin: 2vh auto auto;
+  background-color: white;
 }
 
 .score {
@@ -371,4 +396,7 @@ p {
   margin-bottom: 30vh;
 }
 
+.h-1 {
+  height: 1em;
+}
 </style>

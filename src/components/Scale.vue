@@ -1,38 +1,44 @@
 <template>
   <div class="result">
-    <h4>{{ name }}: {{ value }}{{ unit }}
-      <Badge :badge-data="getBadgeData()" :is-positive="isPositive" v-if="!hideBadge"></Badge>
-    </h4>
-    <div class="gauge-row">
-      <div class="left-container">
-        <div v-if="!isLowest">
-          <Arrow :gradient-id="shortName + 'leftArrow'" :color-start="gaugeLower" :color-end="gaugeLower"></Arrow>
-          <div class="text-center">{{ lowerBound - value }}{{ unit }} von {{ previousScore }}{{ scoreUnit }} entfernt
+    <div>
+      <h4>{{ name }}: {{ value }}{{ unit }}
+        <Badge :badge-data="getBadgeData()" :is-positive="isPositive" v-if="!hideBadge"></Badge>
+        <span @click="detailsShown = !detailsShown" class="float-end clickable" >{{ (detailsShown ? '-' : '+') }}</span>
+      </h4>
+    </div>
+    <div class="details fade-in" v-if="detailsShown">
+      <div class="gauge-row">
+        <div class="left-container">
+          <div v-if="!isLowest">
+            <Arrow :gradient-id="shortName + 'leftArrow'" :color-start="gaugeLower" :color-end="gaugeLower"></Arrow>
+            <div class="text-center">{{ lowerBound - value }}{{ unit }} von {{ previousScore }}{{ scoreUnit }} entfernt
+            </div>
+          </div>
+        </div>
+        <div class="gauge-container">
+          <Gauge :positive="isPositive" :lower-color="gaugeLower" :upper-color="gaugeUpper" :gradient-id="gradientId"
+                 :percent="fractal * 100"></Gauge>
+        </div>
+        <div class="right-container">
+          <div v-if="!isHighest">
+            <Arrow :gradient-id="shortName + 'rightArrow'" :color-start="gaugeUpper" :color-end="gaugeUpper"></Arrow>
+            <div class="text-center">+{{ upperBound - value }}{{ unit }} von {{ nextScore }}{{ scoreUnit }} entfernt
+            </div>
           </div>
         </div>
       </div>
-      <div class="gauge-container">
-        <Gauge :positive="isPositive" :lower-color="gaugeLower" :upper-color="gaugeUpper" :gradient-id="gradientId"
-               :percent="fractal * 100"></Gauge>
-      </div>
-      <div class="right-container" >
-        <div v-if="!isHighest">
-          <Arrow :gradient-id="shortName + 'rightArrow'" :color-start="gaugeUpper" :color-end="gaugeUpper"></Arrow>
-          <div class="text-center">+{{ upperBound - value }}{{ unit }} von {{ nextScore }}{{ scoreUnit }} entfernt</div>
-        </div>
-      </div>
-    </div>
 
-    <span class="toggler" @click="showAllDetails()" v-if="!showAll">Grenzwerte anzeigen</span>
-    <span class="toggler" @click="hideAllDetails()" v-else>Grenzwerte ausblenden</span>
-    <div :class="'scale ' + scaleClasses">
-      <div class="scale-child" v-for="n in totalSections" :key="n"
-           :style="'background-color: ' + colorCodes[n]" @click="toggleDetailsOfScore(n)">
-        <div class="marker" v-if="showBar && isActualScore(n-1)" :style="'left:' + fractal*100 + '%;'"></div>
-        <span class="score-details" v-if="isSelectedScore(n)">{{
-            getRangeString(n)
-          }}</span>
-        <span v-else :class="classes(n-1)">{{ scores[n - 1] }}</span>
+      <span class="toggler" @click="showAllDetails()" v-if="!showAll">Grenzwerte anzeigen</span>
+      <span class="toggler" @click="hideAllDetails()" v-else>Grenzwerte ausblenden</span>
+      <div :class="'scale ' + scaleClasses">
+        <div class="scale-child" v-for="n in totalSections" :key="n"
+             :style="'background-color: ' + colorCodes[n]" @click="toggleDetailsOfScore(n)">
+          <div class="marker" v-if="showBar && isActualScore(n-1)" :style="'left:' + fractal*100 + '%;'"></div>
+          <span class="score-details" v-if="isSelectedScore(n)">{{
+              getRangeString(n)
+            }}</span>
+          <span v-else :class="classes(n-1)">{{ scores[n - 1] }}</span>
+        </div>
       </div>
     </div>
   </div>
@@ -70,6 +76,10 @@ export default {
       default: false,
       type: Boolean
     },
+    collapse: {
+      default: false,
+      type: Boolean
+    },
     green: {
       default: green,
       type: String
@@ -89,7 +99,8 @@ export default {
     return {
       detailsSelectedScoreIndex: Number,
       showAll: false,
-      badgeData: Object
+      badgeData: Object,
+      detailsShown: true
     }
   },
   emits: ['colors-calculated'],
@@ -337,8 +348,9 @@ export default {
 }
 
 .result {
-  margin-top: 1vh;
-  margin-bottom: 5vh;
+  margin-top: 0.5em;
+  margin-bottom: 1em;
+  background: white;
 }
 
 .gauge-container {
@@ -377,5 +389,33 @@ export default {
   top: 0;
   left: 125px;
   width: 0;
+}
+
+.clickable {
+  cursor: pointer;
+}
+@keyframes fade-in {
+  0% {
+    opacity: 0.0;
+  }
+  100% {
+    opacity: 1.0;
+  }
+}
+
+@keyframes slide-out {
+  0% {
+    max-height: 0;
+  }
+  100% {
+    max-height: 400px;
+  }
+}
+
+.fade-in {
+  animation: 1s slide-out;
+}
+.fade-out {
+  animation: 1s slide-out;
 }
 </style>

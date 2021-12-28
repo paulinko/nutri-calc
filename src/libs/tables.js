@@ -54,8 +54,8 @@ function getApplyProtein(badScore, goodStuffValue) {
         reason = (badScore < 11) ? ProteinReasonLowBadScore : ProteinReasonHighGoodStuffScore;
     }
     return {
-         applyProtein,
-         reason
+        applyProtein,
+        reason
     };
 }
 
@@ -606,4 +606,7 @@ function getUnit(nutriProp) {
     }
 }
 
-export {GeneralTable, FatsTable, DrinksTable, CheeseTable, getUnit};
+export {
+    GeneralTable, FatsTable, DrinksTable, CheeseTable, getUnit,
+    ProteinReasonIsCheese, ProteinReasonNotApplied, ProteinReasonLowBadScore, ProteinReasonHighGoodStuffScore
+};
