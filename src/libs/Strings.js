@@ -65,11 +65,15 @@ function GetDisplayNames(prop, wasUsed = true) {
     return DisplayNames[prop] ?? prop
 }
 
+function GetProteinAppliedReason(reason) {
+    return ProteinAppliedDisplayNames.get(reason) ?? 'ungültiger Wert'
+}
+
 export {
     GetInputDisplayNames,
     GetDisplayNames,
     GetInfoTexts,
     GetInputInfoTexts,
     GetPlaceholderText,
-    ProteinAppliedDisplayNames
+    GetProteinAppliedReason
 };

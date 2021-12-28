@@ -20,11 +20,11 @@ export default {
       return this.colors[prop].color
     },
     getPoints(prop) {
-      let points = (this.resultData.negatives[prop] ?? this.resultData.positives[prop]).points
+      let points = (this.resultData.negatives.get(prop) ?? this.resultData.positives.get(prop)).points
       if (points === 0) {
         points = verySmallValue
       }
-      let sign = (this.resultData.negatives[prop]) ? 1 : -1
+      let sign = (this.resultData.negatives.get(prop)) ? 1 : -1
       return sign * points
     },
     wasUsedInCalculation(prop) {
@@ -35,7 +35,7 @@ export default {
     }
   },
   mounted() {
-    let d = [...Object.keys(this.resultData.negatives), ...Object.keys(this.resultData.positives)]
+    let d = [...this.resultData.negatives.keys(), ...this.resultData.positives.keys()]
     let labels = d.map(this.getDisplayNames);
     let dataset = {
       data: d.map(this.getPoints),

@@ -159,29 +159,32 @@ const GeneralTable = {
 
         const protValue = getPoints(this.nutriprops.p.protein, nutirInfo.protein);
         const fiberValue = getPoints(this.nutriprops.p.fiber, nutirInfo.fiber);
-        const goodStuff = getPoints(this.nutriprops.p.goodStuff, nutirInfo.goodStuff);
+        const goodStuffValue = getPoints(this.nutriprops.p.goodStuff, nutirInfo.goodStuff);
 
         const badScore = kjValue.points + sugarValue.points + satFatsValue.points + sodiumValue.points;
-        const pCalc = getApplyProtein(badScore, goodStuff);
+        const pCalc = getApplyProtein(badScore, goodStuffValue);
 
-        let totalScore = badScore - goodStuff.points - fiberValue.points;
+        let totalScore = badScore - goodStuffValue.points - fiberValue.points;
 
         if (pCalc.applyProtein) {
             totalScore -= protValue.points
         }
 
         return {
-            negatives: {
-                kJ: kjValue,
-                sugar: sugarValue,
-                satFats: satFatsValue,
-                sodium: sodiumValue
-            },
-            positives: {
-                protein: protValue,
-                fiber: fiberValue,
-                goodStuff: goodStuff,
-            },
+            negatives: new Map(
+                [
+                    ['kJ', kjValue],
+                    ['sugar', sugarValue],
+                    ['satFats', satFatsValue],
+                    ['sodium', sodiumValue],
+                ]
+            ),
+            positives: new Map([
+                    ['protein', protValue],
+                    ['fiber', fiberValue],
+                    ['goodStuff', goodStuffValue]
+                ]
+            ),
             badScore,
             applyProtein: pCalc.applyProtein,
             proteinAppliedReason: pCalc.reason,
@@ -297,17 +300,20 @@ const CheeseTable = {
         const totalScore = badScore - goodScore;
 
         return {
-            negatives: {
-                kJ: kjValue,
-                sugar: sugarValue,
-                satFats: satFatsValue,
-                sodium: sodiumValue
-            },
-            positives: {
-                protein: protValue,
-                fiber: fiberValue,
-                goodStuff: goodStuffValue,
-            },
+            negatives: new Map(
+                [
+                    ['kJ', kjValue],
+                    ['sugar', sugarValue],
+                    ['satFats', satFatsValue],
+                    ['sodium', sodiumValue],
+                ]
+            ),
+            positives: new Map([
+                    ['protein', protValue],
+                    ['fiber', fiberValue],
+                    ['goodStuff', goodStuffValue]
+                ]
+            ),
             badScore,
             applyProtein: true,
             proteinAppliedReason: ProteinReasonIsCheese,
@@ -442,17 +448,20 @@ const FatsTable = {
         let totalScore = badScore - goodScore;
 
         return {
-            negatives: {
-                kJ: kjValue,
-                sugar: sugarValue,
-                ratioSatFats: ratioValue,
-                sodium: sodiumValue
-            },
-            positives: {
-                protein: protValue,
-                fiber: fiberValue,
-                goodStuff: goodStuffValue
-            },
+            negatives: new Map(
+                [
+                    ['kJ', kjValue],
+                    ['sugar', sugarValue],
+                    ['ratioSatFats', ratioValue],
+                    ['sodium', sodiumValue],
+                ]
+            ),
+            positives: new Map([
+                    ['protein', protValue],
+                    ['fiber', fiberValue],
+                    ['goodStuff', goodStuffValue]
+                ]
+            ),
             badScore,
             applyProtein: pCalc.applyProtein,
             proteinAppliedReason: pCalc.reason,
@@ -571,17 +580,20 @@ const DrinksTable = {
         const totalScore = badScore - goodScore;
 
         return {
-            negatives: {
-                kJ: kjValue,
-                sugar: sugarValue,
-                satFats: satFatsValue,
-                sodium: sodiumValue
-            },
-            positives: {
-                protein: protValue,
-                fiber: fiberValue,
-                goodStuff: goodStuffValue,
-            },
+            negatives: new Map(
+                [
+                    ['kJ', kjValue],
+                    ['sugar', sugarValue],
+                    ['satFats', satFatsValue],
+                    ['sodium', sodiumValue],
+                ]
+            ),
+            positives: new Map([
+                    ['protein', protValue],
+                    ['fiber', fiberValue],
+                    ['goodStuff', goodStuffValue]
+                ]
+            ),
             badScore,
             applyProtein: pCalc.applyProtein,
             proteinAppliedReason: pCalc.reason,

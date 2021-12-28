@@ -11,24 +11,22 @@
           sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea
           takimata sanctus est Lorem ipsum dolor sit amet.
         </p>
-        <div>
-          <button type="button" class="btn btn-success">Jetzt berechnen</button>
-          <a class="btn btn-info">Mehr erfahren</a>
-        </div>
 
+        <div>
+          <a href="#calculate" class="btn btn-success">Jetzt berechnen</a>
+        </div>
         <p>
-          Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et
-          dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet
-          clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet,
-          consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat,
-          sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea
-          takimata sanctus est Lorem ipsum dolor sit amet.
+          Letzte Aktualisierung: {{ new Date() }}
+        </p>
+        <p>
+          Verwendete Quellen: <br>
+          <a href="https://www.vzhh.de/sites/default/files/medien/134/dokumente/2019-10_Verbraucherzentrale-Hamburg_Fragen-und-Antworten-zum-Nutri-Score.pdf"></a>
         </p>
       </div>
     </div>
     <hr>
     <div>
-      <h2>Berechnen</h2>
+      <h2 id="calculate">Berechnen</h2>
       <ul class="nav nav-tabs" id="myTab" role="tablist">
         <li class="nav-item" role="presentation" v-for="tableName in tableNames" :key="tableName">
           <button :class="'nav-link ' + ((mode === tableName) ? 'active' : '')" id="general-tab"
@@ -98,7 +96,7 @@
       <hr>
       <h2>Ergebnisse für <span class="fst-italic">{{ result.name }}</span></h2>
       <h3>Kategorie: <img class="h-1"
-          :src="getImageForMode(result.mode)" alt=""> {{ displayNames(result.mode) }}</h3>
+                          :src="getImageForMode(result.mode)" alt=""> {{ displayNames(result.mode) }}</h3>
       <div class="row score-row">
         <div class="col-md-2">
           <h3>Score</h3>
@@ -123,8 +121,8 @@
         <div class="col-md-3 col-xs-12">
           <h5 class="mt-2">Negative Inhaltsstoffe</h5>
           <nav class="nav flex-column result-nav negative">
-            <a v-for="(value, name) in result.negatives" :key="name" class="nav-link link-danger"
-               href="#">{{ displayNames(name) }}: {{ this.result.negatives[name].value.toLocaleString() }}
+            <a v-for="name in result.negatives.keys()" :key="name" class="nav-link link-danger"
+               href="#">{{ displayNames(name) }}: {{ result.negatives.get(name).value.toLocaleString() }}
               {{ getUnit(name) }}
               <Badge v-if="getColorForProp(name)" classes="float-end" :badge-data="getColorForProp(name)"
                      :is-positive="false"></Badge>
@@ -132,9 +130,9 @@
           </nav>
           <h5 class="mt-2">Positive Inhaltsstoffe</h5>
           <nav class="nav flex-column result-nav positive">
-            <a v-for="(value, name) in result.positives" :key="name" class="nav-link link-success"
+            <a v-for="name in result.positives.keys()" :key="name" class="nav-link link-success"
                aria-current="page" href="#">{{ displayNames(name) }}:
-              {{ this.result.positives[name].value.toLocaleString() }} {{ getUnit(name) }}
+              {{ result.positives.get(name).value.toLocaleString() }} {{ getUnit(name) }}
               <Badge v-if="getColorForProp(name)" :classes="'float-end'" :badge-data="getColorForProp(name)"
                      :is-positive="true"></Badge>
             </a>
@@ -154,11 +152,12 @@
                  :score-colors-override="originalScoreColors"
                  :hide-badge="true"
                  :unit="' '+getUnit('letterScore')"/>
+          <!--          <div v-for="([n,v], i) in result.negatives" :key="n"> {{v}} : {{n}}: {{i}}</div>-->
           <h3>Negative Inhaltsstoffe</h3>
           <Scale @colors-calculated="appendPropColor($event, name)"
                  :data="v.points" :fractal="v.fractal" :value="v.value" :name="displayNames(name)"
                  :scale="currentScale.n[name]"
-                 v-for="(v, name) in result.negatives" :key="name" :is-positive="false" :short-name="name"
+                 v-for="([name,v], ) in result.negatives" :key="name" :is-positive="false" :short-name="name"
                  :was-used-in-calculation="wasUsedInCalculation(name)"
                  :unit="getUnit(name)"
                  score-unit="P"
@@ -167,7 +166,7 @@
           <Scale @colors-calculated="appendPropColor($event, name)"
                  :data="value.points" :fractal="value.fractal" :value="value.value" :name="displayNames(name)"
                  :scale="currentScale.p[name]"
-                 v-for="(value, name) in result.positives" :key="name" :is-positive="true" :short-name="name"
+                 v-for="([name,value], )  in result.positives" :key="name" :is-positive="true" :short-name="name"
                  :was-used-in-calculation="wasUsedInCalculation(name)"
                  :unit="getUnit(name)"
                  score-unit="P"
@@ -227,7 +226,7 @@ export default {
       return this.currentTable.pointsToScore;
     },
     resultColors() {
-      const allColorsPresent = (Object.keys(this.result.negatives).length + Object.keys(this.result.positives).length) ===
+      const allColorsPresent = (this.result.negatives.size + this.result.positives.size) ===
           Object.keys(this.colors).length
       if (allColorsPresent) {
         return this.colors
