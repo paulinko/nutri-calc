@@ -277,7 +277,7 @@ export default {
       this.$nextTick(() => {
         setTimeout(() => {
           scrollTo({
-            top: this.$refs.resultContainer.getBoundingClientRect().top,
+            top: window.scrollY + this.$refs.resultContainer.getBoundingClientRect().top,
             behavior: 'smooth'
           })
         }, 25)
