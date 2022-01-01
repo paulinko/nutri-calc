@@ -16,11 +16,12 @@
           <a href="#calculate" class="btn btn-success">Jetzt berechnen</a>
         </div>
         <p>
-          Letzte Aktualisierung: {{ new Date() }}
+          <span class="fw-bold">Letzte Aktualisierung</span>: {{ (new Date('2021-01-02')).toLocaleDateString()}}
         </p>
         <p>
-          Verwendete Quellen: <br>
-          <a href="https://www.vzhh.de/sites/default/files/medien/134/dokumente/2019-10_Verbraucherzentrale-Hamburg_Fragen-und-Antworten-zum-Nutri-Score.pdf"></a>
+          <span class="fw-bold">Verwendete Quellen</span> <br>
+          <a :href="source.link" target="_blank" v-for="source in sources" :key="source.name">{{source.name}} ({{source.language}}) <br></a>
+
         </p>
       </div>
     </div>
@@ -113,7 +114,7 @@
           <ResultChart v-if="resultColors" :colors="resultColors" :result-data="result">
           </ResultChart>
           <h3>Erklärung</h3>
-          <score-explanation :result="result"></score-explanation>
+          <score-explanation :v-bind="result" :result="result"></score-explanation>
         </div>
       </div>
       <h2>Details</h2>
@@ -193,7 +194,12 @@ import {
   GetPlaceholderText
 } from "@/libs/Strings";
 
-import {GeneralTable, FatsTable, CheeseTable, DrinksTable, getUnit} from "@/libs/tables";
+import {
+  Sources,
+  FurtherReadings
+} from '@/libs/literature_references'
+
+import {GeneralTable, FatsTable, CheeseTable, DrinksTable, getUnit, WasPropUsedInCalculation} from "@/libs/tables";
 
 export default {
   name: 'Calculator',
@@ -255,7 +261,9 @@ export default {
       colors: {},
       result: null,
       mode: 'general',
-      tableNames: ['general', 'fats', 'drinks', 'cheese']
+      tableNames: ['general', 'fats', 'drinks', 'cheese'],
+      sources: Sources,
+      furtherReadings: FurtherReadings
     };
   },
   methods: {
@@ -279,7 +287,7 @@ export default {
       return GetInputDisplayNames(prop)
     },
     displayNames(prop) {
-      return GetDisplayNames(prop, this.wasUsedInCalculation(prop))
+      return GetDisplayNames(prop, WasPropUsedInCalculation(prop, this.result))
     },
     getUnit(nutriProp) {
       return getUnit(nutriProp)
