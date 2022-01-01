@@ -7,6 +7,7 @@
 <script>
 import Chart from 'chart.js/auto';
 import {GetDisplayNames} from "@/libs/Strings";
+import {WasPropUsedInCalculation} from "@/libs/tables";
 
 const verySmallValue = 0.25
 export default {
@@ -27,11 +28,8 @@ export default {
       let sign = (this.resultData.negatives.get(prop)) ? 1 : -1
       return sign * points
     },
-    wasUsedInCalculation(prop) {
-      return (prop !== 'protein' || this.resultData.applyProtein)
-    },
     getDisplayNames(prop) {
-      return GetDisplayNames(prop, this.wasUsedInCalculation(prop))
+      return GetDisplayNames(prop, WasPropUsedInCalculation(prop, this.resultData))
     }
   },
   mounted() {

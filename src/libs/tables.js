@@ -618,7 +618,11 @@ function getUnit(nutriProp) {
     }
 }
 
+function WasPropUsedInCalculation(propName, result) {
+    return (propName !== 'protein' || result.applyProtein)
+}
+
 export {
     GeneralTable, FatsTable, DrinksTable, CheeseTable, getUnit,
-    ProteinReasonIsCheese, ProteinReasonNotApplied, ProteinReasonLowBadScore, ProteinReasonHighGoodStuffScore
+    ProteinReasonIsCheese, ProteinReasonNotApplied, ProteinReasonLowBadScore, ProteinReasonHighGoodStuffScore, WasPropUsedInCalculation
 };
