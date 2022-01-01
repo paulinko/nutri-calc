@@ -1,0 +1,8 @@
+body {
+  background: #f7f7f7;
+}
+
+.nav-tabs .nav-link.active, .nav-tabs .nav-item.show .nav-link {
+  background: #00000000;
+  border-color: #dee2e6 #dee2e6 #f7f7f7;
+}

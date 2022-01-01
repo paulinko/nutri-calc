@@ -3,44 +3,54 @@
     <div>
       <h4>{{ name }}: {{ value }}{{ unit }}
         <Badge :badge-data="getBadgeData()" :is-positive="isPositive" v-if="!hideBadge"></Badge>
-        <span @click="detailsShown = !detailsShown" class="float-end clickable" >{{ (detailsShown ? '-' : '+') }}</span>
+        <span @click="detailsShown = !detailsShown" class="float-end clickable">{{ (detailsShown ? '-' : '+') }}</span>
       </h4>
     </div>
     <div class="details fade-in" v-if="detailsShown">
-      <div class="gauge-row">
-        <div class="left-container">
-          <div v-if="!isLowest">
-            <Arrow :gradient-id="shortName + 'leftArrow'" :color-start="gaugeLower" :color-end="gaugeLower"></Arrow>
-            <div class="text-center">{{ lowerBound - value }}{{ unit }} von {{ previousScore }}{{ scoreUnit }} entfernt
-            </div>
-          </div>
-        </div>
-        <div class="gauge-container">
-          <Gauge :positive="isPositive" :lower-color="gaugeLower" :upper-color="gaugeUpper" :gradient-id="gradientId"
-                 :percent="fractal * 100"></Gauge>
-        </div>
-        <div class="right-container">
-          <div v-if="!isHighest">
-            <Arrow :gradient-id="shortName + 'rightArrow'" :color-start="gaugeUpper" :color-end="gaugeUpper"></Arrow>
-            <div class="text-center">+{{ upperBound - value }}{{ unit }} von {{ nextScore }}{{ scoreUnit }} entfernt
-            </div>
+      <h5>Skala/Grenzwerte</h5>
+      <p>Diese Skala zeigt die Grenzwerte für die verschiedenen zu erreichenden Punktzahlen</p>
+      <div>
+        <span class="toggler" @click="showAllDetails()" v-if="!showAll">Grenzwerte anzeigen</span>
+        <span class="toggler" @click="hideAllDetails()" v-else>Grenzwerte ausblenden</span>
+        <div :class="'scale ' + scaleClasses">
+          <div class="scale-child" v-for="n in totalSections" :key="n"
+               :style="'background-color: ' + colorCodes[n]" @click="toggleDetailsOfScore(n)">
+            <div class="marker" v-if="showBar && isActualScore(n-1)" :style="'left:' + fractal*100 + '%;'"></div>
+            <span class="score-details" v-if="isSelectedScore(n)">{{
+                getRangeString(n)
+              }}</span>
+            <span v-else :class="classes(n-1)">{{ scores[n - 1] }}</span>
           </div>
         </div>
       </div>
-
-      <span class="toggler" @click="showAllDetails()" v-if="!showAll">Grenzwerte anzeigen</span>
-      <span class="toggler" @click="hideAllDetails()" v-else>Grenzwerte ausblenden</span>
-      <div :class="'scale ' + scaleClasses">
-        <div class="scale-child" v-for="n in totalSections" :key="n"
-             :style="'background-color: ' + colorCodes[n]" @click="toggleDetailsOfScore(n)">
-          <div class="marker" v-if="showBar && isActualScore(n-1)" :style="'left:' + fractal*100 + '%;'"></div>
-          <span class="score-details" v-if="isSelectedScore(n)">{{
-              getRangeString(n)
-            }}</span>
-          <span v-else :class="classes(n-1)">{{ scores[n - 1] }}</span>
+      <div>
+        <h5>Tendenz</h5>
+        <p>Dieser Tacho zeigt die Tendenz der Punktzahl an. Da die Einteilung in Punkte stufenweise erfolgt, wird hier
+          visualiert, zu welcher Punktzahl der Wert tendiert.</p>
+        <div class="gauge-row">
+          <div class="left-container">
+            <div v-if="!isLowest">
+              <Arrow :gradient-id="shortName + 'leftArrow'" :color-start="gaugeLower" :color-end="gaugeLower"></Arrow>
+              <div class="text-center">{{ lowerBound - value }}{{ unit }} von {{ previousScore }}{{ scoreUnit }}
+                entfernt
+              </div>
+            </div>
+          </div>
+          <div class="gauge-container">
+            <Gauge :positive="isPositive" :lower-color="gaugeLower" :upper-color="gaugeUpper" :gradient-id="gradientId"
+                   :percent="fractal * 100"></Gauge>
+          </div>
+          <div class="right-container">
+            <div v-if="!isHighest">
+              <Arrow :gradient-id="shortName + 'rightArrow'" :color-start="gaugeUpper" :color-end="gaugeUpper"></Arrow>
+              <div class="text-center">+{{ upperBound - value }}{{ unit }} von {{ nextScore }}{{ scoreUnit }} entfernt
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
+
   </div>
 </template>
 
@@ -71,7 +81,10 @@ export default {
     isPositive: Boolean,
     unit: String,
     scoreUnit: String,
-    scaleClasses: String,
+    scaleClasses: {
+      default: '',
+      type: String
+    },
     hideBadge: {
       default: false,
       type: Boolean
@@ -351,6 +364,9 @@ export default {
   margin-top: 0.5em;
   margin-bottom: 1em;
   background: white;
+  border-bottom: 1px #ccc solid;
+  box-shadow: 0 5px 5px 0 #aaa;
+  padding: 1em;
 }
 
 .gauge-container {
@@ -394,6 +410,7 @@ export default {
 .clickable {
   cursor: pointer;
 }
+
 @keyframes fade-in {
   0% {
     opacity: 0.0;
@@ -415,6 +432,7 @@ export default {
 .fade-in {
   animation: 1s slide-out;
 }
+
 .fade-out {
   animation: 1s slide-out;
 }

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <canvas id="myChart"></canvas>
+    <canvas id="resultChart"></canvas>
   </div>
 </template>
 
@@ -85,7 +85,7 @@ export default {
       },
     };
     new Chart(
-        document.getElementById('myChart'),
+        document.getElementById('resultChart'),
         config
     );
   }
@@ -93,5 +93,7 @@ export default {
 </script>
 
 <style scoped>
-
+#resultChart {
+  max-height: 40vh;
+}
 </style>

@@ -1,7 +1,7 @@
 <template>
     <span :class="calculatedClasses" :style="'background-color:' + badgeData.color">{{sign}}
         {{badgeData.value}}
-      <sup v-html="superscript"></sup></span>
+      <sup :title="title">{{superscript ?? ' '}}</sup></span>
 </template>
 
 <script>
@@ -35,8 +35,19 @@ export default {
       } else if (this.badgeData.percentage > 75) {
         return this.high
       } else {
-        return '&nbsp;'
+        return null
       }
+    },
+
+    title() {
+      if (this.superscript) {
+        let tendency = (this.isPositive) ? 'besseren' : 'schlechteren'
+        if (this.superscript === this.low) {
+          tendency = (!this.isPositive) ? 'besseren' : 'schlechteren'
+        }
+        return `Das "${this.superscript}" bedeutet, dass der Wert dieses Inhaltstoffes eher zur ${tendency} Punktzahl tendiert.`
+      }
+      return null
     }
 
   }

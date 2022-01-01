@@ -92,7 +92,7 @@
         </div>
       </div>
     </div>
-    <div class="result-container" v-if="result">
+    <div class="result-container" ref="resultContainer" v-if="result">
       <hr>
       <h2>Ergebnisse für <span class="fst-italic">{{ result.name }}</span></h2>
       <h3>Kategorie: <img class="h-1"
@@ -266,6 +266,14 @@ export default {
       console.log('result', this.result)
       this.result.mode = this.mode
       this.result.name = this.name || this.getDisplayNames(this.mode)
+      this.$nextTick(() => {
+        setTimeout(() => {
+          scrollTo({
+            top: this.$refs.resultContainer.getBoundingClientRect().top,
+            behavior: 'smooth'
+          })
+        }, 25)
+      })
     },
     inputDisplayNames(prop) {
       return GetInputDisplayNames(prop)
@@ -340,13 +348,13 @@ p {
 .results-content {
   height: 100vh;
   overflow-y: scroll;
-  background-color: white;
+  /*background-color: white;*/
 }
 
 .result-container {
   width: 100%;
   margin: 2vh auto auto;
-  background-color: white;
+  /*background-color: white;*/
 }
 
 .score {
