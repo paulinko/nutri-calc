@@ -1,10 +1,14 @@
 <template>
   <div class="result">
     <div>
-      <h4>{{ name }}: {{ value }}{{ unit }}
-        <Badge :badge-data="getBadgeData()" :is-positive="isPositive" v-if="!hideBadge"></Badge>
-        <span @click="detailsShown = !detailsShown" class="float-end clickable">{{ (detailsShown ? '-' : '+') }}</span>
-      </h4>
+      <a :id="shortName + 'Result'">
+        <h4>{{ name }}: {{ value }}{{ unit }}
+          <Badge :badge-data="getBadgeData()" :is-positive="isPositive" v-if="!hideBadge"></Badge>
+          <span @click="detailsShown = !detailsShown" class="float-end clickable">{{
+              (detailsShown ? '-' : '+')
+            }}</span>
+        </h4>
+      </a>
     </div>
     <div class="details fade-in" v-if="detailsShown">
       <h5>Skala/Grenzwerte</h5>
@@ -50,7 +54,6 @@
         </div>
       </div>
     </div>
-
   </div>
 </template>
 
@@ -106,14 +109,18 @@ export default {
       type: String
     },
     scoreColorsOverride: Array,
-    wasUsedInCalculation: Boolean
+    wasUsedInCalculation: Boolean,
+    detailsShownInitial: {
+      default: true,
+      type: Boolean
+    }
   },
   data() {
     return {
       detailsSelectedScoreIndex: Number,
       showAll: false,
       badgeData: Object,
-      detailsShown: true
+      detailsShown: this.detailsShownInitial
     }
   },
   emits: ['colors-calculated'],
@@ -361,7 +368,6 @@ export default {
 }
 
 .result {
-  margin-top: 0.5em;
   margin-bottom: 1em;
   background: white;
   border-bottom: 1px #ccc solid;
@@ -370,7 +376,6 @@ export default {
 }
 
 .gauge-container {
-  /*max-width: 50%;*/
   flex-basis: 50%;
 }
 
@@ -428,15 +433,17 @@ export default {
     max-height: 0;
   }
   100% {
-    max-height: 400px;
+    max-height: 800px;
   }
 }
 
 .fade-in {
+  overflow-y: hidden;
   animation: 1s slide-out;
 }
 
 .fade-out {
-  animation: 1s slide-out;
+  animation: 1s slide-out reverse;
+  overflow-y: hidden;
 }
 </style>

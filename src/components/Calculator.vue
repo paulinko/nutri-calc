@@ -122,11 +122,11 @@
       </div>
       <h2>Details</h2>
       <div class="row summary">
-        <div class="col-md-3 col-xs-12 d-sm-block d-none points-list">
+        <div ref="resultNav" class="col-md-3 col-xs-12 d-sm-block d-none points-list">
           <h5 class="mt-2">Negative Inhaltsstoffe</h5>
           <nav class="nav flex-column result-nav negative">
             <a v-for="name in result.negatives.keys()" :key="name" class="nav-link link-danger"
-               href="#">{{ displayNames(name) }}: {{ result.negatives.get(name).value.toLocaleString() }}
+               :href="'#' + name + 'Result'">{{ displayNames(name) }}: {{ result.negatives.get(name).value.toLocaleString() }}
               {{ getUnit(name) }}
               <Badge v-if="getColorForProp(name)" classes="float-end" :badge-data="getColorForProp(name)"
                      :is-positive="false"></Badge>
@@ -135,7 +135,7 @@
           <h5 class="mt-2">Positive Inhaltsstoffe</h5>
           <nav class="nav flex-column result-nav positive">
             <a v-for="name in result.positives.keys()" :key="name" class="nav-link link-success"
-               aria-current="page" href="#">{{ displayNames(name) }}:
+               aria-current="page" :href="'#' + name + 'Result'">{{ displayNames(name) }}:
               {{ result.positives.get(name).value.toLocaleString() }} {{ getUnit(name) }}
               <Badge v-if="getColorForProp(name)" :classes="'float-end'" :badge-data="getColorForProp(name)"
                      :is-positive="true"></Badge>
@@ -153,6 +153,7 @@
                  green="#008043"
                  yellow="#f2c011"
                  short-name="letterScore"
+                 :details-shown-initial="resultNavVisible"
                  :score-colors-override="originalScoreColors"
                  :hide-badge="true"
                  :unit="' '+getUnit('letterScore')"/>
@@ -162,6 +163,7 @@
                  :scale="resultScale.n[name].scale"
                  v-for="([name,v], ) in result.negatives" :key="name" :is-positive="false" :short-name="name"
                  :was-used-in-calculation="wasUsedInCalculation(name)"
+                 :details-shown-initial="resultNavVisible"
                  :unit="getUnit(name)"
                  score-unit="P"
           />
@@ -172,6 +174,7 @@
                  v-for="([name,value], )  in result.positives" :key="name" :is-positive="true" :short-name="name"
                  :was-used-in-calculation="wasUsedInCalculation(name)"
                  :unit="getUnit(name)"
+                 :details-shown-initial="resultNavVisible"
                  score-unit="P"
           />
         </div>
@@ -206,6 +209,9 @@ export default {
   name: 'Calculator',
   components: {Scale, Badge, ResultChart, ScoreExplanation},
   computed: {
+    resultNavVisible() {
+      return document.getElementsByTagName('body')[0].getBoundingClientRect().width >= 576;
+    },
     currentTable() {
       switch (this.mode) {
         case 'general':
@@ -422,7 +428,7 @@ p {
 .points-list {
   position: sticky;
   display: block;
-  top: 0;
+  top: 0.5em;
   background: white;
   border-bottom: 1px #ccc solid;
   box-shadow: 0 5px 5px 0 #aaa;
