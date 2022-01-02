@@ -1,14 +1,12 @@
 import {ProteinReasonNotApplied, ProteinReasonLowBadScore, ProteinReasonHighGoodStuffScore, ProteinReasonIsCheese} from '@/libs/tables'
 
-const InputDisplayNames = {
-    ratioSatFats: 'Fette (gesamt)'
-}
 
 const DisplayNames = {
     kJ: 'kJ',
     kcal: 'Kalorien',
     sugar: 'Zucker',
     satFats: 'gesättigte Fette',
+    totalFats: 'Fette (gesamt)',
     ratioSatFats: 'Anteil gesättigter Fette',
     sodium: 'Salz',
     protein: 'Protein',
@@ -42,9 +40,6 @@ const InputInfoTexts = {
     goodStuff: 'Umfasst Obst, Gemüse, Hülsenfüchte, Vollkorn'
 }
 
-function GetInputDisplayNames(prop) {
-    return InputDisplayNames[prop] ?? DisplayNames[prop]
-}
 
 function GetInfoTexts(prop) {
     return InfoTexts[prop] ?? 'Lorem Ipsum sit dolor amet...'
@@ -70,7 +65,6 @@ function GetProteinAppliedReason(reason) {
 }
 
 export {
-    GetInputDisplayNames,
     GetDisplayNames,
     GetInfoTexts,
     GetInputInfoTexts,

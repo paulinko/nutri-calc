@@ -41,7 +41,7 @@ export default {
       return this.getSumStringForMap(this.result.positives)
     },
     goodScore() {
-      return this.result.totalScore - this.result.badScore
+      return Math.abs(this.result.totalScore - this.result.badScore)
     },
     proteinAppliedReason() {
       return GetProteinAppliedReason(this.result.proteinAppliedReason)

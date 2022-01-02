@@ -16,11 +16,12 @@
           <a href="#calculate" class="btn btn-success">Jetzt berechnen</a>
         </div>
         <p>
-          <span class="fw-bold">Letzte Aktualisierung</span>: {{ (new Date('2021-01-02')).toLocaleDateString()}}
+          <span class="fw-bold">Letzte Aktualisierung</span>: {{ (new Date('2021-01-02')).toLocaleDateString() }}
         </p>
         <p>
           <span class="fw-bold">Verwendete Quellen</span> <br>
-          <a :href="source.link" target="_blank" v-for="source in sources" :key="source.name">{{source.name}} ({{source.language}}) <br></a>
+          <a :href="source.link" target="_blank" v-for="source in sources" :key="source.name">{{ source.name }}
+            ({{ source.language }}) <br></a>
 
         </p>
       </div>
@@ -32,7 +33,7 @@
         <li class="nav-item" role="presentation" v-for="tableName in tableNames" :key="tableName">
           <button :class="'nav-link ' + ((mode === tableName) ? 'active' : '')" id="general-tab"
                   @click="mode = tableName; name = getPlaceholderText(mode)" type="button"
-                  role="tab" aria-controls="" aria-selected="true">{{ inputDisplayNames(tableName) }}
+                  role="tab" aria-controls="" aria-selected="true">{{ displayNames(tableName) }}
           </button>
         </li>
       </ul>
@@ -49,7 +50,7 @@
             <div class="row nutriprops-row">
               <div class="col-lg-3 col-md-6">
                 <h4>Negative Inhaltsstoffe</h4>
-                <div v-for="(value, name) in currentTable.nutriprops.n" :key="name" class="row g-2">
+                <div v-for="[name, ] in currentTable.negativeInputs()" :key="name" class="row g-2">
                   <div class="col-7 flex-grow-1">
                     <label class="col-form-label" :for="name" :title="getInputInfoText(name)">{{
                         inputDisplayNames(name)
@@ -66,7 +67,7 @@
               </div>
               <div class="col-lg-3 col-md-6">
                 <h4>Positive Inhaltsstoffe</h4>
-                <div v-for="(value, name) in currentTable.nutriprops.p" :key="name" class="row g-2">
+                <div v-for="[name, ] in currentTable.positiveInputs()" :key="name" class="row g-2">
                   <div class="col-auto flex-grow-1">
                     <label class="col-form-label" :for="name" :title="getInputInfoText(name)">{{
                         inputDisplayNames(name)
@@ -153,11 +154,10 @@
                  :score-colors-override="originalScoreColors"
                  :hide-badge="true"
                  :unit="' '+getUnit('letterScore')"/>
-          <!--          <div v-for="([n,v], i) in result.negatives" :key="n"> {{v}} : {{n}}: {{i}}</div>-->
           <h3>Negative Inhaltsstoffe</h3>
           <Scale @colors-calculated="appendPropColor($event, name)"
                  :data="v.points" :fractal="v.fractal" :value="v.value" :name="displayNames(name)"
-                 :scale="currentScale.n[name]"
+                 :scale="resultScale.n[name].scale"
                  v-for="([name,v], ) in result.negatives" :key="name" :is-positive="false" :short-name="name"
                  :was-used-in-calculation="wasUsedInCalculation(name)"
                  :unit="getUnit(name)"
@@ -166,7 +166,7 @@
           <h3>Positive Inhaltsstoffe</h3>
           <Scale @colors-calculated="appendPropColor($event, name)"
                  :data="value.points" :fractal="value.fractal" :value="value.value" :name="displayNames(name)"
-                 :scale="currentScale.p[name]"
+                 :scale="resultScale.p[name].scale"
                  v-for="([name,value], )  in result.positives" :key="name" :is-positive="true" :short-name="name"
                  :was-used-in-calculation="wasUsedInCalculation(name)"
                  :unit="getUnit(name)"
@@ -188,7 +188,6 @@ import ScoreExplanation from "@/components/ScoreExplanation";
 
 import {
   GetDisplayNames,
-  GetInputDisplayNames,
   GetInputInfoTexts,
   GetInfoTexts,
   GetPlaceholderText
@@ -225,11 +224,11 @@ export default {
     classesCalcElem() {
       return (this.result) ? '' : ' result-hidden'
     },
-    currentScale() {
-      return this.currentTable.nutriprops;
+    resultScale() {
+      return this.resultTable.nutriprops;
     },
     currentPointScale() {
-      return this.currentTable.pointsToScore;
+      return this.resultTable.pointsToScore;
     },
     resultColors() {
       const allColorsPresent = (this.result.negatives.size + this.result.positives.size) ===
@@ -254,7 +253,7 @@ export default {
         fiber: 0,
         oil: 0,
         goodStuff: 0,
-        ratioSatFats: 0,
+        totalFats: 100,
       },
       name: GetPlaceholderText('general'),
       originalScoreColors: ['#008043', '#85b931', '#f2c011', '#e37c13', '#d9411a'],
@@ -263,7 +262,8 @@ export default {
       mode: 'general',
       tableNames: ['general', 'fats', 'drinks', 'cheese'],
       sources: Sources,
-      furtherReadings: FurtherReadings
+      furtherReadings: FurtherReadings,
+      resultTable: Object
     };
   },
   methods: {
@@ -274,6 +274,7 @@ export default {
       console.log('result', this.result)
       this.result.mode = this.mode
       this.result.name = this.name || this.getDisplayNames(this.mode)
+      this.resultTable = this.currentTable
       this.$nextTick(() => {
         setTimeout(() => {
           scrollTo({
@@ -284,7 +285,7 @@ export default {
       })
     },
     inputDisplayNames(prop) {
-      return GetInputDisplayNames(prop)
+      return GetDisplayNames(prop, true)
     },
     displayNames(prop) {
       return GetDisplayNames(prop, WasPropUsedInCalculation(prop, this.result))
