@@ -1,7 +1,7 @@
 <template>
-    <span :class="calculatedClasses" :style="'background-color:' + badgeData.color">{{sign}}
+    <span :title="title" :class="calculatedClasses" :style="'background-color:' + badgeData.color">{{sign}}
         {{badgeData.value}}
-      <sup :title="title">{{superscript ?? ' '}}</sup></span>
+      <sup>{{superscript ?? ' '}}</sup></span>
 </template>
 
 <script>
@@ -18,10 +18,10 @@ export default {
   },
   computed: {
     low() {
-      return (this.isPositive) ? '-' : '+'
+      return '▼'
     },
     high() {
-      return (!this.isPositive) ? '-' : '+'
+      return '▲'
     },
     sign(){
       return (this.isPositive) ? '-' : '+'
@@ -42,10 +42,12 @@ export default {
     title() {
       if (this.superscript) {
         let tendency = (this.isPositive) ? 'besseren' : 'schlechteren'
+        let direction = 'höheren'
         if (this.superscript === this.low) {
           tendency = (!this.isPositive) ? 'besseren' : 'schlechteren'
+          direction = 'niedrigeren'
         }
-        return `Das "${this.superscript}" bedeutet, dass der Wert dieses Inhaltstoffes eher zur ${tendency} Punktzahl tendiert.`
+        return `Das "${this.superscript}" bedeutet, dass der Wert dieses Inhaltstoffes eher zur ${direction} bzw. ${tendency} Punktzahl tendiert.`
       }
       return null
     }

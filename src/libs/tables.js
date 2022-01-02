@@ -42,6 +42,9 @@ function getPoints(scale, value) {
     return null;
 }
 
+function saltToSodium(salt) {
+    return salt * 1000 / 2.5;
+}
 const ProteinReasonNotApplied = 0;
 const ProteinReasonLowBadScore = 1;
 const ProteinReasonHighGoodStuffScore = 2;
@@ -123,7 +126,9 @@ const StdSodium = new Prop([
     [720, 810, 8],
     [810, 900, 9],
     [900, Infinity, 10]
-])
+], PropModes.ONLY_OUTPUT)
+
+const StdSalt = new Prop(null, PropModes.ONLY_INPUT)
 
 const StdProtein = new Prop([
     [-Infinity, 1.6, 0],
@@ -164,7 +169,8 @@ class Table {
             kJ: StdKj,
             sugar: StdSugar,
             satFats: StdSatFats,
-            sodium: StdSodium
+            sodium: StdSodium,
+            salt: StdSalt
         },
         p: {
             protein: StdProtein,
@@ -193,7 +199,7 @@ class Table {
             kjValue: getPoints(this.nutriprops.n.kJ.scale, nutriInfo.kJ),
             sugarValue: getPoints(this.nutriprops.n.sugar.scale, nutriInfo.sugar),
             satFatsValue: getPoints(this.nutriprops.n.satFats.scale, nutriInfo.satFats),
-            sodiumValue: getPoints(this.nutriprops.n.sodium.scale, nutriInfo.sodium),
+            sodiumValue: getPoints(this.nutriprops.n.sodium.scale, saltToSodium(nutriInfo.salt)),
         }
     }
 
@@ -287,6 +293,7 @@ class FatsTable extends Table {
             satFats: StdSatFats,
             sodium: StdSodium,
             totalFats: new Prop(null, PropModes.ONLY_INPUT),
+            salt: StdSalt,
             ratioSatFats: new Prop([
                 [-Infinity, 10, 0],
                 [10, 16, 1],
@@ -314,7 +321,7 @@ class FatsTable extends Table {
             kjValue: getPoints(this.nutriprops.n.kJ.scale, nutriInfo.kJ),
             sugarValue: getPoints(this.nutriprops.n.sugar.scale, nutriInfo.sugar),
             ratioValue: getPoints(this.nutriprops.n.ratioSatFats.scale, ratio),
-            sodiumValue: getPoints(this.nutriprops.n.sodium.scale, nutriInfo.sodium),
+            sodiumValue: getPoints(this.nutriprops.n.sodium.scale, saltToSodium(nutriInfo.salt)),
         }
     }
 
@@ -384,6 +391,7 @@ class DrinksTable extends Table {
                 [13.5, Infinity, 10]
 
             ]),
+            salt: StdSalt,
             satFats: StdSatFats,
             sodium: StdSodium,
         },
@@ -440,314 +448,6 @@ class DrinksTable extends Table {
         }
     }
 }
-
-// const GeneralTable = {
-//     nutriprops: {
-//         n: new Map([
-//             ['kJ', StdKj],
-//             ['sugar', StdSugar],
-//             ['satFats', StdSatFats],
-//             ['sodium', StdSodium],
-//         ]),
-//         p: new Map(
-//             [
-//                 ['protein', StdKj],
-//                 ['fiber', StdFiber],
-//                 ['goodStuff', StdGoodStuff],
-//             ]
-//         )
-//     },
-//
-//     pointsToScore: [
-//         [-Infinity, -1, 'A'],
-//         [-1, 2, 'B'],
-//         [2, 10, 'C'],
-//         [10, 18, 'D'],
-//         [18, Infinity, 'E']
-//     ],
-//
-//     calculateScore: function (nutriInfo) {
-//
-//         const kjValue = getPoints(this.nutriprops.n.kJ, nutriInfo.kJ);
-//         const sugarValue = getPoints(this.nutriprops.n.sugar, nutriInfo.sugar);
-//         const satFatsValue = getPoints(this.nutriprops.n.satFats, nutriInfo.satFats);
-//         const sodiumValue = getPoints(this.nutriprops.n.sodium, nutriInfo.sodium);
-//
-//         const protValue = getPoints(this.nutriprops.p.protein, nutriInfo.protein);
-//         const fiberValue = getPoints(this.nutriprops.p.fiber, nutriInfo.fiber);
-//         const goodStuffValue = getPoints(this.nutriprops.p.goodStuff, nutriInfo.goodStuff);
-//
-//         const badScore = kjValue.points + sugarValue.points + satFatsValue.points + sodiumValue.points;
-//         const pCalc = getApplyProtein(badScore, goodStuffValue);
-//
-//         let totalScore = badScore - goodStuffValue.points - fiberValue.points;
-//
-//         if (pCalc.applyProtein) {
-//             totalScore -= protValue.points
-//         }
-//
-//         return {
-//             negatives: new Map(
-//                 [
-//                     ['kJ', kjValue],
-//                     ['sugar', sugarValue],
-//                     ['satFats', satFatsValue],
-//                     ['sodium', sodiumValue],
-//                 ]
-//             ),
-//             positives: new Map([
-//                     ['protein', protValue],
-//                     ['fiber', fiberValue],
-//                     ['goodStuff', goodStuffValue]
-//                 ]
-//             ),
-//             badScore,
-//             applyProtein: pCalc.applyProtein,
-//             proteinAppliedReason: pCalc.reason,
-//             totalScore,
-//             letterScore: getPoints(this.pointsToScore, totalScore)
-//         }
-//     }
-// }
-
-// const CheeseTable = {
-//     nutriprops: {
-//         n: new Map([
-//             ['kJ', StdKj],
-//             ['sugar', StdSugar],
-//             ['satFats', StdSatFats],
-//             ['sodium', StdSodium],
-//         ]),
-//         p: new Map(
-//             [
-//                 ['protein', StdKj],
-//                 ['fiber', StdFiber],
-//                 ['goodStuff', StdGoodStuff],
-//             ]
-//         )
-//     },
-//     pointsToScore: [
-//         [-Infinity, 0, 'A'],
-//         [0, 2, 'B'],
-//         [2, 10, 'C'],
-//         [10, 18, 'D'],
-//         [18, Infinity, 'E']
-//     ],
-//
-//     calculateScore: function (value) {
-//         const kjValue = getPoints(this.nutriprops.n.kJ, value.kJ);
-//         const sugarValue = getPoints(this.nutriprops.n.sugar, value.sugar);
-//         const satFatsValue = getPoints(this.nutriprops.n.satFats, value.satFats);
-//         const sodiumValue = getPoints(this.nutriprops.n.sodium, value.sodium);
-//
-//         const protValue = getPoints(this.nutriprops.p.protein, value.protein);
-//         const fiberValue = getPoints(this.nutriprops.p.fiber, value.fiber);
-//         const goodStuffValue = getPoints(this.nutriprops.p.goodStuff, value.goodStuff);
-//
-//
-//         const badScore = kjValue.points + sugarValue.points + satFatsValue.points + sodiumValue.points;
-//         const goodScore = protValue.points + goodStuffValue.points + fiberValue.points
-//         const totalScore = badScore - goodScore;
-//
-//         return {
-//             negatives: new Map(
-//                 [
-//                     ['kJ', kjValue],
-//                     ['sugar', sugarValue],
-//                     ['satFats', satFatsValue],
-//                     ['sodium', sodiumValue],
-//                 ]
-//             ),
-//             positives: new Map([
-//                     ['protein', protValue],
-//                     ['fiber', fiberValue],
-//                     ['goodStuff', goodStuffValue]
-//                 ]
-//             ),
-//             badScore,
-//             applyProtein: true,
-//             proteinAppliedReason: ProteinReasonIsCheese,
-//             totalScore,
-//             letterScore: getPoints(this.pointsToScore, totalScore)
-//         }
-//     }
-// }
-
-// const FatsTable = {
-//     nutriprops: {
-//         n: new Map([
-//             ['kJ', StdKj],
-//             ['sugar', StdSugar],
-//             ['satFats', StdSatFats],
-//             ['totalFats', new Prop(null, PropModes.ONLY_INPUT)],
-//             ['sodium', StdSodium],
-//             ['ratioSatFats',
-//                 new Prop([
-//                     [-Infinity, 10, 0],
-//                     [10, 16, 1],
-//                     [16, 22, 2],
-//                     [22, 28, 3],
-//                     [28, 34, 4],
-//                     [34, 40, 5],
-//                     [40, 46, 6],
-//                     [46, 52, 7],
-//                     [52, 58, 8],
-//                     [58, 64, 9],
-//                     [64, Infinity, 10]
-//                 ], PropModes.ONLY_OUTPUT)]
-//         ]),
-//         p: new Map([
-//             ['protein', StdProtein],
-//             ['fiber', StdFiber],
-//             ['goodStuff', StdGoodStuff]
-//         ])
-//     },
-//
-//     pointsToScore: [
-//         [-Infinity, 0, 'A'],
-//         [0, 2, 'B'],
-//         [2, 10, 'C'],
-//         [10, 18, 'D'],
-//         [18, Infinity, 'E']
-//     ],
-//
-//
-//     calculateScore: function (data) {
-//         const kjValue = getPoints(this.nutriprops.n.kJ, data.kJ);
-//         const sugarValue = getPoints(this.nutriprops.n.sugar, data.sugar);
-//         const sodiumValue = getPoints(this.nutriprops.n.sodium, data.sodium);
-//
-//         const protValue = getPoints(this.nutriprops.p.protein, data.protein);
-//         const fiberValue = getPoints(this.nutriprops.p.fiber, data.fiber);
-//         const goodStuffValue = getPoints(this.nutriprops.p.goodStuff, data.goodStuff);
-//
-//
-//         const ratio = data.satFats / data.ratioSatFats * 100
-//         const ratioValue = getPoints(this.nutriprops.n.ratioSatFats, ratio);
-//
-//         const badScore = kjValue.points + sugarValue.points + ratioValue.points + sodiumValue.points;
-//         const pCalc = getApplyProtein(badScore, goodStuffValue)
-//         const goodScore = goodStuffValue.points + fiberValue.points + ((pCalc.applyProtein) ? protValue.points : 0)
-//
-//         let totalScore = badScore - goodScore;
-//
-//         return {
-//             negatives: new Map(
-//                 [
-//                     ['kJ', kjValue],
-//                     ['sugar', sugarValue],
-//                     ['ratioSatFats', ratioValue],
-//                     ['sodium', sodiumValue],
-//                 ]
-//             ),
-//             positives: new Map([
-//                     ['protein', protValue],
-//                     ['fiber', fiberValue],
-//                     ['goodStuff', goodStuffValue]
-//                 ]
-//             ),
-//             badScore,
-//             applyProtein: pCalc.applyProtein,
-//             proteinAppliedReason: pCalc.reason,
-//             totalScore,
-//             letterScore: getPoints(this.pointsToScore, totalScore)
-//         }
-//     }
-// }
-
-// const DrinksTable = {
-//     nutriprops: {
-//         n: {
-//             kJ: new Prop([
-//                 [-Infinity, 0, 0],
-//                 [0, 30, 1],
-//                 [30, 60, 2],
-//                 [60, 90, 3],
-//                 [90, 120, 4],
-//                 [120, 150, 5],
-//                 [150, 180, 6],
-//                 [180, 210, 7],
-//                 [210, 240, 8],
-//                 [240, 270, 9],
-//                 [270, Infinity, 10],
-//             ]),
-//             sugar: new Prop([
-//                 [-Infinity, 0, 0],
-//                 [0, 1.5, 1],
-//                 [1.5, 3, 2],
-//                 [3, 4.5, 3],
-//                 [4.5, 6, 4],
-//                 [6, 7.5, 5],
-//                 [7.5, 9, 6],
-//                 [9, 10.5, 7],
-//                 [10.5, 12, 8],
-//                 [12, 13.5, 9],
-//                 [13.5, Infinity, 10]
-//
-//             ]),
-//             satFats: StdSatFats,
-//             sodium: StdSodium,
-//         },
-//         p: {
-//             protein: StdProtein,
-//             fiber: StdFiber,
-//             goodStuff: new Prop([
-//                 [-Infinity, 40, 0],
-//                 [40, 60, 2],
-//                 [60, 80, 4],
-//                 [80, Infinity, 10],
-//             ])
-//         }
-//     },
-//
-//     pointsToScore: [
-//         [-Infinity, -Infinity, 'A'],
-//         [-Infinity, 2, 'B'],
-//         [3, 5, 'C'],
-//         [5, 9, 'D'],
-//         [9, Infinity, 'E']
-//     ],
-//
-//     calculateScore: function (data) {
-//         const kjValue = getPoints(this.nutriprops.n.kJ, data.kJ);
-//         const sugarValue = getPoints(this.nutriprops.n.sugar, data.sugar);
-//         const sodiumValue = getPoints(this.nutriprops.n.sodium, data.sodium);
-//         const satFatsValue = getPoints(this.nutriprops.n.satFats, data.satFats);
-//
-//         const protValue = getPoints(this.nutriprops.p.protein, data.protein);
-//         const fiberValue = getPoints(this.nutriprops.p.fiber, data.fiber);
-//         const goodStuffValue = getPoints(this.nutriprops.p.goodStuff, data.goodStuff);
-//
-//
-//         const badScore = kjValue.points + sugarValue.points + satFatsValue.points + sodiumValue.points;
-//         const pCalc = getApplyProtein(badScore, goodStuffValue)
-//         const goodScore = goodStuffValue.points + fiberValue.points + ((pCalc.applyProtein) ? protValue.points : 0)
-//
-//         const totalScore = badScore - goodScore;
-//
-//         return {
-//             negatives: new Map(
-//                 [
-//                     ['kJ', kjValue],
-//                     ['sugar', sugarValue],
-//                     ['satFats', satFatsValue],
-//                     ['sodium', sodiumValue],
-//                 ]
-//             ),
-//             positives: new Map([
-//                     ['protein', protValue],
-//                     ['fiber', fiberValue],
-//                     ['goodStuff', goodStuffValue]
-//                 ]
-//             ),
-//             badScore,
-//             applyProtein: pCalc.applyProtein,
-//             proteinAppliedReason: pCalc.reason,
-//             totalScore,
-//             letterScore: getPoints(this.pointsToScore, totalScore)
-//         }
-//     }
-// }
 
 function getUnit(nutriProp) {
     switch (nutriProp) {

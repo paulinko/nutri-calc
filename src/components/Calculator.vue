@@ -3,27 +3,29 @@
     <div class="row">
       <div class="col-md-9">
         <h1>Nutricalc: Der Nutri-Score-Berechner</h1>
-        <p>
-          Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et
-          dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet
-          clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet,
-          consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat,
-          sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea
-          takimata sanctus est Lorem ipsum dolor sit amet.
-        </p>
-
         <div>
-          <a href="#calculate" class="btn btn-success">Jetzt berechnen</a>
+          <p>
+            Der Nutri-Score ist ein freiwilliges Siegel, dass einen schnellen und vereinfachten
+            Vergleich von gleichartigen Lebensmitteln ermöglichen soll.
+          </p>
+          <p>
+            Ziel dieses Rechners ist es, die Berechnung des Nutri-Scores zu veranschaulichen.
+          </p>
+          <div>
+            <a href="#calculate" class="btn btn-success">Jetzt berechnen</a>
+          </div>
         </div>
-        <p>
-          <span class="fw-bold">Letzte Aktualisierung</span>: {{ (new Date('2021-01-02')).toLocaleDateString() }}
-        </p>
-        <p>
-          <span class="fw-bold">Verwendete Quellen</span> <br>
-          <a :href="source.link" target="_blank" v-for="source in sources" :key="source.name">{{ source.name }}
-            ({{ source.language }}) <br></a>
-
-        </p>
+        <hr>
+        <div>
+          <p>
+            <span class="fw-bold">Letzte Aktualisierung</span>: {{ (new Date('2021-01-02')).toLocaleDateString() }}
+          </p>
+          <p>
+            <span class="fw-bold">Verwendete Quellen</span> <br>
+            <a :href="source.link" target="_blank" v-for="source in sources" :key="source.name">{{ source.name }}
+              ({{ source.language }}) <br></a>
+          </p>
+        </div>
       </div>
     </div>
     <hr>
@@ -120,7 +122,7 @@
       </div>
       <h2>Details</h2>
       <div class="row summary">
-        <div class="col-md-3 col-xs-12 d-sm-block d-none ">
+        <div class="col-md-3 col-xs-12 d-sm-block d-none points-list">
           <h5 class="mt-2">Negative Inhaltsstoffe</h5>
           <nav class="nav flex-column result-nav negative">
             <a v-for="name in result.negatives.keys()" :key="name" class="nav-link link-danger"
@@ -174,7 +176,7 @@
           />
         </div>
       </div>
-      <pre>{{ result }}</pre>
+<!--      <pre>{{ result }}</pre>-->
     </div>
   </div>
 </template>
@@ -254,6 +256,7 @@ export default {
         oil: 0,
         goodStuff: 0,
         totalFats: 100,
+        salt: 0
       },
       name: GetPlaceholderText('general'),
       originalScoreColors: ['#008043', '#85b931', '#f2c011', '#e37c13', '#d9411a'],
@@ -355,8 +358,8 @@ p {
 }
 
 .results-content {
-  height: 100vh;
-  overflow-y: scroll;
+  /*height: 100vh;*/
+  /*overflow-y: scroll;*/
   /*background-color: white;*/
 }
 
@@ -414,5 +417,16 @@ p {
 
 .h-1 {
   height: 1em;
+}
+
+.points-list {
+  position: sticky;
+  display: block;
+  top: 0;
+  background: white;
+  border-bottom: 1px #ccc solid;
+  box-shadow: 0 5px 5px 0 #aaa;
+  padding: 1em;
+  align-self: flex-start;
 }
 </style>
