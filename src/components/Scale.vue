@@ -370,11 +370,14 @@ export default {
 }
 
 .gauge-container {
-  max-width: 50%;
+  /*max-width: 50%;*/
+  flex-basis: 50%;
 }
 
 .left-container, .right-container {
-  width: 10%;
+  flex-basis: 15%;
+  max-width: 25vw;
+  padding: 1rem;
 }
 
 .right-container > div > svg {

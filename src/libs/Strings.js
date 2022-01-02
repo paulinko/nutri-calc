@@ -11,7 +11,7 @@ const DisplayNames = {
     sodium: 'Salz',
     protein: 'Protein',
     fiber: 'Ballaststoffe',
-    goodStuff: 'Vollkorn etc.',
+    goodStuff: 'Gemüse-, Obst- und Nussanteil',
     cheese: 'Milchprodukte',
     general: 'Allgemein',
     fats: 'Öle',

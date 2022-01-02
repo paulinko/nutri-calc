@@ -31,7 +31,7 @@
       <h2 id="calculate">Berechnen</h2>
       <ul class="nav nav-tabs" id="myTab" role="tablist">
         <li class="nav-item" role="presentation" v-for="tableName in tableNames" :key="tableName">
-          <button :class="'nav-link ' + ((mode === tableName) ? 'active' : '')" id="general-tab"
+          <button :class="'nav-link px-2 ' + ((mode === tableName) ? 'active' : '')" id="general-tab"
                   @click="mode = tableName; name = getPlaceholderText(mode)" type="button"
                   role="tab" aria-controls="" aria-selected="true">{{ displayNames(tableName) }}
           </button>
@@ -48,7 +48,7 @@
           </p>
           <form>
             <div class="row nutriprops-row">
-              <div class="col-lg-3 col-md-6">
+              <div class="col-lg-4 col-md-6">
                 <h4>Negative Inhaltsstoffe</h4>
                 <div v-for="[name, ] in currentTable.negativeInputs()" :key="name" class="row g-2">
                   <div class="col-7 flex-grow-1">
@@ -65,7 +65,7 @@
                   </div>
                 </div>
               </div>
-              <div class="col-lg-3 col-md-6">
+              <div class="col-lg-4 col-md-6">
                 <h4>Positive Inhaltsstoffe</h4>
                 <div v-for="[name, ] in currentTable.positiveInputs()" :key="name" class="row g-2">
                   <div class="col-auto flex-grow-1">
@@ -81,7 +81,7 @@
                   </div>
                 </div>
               </div>
-              <div class="col-lg-2 d-md-block d-xs-none ms-5">
+              <div class="col-md-2 d-none d-md-block ms-5">
                 <img :src="currentImage" alt="">
               </div>
             </div>
@@ -120,7 +120,7 @@
       </div>
       <h2>Details</h2>
       <div class="row summary">
-        <div class="col-md-3 col-xs-12">
+        <div class="col-md-3 col-xs-12 d-sm-block d-none ">
           <h5 class="mt-2">Negative Inhaltsstoffe</h5>
           <nav class="nav flex-column result-nav negative">
             <a v-for="name in result.negatives.keys()" :key="name" class="nav-link link-danger"
