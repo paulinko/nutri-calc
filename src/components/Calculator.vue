@@ -1,5 +1,8 @@
 <template>
   <div class="container text-start">
+    <modal v-if="showModalInfoFor" :title="displayNames(showModalInfoFor)" :mode="showModalInfoFor"
+           @close-modal="showModalInfoFor = null">
+    </modal>
     <div class="row">
       <div class="col-md-9">
         <h1>Nutricalc: Der Nutri-Score-Berechner</h1>
@@ -52,36 +55,22 @@
             <div class="row nutriprops-row">
               <div class="col-lg-4 col-md-6">
                 <h4>Negative Inhaltsstoffe</h4>
-                <div v-for="[name, ] in currentTable.negativeInputs()" :key="name" class="row g-2">
-                  <div class="col-7 flex-grow-1">
-                    <label class="col-form-label" :for="name" :title="getInputInfoText(name)">{{
-                        inputDisplayNames(name)
-                      }}</label>
-                  </div>
-                  <div class="col-5">
-                    <div class="input-group">
-                      <input class="form-control" type="text" :name="name" :id="name"
-                             v-model.number="nutritionalInfo[name]">
-                      <span class="input-group-text col-4">{{ getUnit(name) }}</span>
-                    </div>
-                  </div>
-                </div>
+                <InputRow v-for="[name, ] in currentTable.negativeInputs()" :key="name" class="row g-2"
+                          :name="name" :has-info-modal="hasInfoModal(name)" :label-name="inputDisplayNames(name)"
+                          @open-modal="showModalInfoFor = name">
+                  <input class="form-control" type="text" :name="name" :id="name"
+                         v-model="nutritionalInfo[name]">
+                  <span class="input-group-text col-4">{{ getUnit(name) }}</span>
+                </InputRow>
               </div>
               <div class="col-lg-4 col-md-6">
                 <h4>Positive Inhaltsstoffe</h4>
-                <div v-for="[name, ] in currentTable.positiveInputs()" :key="name" class="row g-2">
-                  <div class="col-auto flex-grow-1">
-                    <label class="col-form-label" :for="name" :title="getInputInfoText(name)">{{
-                        inputDisplayNames(name)
-                      }}</label>
-                  </div>
-                  <div class="col-4">
-                    <div class="input-group">
-                      <input class="form-control" type="text" :name="name" :id="name" v-model="nutritionalInfo[name]">
-                      <span class="input-group-text">{{ getUnit(name) }}</span>
-                    </div>
-                  </div>
-                </div>
+                <InputRow v-for="[name, ] in currentTable.positiveInputs()" :key="name" class="row g-2"
+                          :name="name" :has-info-modal="hasInfoModal(name)" :label-name="inputDisplayNames(name)"
+                          @open-modal="showModalInfoFor = name">
+                  <input class="form-control" type="text" :name="name" :id="name" v-model="nutritionalInfo[name]">
+                  <span class="input-group-text">{{ getUnit(name) }}</span>
+                </InputRow>
               </div>
               <div class="col-md-2 d-none d-md-block ms-5">
                 <img :src="currentImage" alt="">
@@ -126,7 +115,8 @@
           <h5 class="mt-2">Negative Inhaltsstoffe</h5>
           <nav class="nav flex-column result-nav negative">
             <a v-for="name in result.negatives.keys()" :key="name" class="nav-link link-danger"
-               :href="'#' + name + 'Result'">{{ displayNames(name) }}: {{ result.negatives.get(name).value.toLocaleString() }}
+               :href="'#' + name + 'Result'">{{ displayNames(name) }}:
+              {{ result.negatives.get(name).value.toLocaleString() }}
               {{ getUnit(name) }}
               <Badge v-if="getColorForProp(name)" classes="float-end" :badge-data="getColorForProp(name)"
                      :is-positive="false"></Badge>
@@ -179,7 +169,7 @@
           />
         </div>
       </div>
-<!--      <pre>{{ result }}</pre>-->
+      <!--      <pre>{{ result }}</pre>-->
     </div>
   </div>
 </template>
@@ -190,6 +180,8 @@ import Scale from "@/components/Scale";
 import Badge from "@/components/Badge";
 import ResultChart from "@/components/ResultChart";
 import ScoreExplanation from "@/components/ScoreExplanation";
+import Modal from "@/components/Modal";
+import InputRow from "@/components/InputRow";
 
 import {
   GetDisplayNames,
@@ -207,7 +199,7 @@ import {GeneralTable, FatsTable, CheeseTable, DrinksTable, getUnit, WasPropUsedI
 
 export default {
   name: 'Calculator',
-  components: {Scale, Badge, ResultChart, ScoreExplanation},
+  components: {Scale, Badge, ResultChart, ScoreExplanation, Modal, InputRow},
   computed: {
     resultNavVisible() {
       return document.getElementsByTagName('body')[0].getBoundingClientRect().width >= 576;
@@ -272,7 +264,8 @@ export default {
       tableNames: ['general', 'fats', 'drinks', 'cheese'],
       sources: Sources,
       furtherReadings: FurtherReadings,
-      resultTable: Object
+      resultTable: Object,
+      showModalInfoFor: null
     };
   },
   methods: {
@@ -313,6 +306,14 @@ export default {
     },
     getColorForProp(prop) {
       return this.colors[prop] ?? null
+    },
+    hasInfoModal(prop) {
+      switch (prop) {
+        case 'goodStuff':
+          return true
+        default:
+          return false;
+      }
     },
     wasUsedInCalculation(prop) {
       return (prop !== 'protein' || this.result.applyProtein)

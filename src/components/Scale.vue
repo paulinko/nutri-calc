@@ -14,8 +14,8 @@
       <h5>Skala/Grenzwerte</h5>
       <p>Diese Skala zeigt die Grenzwerte für die verschiedenen zu erreichenden Punktzahlen</p>
       <div>
-        <span class="toggler" @click="showAllDetails()" v-if="!showAll">Grenzwerte anzeigen</span>
-        <span class="toggler" @click="hideAllDetails()" v-else>Grenzwerte ausblenden</span>
+        <span class="toggler text-primary float-end" @click="showAllDetails()" v-if="!showAll">Grenzwerte anzeigen</span>
+        <span class="toggler text-primary float-end" @click="hideAllDetails()" v-else>Grenzwerte ausblenden</span>
         <div :class="'scale ' + scaleClasses">
           <div class="scale-child" v-for="n in totalSections" :key="n"
                :style="'background-color: ' + colorCodes[n]" @click="toggleDetailsOfScore(n)">
@@ -413,10 +413,6 @@ export default {
   top: 0;
   left: 125px;
   width: 0;
-}
-
-.clickable {
-  cursor: pointer;
 }
 
 @keyframes fade-in {
