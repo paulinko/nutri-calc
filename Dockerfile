@@ -1,6 +1,13 @@
-FROM node:14.18.0
-VOLUME /project
+FROM node:14-alpine as builder
 
-RUN npm install -g @vue/cli
-WORKDIR /project/nutri-score
-CMD npm run serve
+WORKDIR /app
+
+COPY public ./public
+COPY src/ ./src
+COPY babel.config.js package.json package-lock.json ./
+
+RUN npm install && npm audit fix && npm run build
+
+FROM nginx:alpine
+
+COPY --from=builder /app/dist /usr/share/nginx/html/
