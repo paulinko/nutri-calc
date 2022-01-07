@@ -58,7 +58,8 @@
                 <InputRow v-for="[name, ] in currentTable.negativeInputs()" :key="name" class="row g-2"
                           :name="name" :has-info-modal="hasInfoModal(name)" :label-name="inputDisplayNames(name)"
                           @open-modal="showModalInfoFor = name">
-                  <input class="form-control" type="text" :name="name" :id="name"
+                  <input :class="'form-control ' + (isValid(name) ? '' : 'is-invalid')" required type="text"
+                         :name="name" :id="name"
                          v-model="nutritionalInfo[name]">
                   <span class="input-group-text col-4">{{ getUnit(name) }}</span>
                 </InputRow>
@@ -68,7 +69,8 @@
                 <InputRow v-for="[name, ] in currentTable.positiveInputs()" :key="name" class="row g-2"
                           :name="name" :has-info-modal="hasInfoModal(name)" :label-name="inputDisplayNames(name)"
                           @open-modal="showModalInfoFor = name">
-                  <input class="form-control" type="text" :name="name" :id="name" v-model="nutritionalInfo[name]">
+                  <input :class="'form-control ' + (isValid(name) ? '' : 'is-invalid')" type="text" :name="name"
+                         required :id="name" v-model="nutritionalInfo[name]">
                   <span class="input-group-text">{{ getUnit(name) }}</span>
                 </InputRow>
               </div>
@@ -79,7 +81,7 @@
           </form>
           <div :class="'row mt-3 ' + classesCalcElem ">
             <div class="col-md-6">
-              <button class="btn btn-success btn-lg" @click="calculateScore()">Score berechnen</button>
+              <button class="btn btn-success btn-lg" @click="calculateScore()" :disabled="!allFieldsValid()">Score berechnen</button>
             </div>
           </div>
         </div>
@@ -310,6 +312,7 @@ export default {
     hasInfoModal(prop) {
       switch (prop) {
         case 'goodStuff':
+        case 'salt':
           return true
         default:
           return false;
@@ -332,7 +335,32 @@ export default {
         default:
           return `${PATH}sandwich.svg`
       }
+    },
+    isValid(prop) {
+      let value = this.nutritionalInfo[prop];
+      if (value === '') {
+        return false
+      }
+      const defaultvalidator = (v) => (v >= 0 && v <= 100);
+      const validators = {
+        kJ: (v) => (v >= 0 && v <= 10_000),
+      };
+
+      return (validators[prop] || defaultvalidator)(value)
+    },
+
+
+    allFieldsValid() {
+      let isValid = true;
+      for (let [name,] of this.currentTable.negativeInputs()) {
+        isValid &= this.isValid(name)
+      }
+      for (let [name,] of this.currentTable.positiveInputs()) {
+        isValid &= this.isValid(name)
+      }
+      return isValid
     }
+
   }
 }
 </script>

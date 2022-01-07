@@ -1,7 +1,5 @@
 <template>
-    <span :title="title" :class="calculatedClasses" :style="'background-color:' + badgeData.color">{{sign}}
-        {{badgeData.value}}
-      <sup>{{superscript ?? ' '}}</sup></span>
+    <span :title="title" :class="calculatedClasses" :style="'background-color:' + badgeData.color">{{sign}}{{value}}<sup>{{superscript ?? ' '}}</sup></span>
 </template>
 
 <script>
@@ -25,6 +23,9 @@ export default {
     },
     sign(){
       return (this.isPositive) ? '-' : '+'
+    },
+    value(){
+      return (this.badgeData.value > 9 ) ? this.badgeData.value : (' ' + this.badgeData.value)
     },
     calculatedClasses() {
       return  'badge fs-6 text-black-50 score-badge ' + (this.classes ??'')
@@ -59,7 +60,27 @@ export default {
 <style scoped>
 .score-badge {
   box-shadow: 0 0 0.2em #bbb;
-  min-width: 7ch;
+  min-width: 8ch;
+}
+
+
+/* bootstrap.css | http://localhost:8082/bootstrap.css */
+
+sup {
+  min-width: 1ch;
+  display: inline-block;
+}
+
+.badge {
+  /* padding: 0.35em 0.65em; */
+  padding: 0.35em 0.45em;
+}
+
+/* Inline #2 | http://localhost:8082/#proteinResult */
+
+.score-badge {
+  text-align: center;
+  min-width: 4.5em;
 }
 
 

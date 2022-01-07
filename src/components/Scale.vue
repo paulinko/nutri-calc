@@ -35,8 +35,10 @@
           <div class="left-container">
             <div v-if="!isLowest">
               <Arrow :gradient-id="shortName + 'leftArrow'" :color-start="gaugeLower" :color-end="gaugeLower"></Arrow>
-              <div class="text-center">{{ lowerBound - value }}{{ unit }} von {{ previousScore }}{{ scoreUnit }}
-                entfernt
+              <div class="text-center">
+                <span v-if="lowerBound - value !== 0">{{ lowerBound - value }}{{ unit }} von {{ previousScore }}{{ scoreUnit }}
+                entfernt</span>
+                <span v-else>an der Grenze zu {{ previousScore }}{{ scoreUnit }}</span>
               </div>
             </div>
           </div>
@@ -47,7 +49,9 @@
           <div class="right-container">
             <div v-if="!isHighest">
               <Arrow :gradient-id="shortName + 'rightArrow'" :color-start="gaugeUpper" :color-end="gaugeUpper"></Arrow>
-              <div class="text-center">+{{ upperBound - value }}{{ unit }} von {{ nextScore }}{{ scoreUnit }} entfernt
+              <div class="text-center">
+                <span v-if="upperBound - value !== 0">+{{ upperBound - value }}{{ unit }} von {{ nextScore }}{{ scoreUnit }} entfernt</span>
+                <span v-else>an der Grenze zu {{ nextScore }}{{ scoreUnit }}</span>
               </div>
             </div>
           </div>

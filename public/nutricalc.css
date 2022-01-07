@@ -26,17 +26,17 @@ body {
 
 
 .nutri-modal {
-    min-width: 300px;
+    min-width: 330px;
     width: 40vw;
     margin: auto;
     background-color: white;
     padding: 1.5em 2em;
     border-radius: 0.3em;
-    min-height: 40vh;
+    /*min-height: 40vh;*/
     z-index: 102;
 }
 .nutri-modal > .content-container {
-    overflow-y: scroll;
+    overflow-y: auto;
     max-height: 80vh;
     padding: 0.5em;
 }
