@@ -320,12 +320,11 @@ export default {
 <style scoped>
 .scale {
   display: flex;
-  width: 98vw;
+  width: 100%;
   max-width: 800px;
   margin: auto;
   align-items: normal;
-  height: 5rem;
-  justify-content: center;
+  overflow-y: auto;
 }
 
 
@@ -336,13 +335,13 @@ export default {
   align-items: center;
   align-content: center;
   justify-content: center;
-  max-height: 10vw;
+  height: 6ch;
   color: #0000007F;
   max-width: 10%;
   cursor: pointer;
   font-size: 16pt;
   position: relative;
-  /*color: #FFFFFF;*/
+  min-width: 6ch;
 }
 
 .text-white > .scale-child {
@@ -355,10 +354,12 @@ export default {
 
 .scale-child:first-child {
   border-radius: 25% 0 0 25%;
+  margin-left: auto;
 }
 
 .scale-child:last-child {
   border-radius: 0 25% 25% 0;
+  margin-right: auto;
 }
 
 .scale-item-score.actual-score {
@@ -402,7 +403,7 @@ export default {
   text-align: center;
   font-size: 11pt;
   z-index: 1001;
-  padding: 3px;
+  padding: 1px;
 }
 
 .toggler {
