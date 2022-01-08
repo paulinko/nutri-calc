@@ -34,6 +34,7 @@ body {
     border-radius: 0.3em;
     /*min-height: 40vh;*/
     z-index: 102;
+    pointer-events: none;
 }
 .nutri-modal > .content-container {
     overflow-y: auto;

@@ -21,7 +21,7 @@
         <hr>
         <div>
           <p>
-            <span class="fw-bold">Letzte Aktualisierung</span>: {{ (new Date('2021-01-02')).toLocaleDateString() }}
+            <span class="fw-bold">Letzte Aktualisierung</span>: {{ updateTime }}
           </p>
           <p>
             <span class="fw-bold">Verwendete Quellen</span> <br>
@@ -81,7 +81,9 @@
           </form>
           <div :class="'row mt-3 ' + classesCalcElem ">
             <div class="col-md-6">
-              <button class="btn btn-success btn-lg" @click="calculateScore()" :disabled="!allFieldsValid()">Score berechnen</button>
+              <button class="btn btn-success btn-lg" @click="calculateScore()" :disabled="!allFieldsValid()">Score
+                berechnen
+              </button>
             </div>
           </div>
         </div>
@@ -267,14 +269,23 @@ export default {
       sources: Sources,
       furtherReadings: FurtherReadings,
       resultTable: Object,
-      showModalInfoFor: null
+      showModalInfoFor: null,
+      updateTime: (new Date('2021-01-02')).toLocaleString(undefined, {
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit'
+      })
     };
   },
   methods: {
     calculateScore() {
       this.result = null
       this.colors = {}
-      this.result = this.currentTable.calculateScore(this.nutritionalInfo)
+      let normalizedNutriInfo = {}
+      for (const [prop, val] of Object.entries(this.nutritionalInfo)) {
+        normalizedNutriInfo[prop] = this.normalizeFloat(val)
+      }
+      this.result = this.currentTable.calculateScore(normalizedNutriInfo)
       console.log('result', this.result)
       this.result.mode = this.mode
       this.result.name = this.name || this.getDisplayNames(this.mode)
@@ -287,6 +298,9 @@ export default {
           })
         }, 25)
       })
+    },
+    normalizeFloat(val) {
+      return parseFloat((val).toString().replace(',', '.'))
     },
     inputDisplayNames(prop) {
       return GetDisplayNames(prop, true)
@@ -341,6 +355,7 @@ export default {
       if (value === '') {
         return false
       }
+      value = this.normalizeFloat(value)
       const defaultvalidator = (v) => (v >= 0 && v <= 100);
       const validators = {
         kJ: (v) => (v >= 0 && v <= 10_000),
