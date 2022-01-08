@@ -9,11 +9,11 @@
           </p>
           <h5>Einschränkungen</h5>
           <p class=" text-success">
-            <span>✔</span> Obst, Gemüse und Hülsenfrüchte sowie Nüsse und Schalenfrüchte zählen in die Berechnung, aber
+            <inline-icon type="check"></inline-icon> Obst, Gemüse und Hülsenfrüchte sowie Nüsse und Schalenfrüchte zählen in die Berechnung, aber
             ...
           </p>
           <p class=" text-danger">
-            &times; <span class="fw-bolder"> stärkereiche Knollen (z.B Kartoffeln und Süßkartoffeln), Quinoa und
+            <inline-icon type="times"></inline-icon> <span class="fw-bolder"> stärkereiche Knollen (z.B Kartoffeln und Süßkartoffeln), Quinoa und
             Gewürze</span>, Mehl aus Mais oder Hülsenfrüchten zählen nicht.
           </p>
           <hr>
@@ -30,16 +30,16 @@
           <hr>
           <h5>Verarbeitung</h5>
           <p class=" text-success">
-            <span>✔</span> im Ganzen enthalten, geschnitten und geschält
+            <inline-icon type="check"></inline-icon> im Ganzen enthalten, geschnitten und geschält
           </p>
           <p class=" text-success">
-            <span>✔</span>  gefroren, getrocknet, gegart und in Dosen konserviert sind
+            <inline-icon type="check"></inline-icon>  gefroren, getrocknet, gegart und in Dosen konserviert sind
           </p>
           <p class=" text-warning">
-            <span>✔</span>  Säfte und Pürees, falls das Obst und Gemüse nur gepresst, püriert oder anders zerkleinert wurde
+            <inline-icon type="check"></inline-icon>  Säfte und Pürees, falls das Obst und Gemüse nur gepresst, püriert oder anders zerkleinert wurde
           </p>
           <p class="text-danger">
-            <span class="fw-bolder">&times;</span>  kein konzentrierter Sirup oder hoch verarbeitetes Obst und Gemüse.
+            <inline-icon type="times"></inline-icon>   kein konzentrierter Sirup oder hoch verarbeitetes Obst und Gemüse.
           </p>
         </div>
         <div v-else-if="mode === 'salt'">
@@ -60,8 +60,11 @@
 </template>
 
 <script>
+
+import InlineIcon from "@/components/InlineIcon";
 export default {
   name: "modal",
+  components: {InlineIcon},
   props: {
     title: {
       type: String,
