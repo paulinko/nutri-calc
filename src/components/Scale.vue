@@ -11,7 +11,7 @@
       </a>
     </div>
     <div class="details fade-in" v-if="detailsShown">
-      <h5>Skala/Grenzwerte</h5>
+      <h5>Skala/Grenzwerte <small>(je höher desto <span class="fw-bolder">{{(isPositive) ? 'besser' : 'schlechter'}}</span>)</small></h5>
       <p>Diese Skala zeigt die Grenzwerte für die verschiedenen zu erreichenden Punktzahlen</p>
       <div>
         <span class="toggler text-primary float-end" @click="showAllDetails()"

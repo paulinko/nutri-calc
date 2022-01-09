@@ -8,7 +8,7 @@
         <h1>Nutricalc: Der Nutri-Score-Berechner</h1>
         <div>
           <p>
-            Der Nutri-Score ist ein freiwilliges Siegel, dass einen schnellen und vereinfachten
+            Der Nutri-Score ist ein freiwilliges Siegel, das einen schnellen und vereinfachten
             Vergleich von gleichartigen Lebensmitteln ermöglichen soll.
           </p>
           <p>
@@ -47,7 +47,7 @@
           <h4>Berechnung für &nbsp;<input class="form-control  w-50 d-inline"
                                           title="Gib einen Namen für das Lebensmittel an" type="text" name="name"
                                           id="productName"
-                                          v-model="name"></h4>
+                                          v-model="name"  @focus="$event.target.setSelectionRange(0, $event.target.value.length)"></h4>
           <p>
             {{ modeInfoText }}
           </p>
@@ -60,7 +60,9 @@
                           @open-modal="showModalInfoFor = name">
                   <input :class="'form-control ' + (isValid(name) ? '' : 'is-invalid')" required type="text"
                          :name="name" :id="name"
-                         v-model="nutritionalInfo[name]">
+                         v-model="nutritionalInfo[name]"
+                         @focus="$event.target.setSelectionRange(0, $event.target.value.length)"
+                  >
                   <span class="input-group-text col-4">{{ getUnit(name) }}</span>
                 </InputRow>
               </div>
@@ -70,7 +72,9 @@
                           :name="name" :has-info-modal="hasInfoModal(name)" :label-name="inputDisplayNames(name)"
                           @open-modal="showModalInfoFor = name">
                   <input :class="'form-control ' + (isValid(name) ? '' : 'is-invalid')" type="text" :name="name"
-                         required :id="name" v-model="nutritionalInfo[name]">
+                         required :id="name" v-model="nutritionalInfo[name]"
+                         @focus="$event.target.setSelectionRange(0, $event.target.value.length)"
+                  >
                   <span class="input-group-text">{{ getUnit(name) }}</span>
                 </InputRow>
               </div>
