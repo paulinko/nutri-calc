@@ -25,7 +25,7 @@ const DisplayNames = {
     letterScore: 'Gesamtpunktzahl'
 }
 const ProteinAppliedDisplayNames = new Map([
-    [ProteinReasonNotApplied, 'weil es sich um kein Milchprodukt handelt, die Anzahl der Negativpunkte größer als 11 ist und das Produkt zu weniger als 80% aus Obst,Gemüse oder Nüssen'],
+    [ProteinReasonNotApplied, 'weil es sich um kein Milchprodukt handelt, die Anzahl der Negativpunkte größer als 11 ist und das Produkt zu weniger als 80% aus Obst,Gemüse oder Nüssen besteht.'],
     [ProteinReasonLowBadScore, 'weil die Negativsumme weniger als 11 Punkte ist'],
     [ProteinReasonHighGoodStuffScore, 'weil die Negativsumme zwar größer als 11 Punkte ist, das Produkt aber zu mehr als 80% aus Obst,Gemüse oder Nüssen besteht'],
     [ProteinReasonIsCheese, 'weil bei Milchprodukten der Proteingehalt immer in die Bewertung einfließt']
