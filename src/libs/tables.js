@@ -158,8 +158,8 @@ const StdGoodStuff = new Prop([
 const StdPointsToScore = [
     [-Infinity, -1, 'A'],
     [-1, 2, 'B'],
-    [3, 10, 'C'],
-    [11, 18, 'D'],
+    [2, 10, 'C'],
+    [10, 18, 'D'],
     [18, Infinity, 'E']
 ];
 
@@ -458,7 +458,7 @@ function getUnit(nutriProp) {
         case 'ratioSatFats':
             return '%'
         case 'letterScore':
-            return 'Punkte'
+            return 'P'
         default:
             return 'g'
     }

@@ -150,7 +150,7 @@
                  :details-shown-initial="resultNavVisible"
                  :score-colors-override="originalScoreColors"
                  :hide-badge="true"
-                 :unit="' '+getUnit('letterScore')"/>
+                 :unit="getUnit('letterScore')"/>
           <h3>Negative Inhaltsstoffe</h3>
           <Scale @colors-calculated="appendPropColor($event, name)"
                  :data="v.points" :fractal="v.fractal" :value="v.value" :name="displayNames(name)"

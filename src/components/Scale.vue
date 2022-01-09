@@ -14,15 +14,20 @@
       <h5>Skala/Grenzwerte</h5>
       <p>Diese Skala zeigt die Grenzwerte für die verschiedenen zu erreichenden Punktzahlen</p>
       <div>
-        <span class="toggler text-primary float-end" @click="showAllDetails()" v-if="!showAll">Grenzwerte anzeigen</span>
+        <span class="toggler text-primary float-end" @click="showAllDetails()"
+              v-if="!showAll">Grenzwerte anzeigen</span>
         <span class="toggler text-primary float-end" @click="hideAllDetails()" v-else>Grenzwerte ausblenden</span>
         <div :class="'scale ' + scaleClasses">
           <div class="scale-child" v-for="n in totalSections" :key="n"
                :style="'background-color: ' + colorCodes[n]" @click="toggleDetailsOfScore(n)">
             <div class="marker" v-if="showBar && isActualScore(n-1)" :style="'left:' + fractal*100 + '%;'"></div>
-            <span class="score-details" v-if="isSelectedScore(n)">{{
-                getRangeString(n)
-              }}</span>
+            <div class="details-container" v-if="isSelectedScore(n)">
+              <div :class="'score' + (isActualScore(n-1) ? ' active' : '')">{{ scores[n - 1] }}</div>
+              <div>{{
+                  getRangeString(n)
+                }}
+              </div>
+            </div>
             <span v-else :class="classes(n-1)">{{ scores[n - 1] }}</span>
           </div>
         </div>
@@ -36,7 +41,9 @@
             <div v-if="!isLowest">
               <Arrow :gradient-id="shortName + 'leftArrow'" :color-start="gaugeLower" :color-end="gaugeLower"></Arrow>
               <div class="text-center">
-                <span v-if="lowerBound - value !== 0">{{ lowerBound - value }}{{ unit }} von {{ previousScore }}{{ scoreUnit }}
+                <span v-if="lowerBound - value !== 0">{{ lowerBound - value }}{{ unit }} von {{
+                    previousScore
+                  }}{{ scoreUnit }}
                 entfernt</span>
                 <span v-else>an der Grenze zu {{ previousScore }}{{ scoreUnit }}</span>
               </div>
@@ -50,7 +57,9 @@
             <div v-if="!isHighest">
               <Arrow :gradient-id="shortName + 'rightArrow'" :color-start="gaugeUpper" :color-end="gaugeUpper"></Arrow>
               <div class="text-center">
-                <span v-if="upperBound - value !== 0">+{{ upperBound - value }}{{ unit }} von {{ nextScore }}{{ scoreUnit }} entfernt</span>
+                <span v-if="upperBound - value !== 0">+{{ upperBound - value }}{{ unit }} von {{
+                    nextScore
+                  }}{{ scoreUnit }} entfernt</span>
                 <span v-else>an der Grenze zu {{ nextScore }}{{ scoreUnit }}</span>
               </div>
             </div>
@@ -275,13 +284,17 @@ export default {
         return 'n/a'
       }
 
+      // const greater = 'über'
+      // const lower = 'unter'
+      const greater = '>'
+      const lower = '<'
       if (lowerBound === -Infinity) {
-        return `< ${upperBound}${this.unit}`
+        return `${lower} ${upperBound}${this.unit}`
       } else if (upperBound === Infinity) {
-        return `> ${lowerBound}${this.unit}`
+        return `${greater} ${lowerBound}${this.unit}`
       }
 
-      return `${lowerBound}${this.unit} - ${upperBound}${this.unit}`
+      return `${greater} ${lowerBound}${this.unit}`
     },
 
     toggleDetailsOfScore(i) {
@@ -344,6 +357,30 @@ export default {
   min-width: 6ch;
 }
 
+.details-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  align-content: center;
+  justify-content: center;
+  /*line-height: 1rem;*/
+  text-align: center;
+  font-size: 1rem;
+  z-index: 1001;
+}
+
+.details-container  > .score {
+  font-size: 1.3rem;
+  line-height: 1.3rem;
+}
+
+.details-container > .score.active {
+  font-weight: bolder;
+  font-size: 1.5rem;
+}
+
+
 .text-white > .scale-child {
   color: #FFF !important;
 }
@@ -397,13 +434,6 @@ export default {
 .gauge-row {
   display: flex;
   justify-content: center;
-}
-
-.score-details {
-  text-align: center;
-  font-size: 11pt;
-  z-index: 1001;
-  padding: 1px;
 }
 
 .toggler {
