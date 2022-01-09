@@ -41,7 +41,7 @@
             <div v-if="!isLowest">
               <Arrow :gradient-id="shortName + 'leftArrow'" :color-start="gaugeLower" :color-end="gaugeLower"></Arrow>
               <div class="text-center">
-                <span v-if="lowerBound - value !== 0">{{ lowerBound - value }}{{ unit }} von {{
+                <span v-if="lowerBound - value !== 0">{{ round(lowerBound - value)}}{{ unit }} von {{
                     previousScore
                   }}{{ scoreUnit }}
                 entfernt</span>
@@ -57,7 +57,7 @@
             <div v-if="!isHighest">
               <Arrow :gradient-id="shortName + 'rightArrow'" :color-start="gaugeUpper" :color-end="gaugeUpper"></Arrow>
               <div class="text-center">
-                <span v-if="upperBound - value !== 0">+{{ upperBound - value }}{{ unit }} von {{
+                <span v-if="upperBound - value !== 0">+{{ round(upperBound - value) }}{{ unit }} von {{
                     nextScore
                   }}{{ scoreUnit }} entfernt</span>
                 <span v-else>an der Grenze zu {{ nextScore }}{{ scoreUnit }}</span>
@@ -297,6 +297,9 @@ export default {
       return `${greater} ${lowerBound}${this.unit}`
     },
 
+    round(v){
+      return  Math.round(v * 100) / 100
+    },
     toggleDetailsOfScore(i) {
       if (this.detailsSelectedScoreIndex === i) {
         this.detailsSelectedScoreIndex = -1
