@@ -22,6 +22,7 @@ body {
     bottom: 0;
     height: 100%;
     display: flex;
+    pointer-events: auto;
 }
 
 
@@ -34,12 +35,15 @@ body {
     border-radius: 0.3em;
     /*min-height: 40vh;*/
     z-index: 102;
-    pointer-events: none;
+    pointer-events: none !important;
 }
+
 .nutri-modal > .content-container {
     overflow-y: auto;
     max-height: 80vh;
     padding: 0.5em;
+    z-index: 103;
+    pointer-events: none;
 }
 
 .clickable {
@@ -47,46 +51,63 @@ body {
 }
 
 @keyframes fade-in {
-  0% {
-    opacity: 0.0;
-  }
-  100% {
-    opacity: 1.0;
-  }
+    0% {
+        opacity: 0.0;
+    }
+    100% {
+        opacity: 1.0;
+    }
 }
 
 @keyframes fade-out {
-  0% {
-    opacity: 1.0;
-  }
-  100% {
-    opacity: 0.0;
-  }
+    0% {
+        opacity: 1.0;
+    }
+    100% {
+        opacity: 0.0;
+    }
 }
 
-@keyframes from-top{
-  0% {
-    margin-bottom: 100%;
-  }
-  100% {
-    margin-bottom: inherit;
-  }
+@keyframes from-top {
+    0% {
+        margin-bottom: 100%;
+    }
+    100% {
+        margin-bottom: inherit;
+    }
 }
 
 .nutri-modal.fade-in {
-  animation: 0.5s fade-in;
+    animation: 0.5s fade-in;
 }
 
 .nutri-modal.fade-out {
-  animation: 0.5s fade-out;
+    animation: 0.5s fade-out;
 }
 
 .overlay.fade-in {
-  animation: 0.5s fade-in;
+    animation: 0.5s fade-in;
 }
 
 .overlay.fade-out {
-  animation: 0.5s fade-out;
+    animation: 0.5s fade-out;
 }
+
+
+
+/* bootstrap.css | http://localhost:8082/bootstrap.css */
+
+.modal.fade .modal-dialog {
+  z-index: 1000000;
+  display: block;
+}
+
+/* Element | http://localhost:8082/ */
+
+.modal {
+  z-index: 909999999999999;
+  background-color: #3339;
+}
+
 
 

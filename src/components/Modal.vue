@@ -1,19 +1,25 @@
 <template>
-  <div :class="'overlay ' + classes" @click="closeModal()">
-    <div :class="'nutri-modal ' + classes">
-      <h4>{{ title }} <span class="float-end clickable" @click="closeModal()">&times;</span></h4>
-      <div class="content-container">
+  <div class="modal fade show"  tabindex="-1" role="dialog" style="display: block" aria-hidden="true" >
+  <div class="modal-dialog modal-dialog-centered " role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">{{ title }}</h5>
+        <button type="button" class="btn-close clickable" @click="closeModal()" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
         <div v-if="mode === 'goodStuff'">
           <p>
             Hier werden die Anteile von Obst, Gemüse und Hülsenfrüchten sowie Nüsse und Schalenfrüchte bewertet.
           </p>
           <h5>Einschränkungen</h5>
           <p class=" text-success">
-            <inline-icon type="check"></inline-icon> Obst, Gemüse und Hülsenfrüchte sowie Nüsse und Schalenfrüchte zählen in die Berechnung, aber
+            <inline-icon type="check"></inline-icon>
+            Obst, Gemüse und Hülsenfrüchte sowie Nüsse und Schalenfrüchte zählen in die Berechnung, aber
             ...
           </p>
           <p class=" text-danger">
-            <inline-icon type="times"></inline-icon> <span class="fw-bolder"> stärkereiche Knollen (z.B Kartoffeln und Süßkartoffeln), Quinoa und
+            <inline-icon type="times"></inline-icon>
+            <span class="fw-bolder"> stärkereiche Knollen (z.B Kartoffeln und Süßkartoffeln), Quinoa und
             Gewürze</span>, Mehl aus Mais oder Hülsenfrüchten zählen nicht.
           </p>
           <hr>
@@ -30,16 +36,20 @@
           <hr>
           <h5>Verarbeitung</h5>
           <p class=" text-success">
-            <inline-icon type="check"></inline-icon> im Ganzen enthalten, geschnitten und geschält
+            <inline-icon type="check"></inline-icon>
+            im Ganzen enthalten, geschnitten und geschält
           </p>
           <p class=" text-success">
-            <inline-icon type="check"></inline-icon>  gefroren, getrocknet, gegart und in Dosen konserviert sind
+            <inline-icon type="check"></inline-icon>
+            gefroren, getrocknet, gegart und in Dosen konserviert sind
           </p>
           <p class=" text-warning">
-            <inline-icon type="check"></inline-icon>  Säfte und Pürees, falls das Obst und Gemüse nur gepresst, püriert oder anders zerkleinert wurde
+            <inline-icon type="check"></inline-icon>
+            Säfte und Pürees, falls das Obst und Gemüse nur gepresst, püriert oder anders zerkleinert wurde
           </p>
           <p class="text-danger">
-            <inline-icon type="times"></inline-icon>   kein konzentrierter Sirup oder hoch verarbeitetes Obst und Gemüse.
+            <inline-icon type="times"></inline-icon>
+            kein konzentrierter Sirup oder hoch verarbeitetes Obst und Gemüse.
           </p>
         </div>
         <div v-else-if="mode === 'salt'">
@@ -51,12 +61,21 @@
             eingeht, wird daher der vom Hersteller angegebene Salzgehalt durch 2,5 geteilt.
           </p>
         </div>
+        <div v-else-if="mode === 'share'">
+          <p>
+            Mit dieser URL kannst du anderen deine Berechnung zeigen:
+          </p>
+          <input type="text" class="form-control" ref="shareUrl" :value="vars.shareUrl">
+          <button class="btn btn-primary btn-copy btn-lg mx-auto d-block my-1" @click="copy($refs.shareUrl, $event.target)">Kopieren</button>
+        </div>
         <div v-else>
 
         </div>
+
       </div>
     </div>
   </div>
+</div>
 </template>
 
 <script>
@@ -73,7 +92,8 @@ export default {
     mode: {
       type: String,
       default: 'info'
-    }
+    },
+    vars : Object
   },
   data() {
     return {
@@ -88,6 +108,20 @@ export default {
         this.$emit('close-modal')
         this.classes = 'fade-in'
       }, 450);
+    },
+    copy(textInput, btn){
+      textInput.select();
+      textInput.setSelectionRange(0, 99999);
+      navigator.clipboard.writeText(textInput.value);
+      let initialClassList = btn.classList.toString()
+      let initialText = btn.innerText
+
+      btn.innerText = 'Kopiert'
+      btn.classList = initialClassList + ' btn-success'
+      setTimeout(() => {
+        btn.classList = initialClassList
+        btn.innerText = initialText
+      }, 1000)
     }
   }
 }
@@ -96,5 +130,8 @@ export default {
 <style scoped>
 .text-warning {
   color: #ff9e07 !important;
+}
+.copy .btn-copy {
+      transition: 0.3s ease-in;
 }
 </style>

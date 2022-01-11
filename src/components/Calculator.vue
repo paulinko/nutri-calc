@@ -1,7 +1,8 @@
 <template>
   <div class="container text-start">
     <modal v-if="showModalInfoFor" :title="displayNames(showModalInfoFor)" :mode="showModalInfoFor"
-           @close-modal="showModalInfoFor = null">
+           :params="modalParams" :vars="modalParams"
+           @close-modal="resetModal()">
     </modal>
     <div class="row">
       <div class="col-md-9">
@@ -47,7 +48,8 @@
           <h4>Berechnung für &nbsp;<input class="form-control  w-50 d-inline"
                                           title="Gib einen Namen für das Lebensmittel an" type="text" name="name"
                                           id="productName"
-                                          v-model="name"  @focus="$event.target.setSelectionRange(0, $event.target.value.length)"></h4>
+                                          v-model="name"
+                                          @focus="$event.target.setSelectionRange(0, $event.target.value.length)"></h4>
           <p>
             {{ modeInfoText }}
           </p>
@@ -123,9 +125,12 @@
           <h5 class="mt-2">Negative Inhaltsstoffe</h5>
           <nav class="nav flex-column result-nav negative">
             <a v-for="name in result.negatives.keys()" :key="name" class="nav-link link-danger"
-               :href="'#' + name + 'Result'">{{ displayNames(name) }}:
+               :href="'#' + name + 'Result'">
+              <span class="result-nav-text">
+                {{ displayNames(name) }}:
               {{ result.negatives.get(name).value.toLocaleString() }}
               {{ getUnit(name) }}
+              </span>
               <Badge v-if="getColorForProp(name)" classes="float-end" :badge-data="getColorForProp(name)"
                      :is-positive="false"></Badge>
             </a>
@@ -133,12 +138,18 @@
           <h5 class="mt-2">Positive Inhaltsstoffe</h5>
           <nav class="nav flex-column result-nav positive">
             <a v-for="name in result.positives.keys()" :key="name" class="nav-link link-success"
-               aria-current="page" :href="'#' + name + 'Result'">{{ displayNames(name) }}:
+               aria-current="page" :href="'#' + name + 'Result'">
+              <span class="result-nav-text">{{ displayNames(name) }}:
               {{ result.positives.get(name).value.toLocaleString() }} {{ getUnit(name) }}
+              </span>
               <Badge v-if="getColorForProp(name)" :classes="'float-end'" :badge-data="getColorForProp(name)"
                      :is-positive="true"></Badge>
             </a>
           </nav>
+          <a class="nav-link link-dark clickable" @click="initModal('share', {shareUrl})">
+            <inline-icon type="share"></inline-icon>
+            Ergebnis teilen
+          </a>
         </div>
         <div class="col-md-9 results-content" data-bs-spy="scroll" data-bs-target="#list-example" data-bs-offset="0">
           <Scale :data="result.letterScore.points" :fractal="result.letterScore.fractal"
@@ -177,7 +188,6 @@
           />
         </div>
       </div>
-      <!--      <pre>{{ result }}</pre>-->
     </div>
   </div>
 </template>
@@ -190,6 +200,7 @@ import ResultChart from "@/components/ResultChart";
 import ScoreExplanation from "@/components/ScoreExplanation";
 import Modal from "@/components/Modal";
 import InputRow from "@/components/InputRow";
+import InlineIcon from "@/components/InlineIcon";
 
 import {
   GetDisplayNames,
@@ -207,7 +218,7 @@ import {GeneralTable, FatsTable, CheeseTable, DrinksTable, getUnit, WasPropUsedI
 
 export default {
   name: 'Calculator',
-  components: {Scale, Badge, ResultChart, ScoreExplanation, Modal, InputRow},
+  components: {Scale, Badge, ResultChart, ScoreExplanation, Modal, InputRow, InlineIcon},
   computed: {
     resultNavVisible() {
       return document.getElementsByTagName('body')[0].getBoundingClientRect().width >= 576;
@@ -264,6 +275,7 @@ export default {
         totalFats: 100,
         salt: 0
       },
+      modalParams: {},
       name: GetPlaceholderText('general'),
       originalScoreColors: ['#008043', '#85b931', '#f2c011', '#e37c13', '#d9411a'],
       colors: {},
@@ -274,12 +286,28 @@ export default {
       furtherReadings: FurtherReadings,
       resultTable: Object,
       showModalInfoFor: null,
+      shareUrl: null,
       updateTime: (new Date('2021-01-02')).toLocaleString(undefined, {
         year: 'numeric',
         month: '2-digit',
         day: '2-digit'
       })
     };
+  },
+  mounted() {
+    const url = new URL(window.location.href);
+    const mode = url.searchParams.get("mode");
+    if (mode) {
+      this.mode = mode;
+      this.name = url.searchParams.get("name");
+      for (const [prop,] of Object.entries(this.nutritionalInfo)) {
+        let v = url.searchParams.get(prop)
+        if (v) {
+          this.nutritionalInfo[prop] = v
+        }
+      }
+      this.calculateScore()
+    }
   },
   methods: {
     calculateScore() {
@@ -302,6 +330,23 @@ export default {
           })
         }, 25)
       })
+      this.shareUrl = this.buildUrl(this.nutritionalInfo, this.mode, this.name)
+    },
+    resetModal() {
+      this.showModalInfoFor = null;
+      this.modalParams = {}
+    },
+    initModal(name, modalParams) {
+      this.showModalInfoFor = name;
+      this.modalParams = modalParams
+    },
+    buildUrl(nutriInfo, mode, name) {
+      let params = new URLSearchParams({
+        ...nutriInfo,
+        mode,
+        name
+      })
+      return (window.location.protocol + '//' + window.location.host + window.location.pathname + '?' + params.toString())
     },
     normalizeFloat(val) {
       return parseFloat((val).toString().replace(',', '.'))
@@ -482,5 +527,10 @@ p {
   box-shadow: 0 5px 5px 0 #aaa;
   padding: 1em;
   align-self: flex-start;
+}
+
+.result-nav-text {
+  max-width: 20ch;
+  display: inline-block;
 }
 </style>
