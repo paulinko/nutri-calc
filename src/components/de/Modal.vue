@@ -56,10 +56,10 @@
           </div>
           <div v-else-if="mode === 'salt'">
             <p>
-              When calculating the Nutri-Score, the sodium content is rated negative.
-              The sodium content can be calculated from the amount of salt .
-              Enter the salt content specified by the manufacturer in the input field, and the application calculates
-              the sodium content (40% of the salt contained).
+              Bei der Berechnung des Nutri-Scores wird der Natriumgehalt negativ gewertet.
+              Dieser kann aus dem Salzgehalt berechnet werden.
+              Geben Sie in dem Eingabefeld den von Hersteller angegebenen Salzgehalt an, die Anwendung berechnet dafür
+              den Natriumgehalt (40% des enthaltenden Salzes).
             </p>
           </div>
           <div v-else-if="mode === 'share'">

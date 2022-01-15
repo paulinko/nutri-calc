@@ -1,185 +1,206 @@
 <template>
-  <div class="container text-start">
-    <modal v-if="showModalInfoFor" :title="displayNames(showModalInfoFor)" :mode="showModalInfoFor"
-           :params="modalParams" :vars="modalParams"
-           @close-modal="resetModal()">
-    </modal>
-    <div class="row">
-      <div class="col-md-9">
-        <h1>{{ displayNames('heading') }}</h1>
-        <intro></intro>
-        <hr>
-        <div>
-          <p>
-            <span class="fw-bold">{{ displayNames('last_updated') }}</span>: {{ updateTime }}
-          </p>
-          <p>
-            <span class="fw-bold">{{ displayNames('sources_used') }}</span> <br>
-            <a :href="source.link" class="text-decoration-none" target="_blank" v-for="source in sources" :key="source.name">{{ source.name }}
-              <span class="fw-bold">({{ trans(source.language) }})</span> <br></a>
-          </p>
+  <div>
+    <div class="container text-start">
+      <nav class="navbar navbar-expand-sm navbar-light ">
+        <div class=" flex-row ms-auto">
+          <div class="" id="navbarNav">
+            <ul class="navbar-nav flex-row  ms-sm-auto">
+              <li class="nav-item">
+                <a class="nav-link" :href="otherLangLink">{{otherLang}}</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="https://github.com/paulinko/nutri-calc">
+                  <InlineIcon type="github"></InlineIcon>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+      <modal v-if="showModalInfoFor" :title="displayNames(showModalInfoFor)" :mode="showModalInfoFor"
+             :params="modalParams" :vars="modalParams"
+             @close-modal="resetModal()">
+      </modal>
+      <div class="row">
+        <div class="col-md-9">
+          <h1>{{ displayNames('heading') }}</h1>
+          <intro></intro>
+          <hr>
+          <div>
+            <p>
+              <span class="fw-bold">{{ displayNames('last_updated') }}</span>: {{ updateTime }}
+            </p>
+            <p>
+              <span class="fw-bold">{{ displayNames('sources_used') }}</span> <br>
+              <a :href="source.link" class="text-decoration-none" target="_blank" v-for="source in sources"
+                 :key="source.name">{{ source.name }}
+                <span class="fw-bold">({{ trans(source.language) }})</span> <br></a>
+            </p>
+          </div>
         </div>
       </div>
-    </div>
-    <hr>
-    <div>
-      <h2 id="calculate">{{ trans('calculate') }}</h2>
-      <ul class="nav nav-tabs" id="myTab" role="tablist">
-        <li class="nav-item" role="presentation" v-for="tableName in tableNames" :key="tableName">
-          <button :class="'nav-link px-2 ' + ((mode === tableName) ? 'active' : '')" id="general-tab"
-                  @click="mode = tableName; name = getPlaceholderText(mode)" type="button"
-                  role="tab" aria-controls="" aria-selected="true">{{ displayNames(tableName) }}
-          </button>
-        </li>
-      </ul>
-      <div class="tab-content">
-        <div class="tab-pane fade show active py-3">
-          <h4>{{ displayNames('calculate_for') }} &nbsp;<input class="form-control  w-50 d-inline"
-                                                               title="Gib einen Namen für das Lebensmittel an"
-                                                               type="text" name="name"
-                                                               id="productName"
-                                                               v-model="name"
-                                                               @focus="$event.target.setSelectionRange(0, $event.target.value.length)">
-          </h4>
-          <p>
-            {{ modeInfoText }}
-          </p>
-          <form>
-            <div class="row nutriprops-row">
-              <div class="col-lg-4 col-md-6">
-                <h4>{{ displayNames('negative_inputs') }}</h4>
-                <InputRow v-for="[name, ] in currentTable.negativeInputs()" :key="name" class="row g-2"
-                          :name="name" :has-info-modal="hasInfoModal(name)" :label-name="inputDisplayNames(name)"
-                          @open-modal="showModalInfoFor = name">
-                  <input :class="'form-control ' + (isValid(name) ? '' : 'is-invalid')" required type="text"
-                         :name="name" :id="name"
-                         v-model="nutritionalInfo[name]"
-                         @focus="$event.target.setSelectionRange(0, $event.target.value.length)"
-                  >
-                  <span class="input-group-text col-4">{{ getUnit(name) }}</span>
-                </InputRow>
+      <hr>
+      <div>
+        <h2 id="calculate">{{ trans('calculate') }}</h2>
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+          <li class="nav-item" role="presentation" v-for="tableName in tableNames" :key="tableName">
+            <button :class="'nav-link px-2 ' + ((mode === tableName) ? 'active' : '')" id="general-tab"
+                    @click="mode = tableName; name = getPlaceholderText(mode)" type="button"
+                    role="tab" aria-controls="" aria-selected="true">{{ displayNames(tableName) }}
+            </button>
+          </li>
+        </ul>
+        <div class="tab-content">
+          <div class="tab-pane fade show active py-3">
+            <h4>{{ displayNames('calculate_for') }} &nbsp;<input class="form-control  w-50 d-inline"
+                                                                 title="Gib einen Namen für das Lebensmittel an"
+                                                                 type="text" name="name"
+                                                                 id="productName"
+                                                                 v-model="name"
+                                                                 @focus="$event.target.setSelectionRange(0, $event.target.value.length)">
+            </h4>
+            <p>
+              {{ modeInfoText }}
+            </p>
+            <form>
+              <div class="row nutriprops-row">
+                <div class="col-lg-4 col-md-6">
+                  <h4>{{ displayNames('negative_inputs') }}</h4>
+                  <InputRow v-for="[name, ] in currentTable.negativeInputs()" :key="name" class="row g-2"
+                            :name="name" :has-info-modal="hasInfoModal(name)" :label-name="inputDisplayNames(name)"
+                            @open-modal="showModalInfoFor = name">
+                    <input :class="'form-control ' + (isValid(name) ? '' : 'is-invalid')" required type="text"
+                           :name="name" :id="name"
+                           v-model="nutritionalInfo[name]"
+                           @focus="$event.target.setSelectionRange(0, $event.target.value.length)"
+                    >
+                    <span class="input-group-text col-4">{{ getUnit(name) }}</span>
+                  </InputRow>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                  <h4>{{ displayNames('positive_inputs') }}</h4>
+                  <InputRow v-for="[name, ] in currentTable.positiveInputs()" :key="name" class="row g-2"
+                            :name="name" :has-info-modal="hasInfoModal(name)" :label-name="inputDisplayNames(name)"
+                            @open-modal="showModalInfoFor = name">
+                    <input :class="'form-control ' + (isValid(name) ? '' : 'is-invalid')" type="text" :name="name"
+                           required :id="name" v-model="nutritionalInfo[name]"
+                           @focus="$event.target.setSelectionRange(0, $event.target.value.length)"
+                    >
+                    <span class="input-group-text">{{ getUnit(name) }}</span>
+                  </InputRow>
+                </div>
+                <div class="col-md-2 d-none d-md-block ms-5">
+                  <img :src="currentImage" alt="">
+                </div>
               </div>
-              <div class="col-lg-4 col-md-6">
-                <h4>{{ displayNames('positive_inputs') }}</h4>
-                <InputRow v-for="[name, ] in currentTable.positiveInputs()" :key="name" class="row g-2"
-                          :name="name" :has-info-modal="hasInfoModal(name)" :label-name="inputDisplayNames(name)"
-                          @open-modal="showModalInfoFor = name">
-                  <input :class="'form-control ' + (isValid(name) ? '' : 'is-invalid')" type="text" :name="name"
-                         required :id="name" v-model="nutritionalInfo[name]"
-                         @focus="$event.target.setSelectionRange(0, $event.target.value.length)"
-                  >
-                  <span class="input-group-text">{{ getUnit(name) }}</span>
-                </InputRow>
+            </form>
+            <div :class="'row mt-3 ' + classesCalcElem ">
+              <div class="col-md-6">
+                <button class="btn btn-success btn-lg" @click="calculateScore()" :disabled="!allFieldsValid()">
+                  {{ trans('calculate_score') }}
+                </button>
               </div>
-              <div class="col-md-2 d-none d-md-block ms-5">
-                <img :src="currentImage" alt="">
-              </div>
-            </div>
-          </form>
-          <div :class="'row mt-3 ' + classesCalcElem ">
-            <div class="col-md-6">
-              <button class="btn btn-success btn-lg" @click="calculateScore()" :disabled="!allFieldsValid()">{{trans('calculate_score')}}
-              </button>
             </div>
           </div>
         </div>
       </div>
-    </div>
-    <div class="result-container" ref="resultContainer" v-if="result">
-      <hr>
-      <h2>{{ trans('result_for') }} <span class="fst-italic">{{ result.name }}</span></h2>
-      <h3>{{ trans('category') }} : <img class="h-1"
-                                                :src="getImageForMode(result.mode)" alt=""> {{
-          trans(result.mode)
-        }}</h3>
-      <div class="row score-row">
-        <div class="col-md-2">
-          <h3>{{ trans('score') }}</h3>
-          <div class="text-start score-result">
-            <div>
+      <div class="result-container" ref="resultContainer" v-if="result">
+        <hr>
+        <h2>{{ trans('result_for') }} <span class="fst-italic">{{ result.name }}</span></h2>
+        <h3>{{ trans('category') }}: <img class="h-1"
+                                          :src="getImageForMode(result.mode)" alt=""> {{
+            trans(result.mode)
+          }}</h3>
+        <div class="row score-row">
+          <div class="col-md-2">
+            <h3>{{ trans('score') }}</h3>
+            <div class="text-start score-result">
+              <div>
               <span :class="'score ' + result.letterScore.points ">
               {{ result.letterScore.points }}
               </span>
+              </div>
             </div>
           </div>
+          <div class="col-md-10">
+            <h3>{{ trans('distribution_points') }}</h3>
+            <ResultChart v-if="resultColors" :colors="resultColors" :result-data="result">
+            </ResultChart>
+            <h3>{{ trans('explanation') }}</h3>
+            <score-explanation :v-bind="result" :result="result"></score-explanation>
+          </div>
         </div>
-        <div class="col-md-10">
-          <h3>{{trans('distribution_points')}}</h3>
-          <ResultChart v-if="resultColors" :colors="resultColors" :result-data="result">
-          </ResultChart>
-          <h3>{{trans('explanation')}}</h3>
-          <score-explanation :v-bind="result" :result="result"></score-explanation>
-        </div>
-      </div>
-      <h2>Details</h2>
-      <div class="row summary">
-        <div ref="resultNav" class="col-md-3 col-xs-12 d-sm-block d-none points-list">
-          <h5 class="mt-2">{{trans('negative_inputs')}}</h5>
-          <nav class="nav flex-column result-nav negative">
-            <a v-for="name in result.negatives.keys()" :key="name" class="nav-link link-danger"
-               :href="'#' + name + 'Result'">
+        <h2>Details</h2>
+        <div class="row summary">
+          <div ref="resultNav" class="col-md-3 col-xs-12 d-sm-block d-none points-list">
+            <h5 class="mt-2">{{ trans('negative_inputs') }}</h5>
+            <nav class="nav flex-column result-nav negative">
+              <a v-for="name in result.negatives.keys()" :key="name" class="nav-link link-danger"
+                 :href="'#' + name + 'Result'">
               <span class="result-nav-text">
                 {{ displayNames(name) }}:
               {{ result.negatives.get(name).value.toLocaleString() }}{{ getUnit(name) }}
               </span>
-              <Badge v-if="getColorForProp(name)" classes="float-end" :badge-data="getColorForProp(name)"
-                     :is-positive="false"></Badge>
-            </a>
-          </nav>
-          <h5 class="mt-2">{{trans('positive_inputs')}}</h5>
-          <nav class="nav flex-column result-nav positive">
-            <a v-for="name in result.positives.keys()" :key="name" class="nav-link link-success"
-               aria-current="page" :href="'#' + name + 'Result'">
+                <Badge v-if="getColorForProp(name)" classes="float-end" :badge-data="getColorForProp(name)"
+                       :is-positive="false"></Badge>
+              </a>
+            </nav>
+            <h5 class="mt-2">{{ trans('positive_inputs') }}</h5>
+            <nav class="nav flex-column result-nav positive">
+              <a v-for="name in result.positives.keys()" :key="name" class="nav-link link-success"
+                 aria-current="page" :href="'#' + name + 'Result'">
               <span class="result-nav-text">{{ trans(name) }}:
               {{ result.positives.get(name).value.toLocaleString() }}{{ getUnit(name) }}
               </span>
-              <Badge v-if="getColorForProp(name)" :classes="'float-end'" :badge-data="getColorForProp(name)"
-                     :is-positive="true"></Badge>
+                <Badge v-if="getColorForProp(name)" :classes="'float-end'" :badge-data="getColorForProp(name)"
+                       :is-positive="true"></Badge>
+              </a>
+            </nav>
+            <a class="nav-link link-dark clickable" @click="initModal('share', {shareUrl})">
+              <inline-icon type="share"></inline-icon>
+              {{ trans('share_result') }}
             </a>
-          </nav>
-          <a class="nav-link link-dark clickable" @click="initModal('share', {shareUrl})">
-            <inline-icon type="share"></inline-icon>
-            {{trans('share_result')}}
-          </a>
-        </div>
-        <div class="col-md-9 results-content" data-bs-spy="scroll" data-bs-target="#list-example" data-bs-offset="0">
-          <Scale :data="result.letterScore.points" :fractal="result.letterScore.fractal"
-                 :value="result.letterScore.value" :name="displayNames('letterScore')"
-                 :scale="currentPointScale"
-                 :was-used-in-calculation="true"
-                 score-unit=""
-                 scale-classes=" text-white"
-                 red="#d9411a"
-                 green="#008043"
-                 yellow="#f2c011"
-                 short-name="letterScore"
-                 :details-shown-initial="resultNavVisible"
-                 :score-colors-override="originalScoreColors"
-                 :hide-badge="true"
-                 :unit="getUnit('letterScore')"/>
-          <h3>{{trans('negative_inputs')}}</h3>
-          <Scale @colors-calculated="appendPropColor($event, name)"
-                 :data="v.points" :fractal="v.fractal" :value="v.value" :name="displayNames(name)"
-                 :scale="resultScale.n[name].scale"
-                 v-for="([name,v], ) in result.negatives" :key="name" :is-positive="false" :short-name="name"
-                 :was-used-in-calculation="wasUsedInCalculation(name)"
-                 :details-shown-initial="resultNavVisible"
-                 :unit="getUnit(name)"
-                 score-unit="P"
-          />
-          <h3>{{trans('positive_inputs')}}</h3>
-          <Scale @colors-calculated="appendPropColor($event, name)"
-                 :data="value.points" :fractal="value.fractal" :value="value.value" :name="displayNames(name)"
-                 :scale="resultScale.p[name].scale"
-                 v-for="([name,value], )  in result.positives" :key="name" :is-positive="true" :short-name="name"
-                 :was-used-in-calculation="wasUsedInCalculation(name)"
-                 :unit="getUnit(name)"
-                 :details-shown-initial="resultNavVisible"
-                 score-unit="P"
-          />
+          </div>
+          <div class="col-md-9 results-content" data-bs-spy="scroll" data-bs-target="#list-example" data-bs-offset="0">
+            <Scale :data="result.letterScore.points" :fractal="result.letterScore.fractal"
+                   :value="result.letterScore.value" :name="displayNames('letterScore')"
+                   :scale="currentPointScale"
+                   :was-used-in-calculation="true"
+                   score-unit=""
+                   scale-classes=" text-white"
+                   red="#d9411a"
+                   green="#008043"
+                   yellow="#f2c011"
+                   short-name="letterScore"
+                   :details-shown-initial="resultNavVisible"
+                   :score-colors-override="originalScoreColors"
+                   :hide-badge="true"
+                   :unit="getUnit('letterScore')"/>
+            <h3>{{ trans('negative_inputs') }}</h3>
+            <Scale @colors-calculated="appendPropColor($event, name)"
+                   :data="v.points" :fractal="v.fractal" :value="v.value" :name="displayNames(name)"
+                   :scale="resultScale.n[name].scale"
+                   v-for="([name,v], ) in result.negatives" :key="name" :is-positive="false" :short-name="name"
+                   :was-used-in-calculation="wasUsedInCalculation(name)"
+                   :details-shown-initial="resultNavVisible"
+                   :unit="getUnit(name)"
+                   score-unit="P"
+            />
+            <h3>{{ trans('positive_inputs') }}</h3>
+            <Scale @colors-calculated="appendPropColor($event, name)"
+                   :data="value.points" :fractal="value.fractal" :value="value.value" :name="displayNames(name)"
+                   :scale="resultScale.p[name].scale"
+                   v-for="([name,value], )  in result.positives" :key="name" :is-positive="true" :short-name="name"
+                   :was-used-in-calculation="wasUsedInCalculation(name)"
+                   :unit="getUnit(name)"
+                   :details-shown-initial="resultNavVisible"
+                   score-unit="P"
+            />
+          </div>
         </div>
       </div>
     </div>
+
   </div>
 </template>
 
@@ -198,7 +219,8 @@ import {
   GetInputInfoTexts,
   GetInfoTexts,
   GetPlaceholderText,
-  trans
+  trans,
+  CurrentLocale,
 } from "@/libs/str_functions";
 
 import {
@@ -228,6 +250,12 @@ export default {
         default:
           return GeneralTable
       }
+    },
+    otherLang() {
+      return (CurrentLocale === 'de') ? 'Englisch' : 'German'
+    },
+    otherLangLink() {
+      return (CurrentLocale === 'de') ? '../en/' : '../de/'
     },
     currentImage() {
       return this.getImageForMode(this.mode)
@@ -378,7 +406,7 @@ export default {
       return (prop !== 'protein' || this.result.applyProtein)
     },
     getImageForMode(mode) {
-      const PATH = '/img/';
+      const PATH = './img/';
       switch (mode) {
         case 'general':
           return `${PATH}sandwich.svg`

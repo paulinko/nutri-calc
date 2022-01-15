@@ -11,7 +11,6 @@ ln -sf "$lc" localized
 
 echo "Changing libs to $lc"
 cd ../libs || exit 2
-pwd
 if [ ! -d "$lc" ]; then
   echo "dir $lc does not exist in $(pwd), exiting"
   exit 255
