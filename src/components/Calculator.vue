@@ -9,7 +9,7 @@
                 <a class="nav-link" :href="otherLangLink">{{otherLang}}</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="https://github.com/paulinko/nutri-calc">
+                <a class="nav-link" href="https://github.com/paulinko/nutri-calc" target="_blank">
                   <InlineIcon type="github"></InlineIcon>
                 </a>
               </li>

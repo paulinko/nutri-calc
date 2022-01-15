@@ -93,6 +93,9 @@ body {
     animation: 0.5s fade-out;
 }
 
+p {
+    max-width: 90ch;
+}
 
 
 /* bootstrap.css | http://localhost:8082/bootstrap.css */

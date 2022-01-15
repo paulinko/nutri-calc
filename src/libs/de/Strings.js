@@ -84,7 +84,7 @@ const InputInfoTexts = {
     goodStuff: 'Umfasst Obst, Gemüse, Hülsenfüchte, Vollkorn'
 }
 
-const CurrentLocale = 'en';
+const CurrentLocale = 'de';
 
 export {
     InfoTexts,
