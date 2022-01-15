@@ -84,11 +84,12 @@ const InputInfoTexts = {
     goodStuff: 'Umfasst Obst, Gemüse, Hülsenfüchte, Vollkorn'
 }
 
-
+const CurrentLocale = 'en';
 
 export {
     InfoTexts,
     ProteinAppliedDisplayNames,
     DisplayNames,
-    InputInfoTexts
+    InputInfoTexts,
+    CurrentLocale
 };
