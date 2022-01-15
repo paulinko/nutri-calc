@@ -25,7 +25,7 @@
 
 <script>
 
-import {GetProteinAppliedReason, GetDisplayNames} from '@/libs/Strings'
+import {GetProteinAppliedReason, GetDisplayNames} from '@/libs/str_functions'
 import {WasPropUsedInCalculation} from "@/libs/tables";
 
 export default {

@@ -11,12 +11,13 @@
       </a>
     </div>
     <div class="details fade-in" v-if="detailsShown">
-      <h5>Skala/Grenzwerte <small>(je höher desto <span class="fw-bolder">{{(isPositive) ? 'besser' : 'schlechter'}}</span>)</small></h5>
-      <p>Diese Skala zeigt die Grenzwerte für die verschiedenen zu erreichenden Punktzahlen</p>
+      <h5>{{ trans('score_limits') }} <small>({{ trans('higher_is') }} <span
+          class="fw-bolder">{{ trans((isPositive) ? 'better' : 'worse') }}</span>)</small></h5>
+      <p>{{ trans('score_limits_info') }}</p>
       <div>
         <span class="toggler text-primary float-end" @click="showAllDetails()"
-              v-if="!showAll">Grenzwerte anzeigen</span>
-        <span class="toggler text-primary float-end" @click="hideAllDetails()" v-else>Grenzwerte ausblenden</span>
+              v-if="!showAll">{{ trans('show_limits') }}</span>
+        <span class="toggler text-primary float-end" @click="hideAllDetails()" v-else>{{ trans('hide_limits') }}</span>
         <div :class="'scale ' + scaleClasses">
           <div class="scale-child" v-for="n in totalSections" :key="n"
                :style="'background-color: ' + colorCodes[n]" @click="toggleDetailsOfScore(n)">
@@ -33,19 +34,22 @@
         </div>
       </div>
       <div>
-        <h5>Tendenz</h5>
-        <p>Dieser Tacho zeigt die Tendenz der Punktzahl an. Da die Einteilung in Punkte stufenweise erfolgt, wird hier
-          visualiert, zu welcher Punktzahl der Wert tendiert.</p>
+        <h5>{{ trans('tendency') }}</h5>
+        <p>{{ trans('tendency_info') }}</p>
         <div class="gauge-row">
           <div class="left-container">
             <div v-if="!isLowest">
               <Arrow :gradient-id="shortName + 'leftArrow'" :color-start="gaugeLower" :color-end="gaugeLower"></Arrow>
               <div class="text-center">
-                <span v-if="lowerBound - value !== 0">{{ round(lowerBound - value)}}{{ unit }} von {{
-                    previousScore
-                  }}{{ scoreUnit }}
-                entfernt</span>
-                <span v-else>an der Grenze zu {{ previousScore }}{{ scoreUnit }}</span>
+                <span v-if="lowerBound - value !== 0">
+                  {{
+                    trans('diff_from_points', {
+                      diff: round(lowerBound - value).toString() + unit,
+                      points: (previousScore).toString() + scoreUnit
+                    })
+                  }}
+                </span>
+                <span v-else>{{ trans('bordering_on', {points: (previousScore).toString() + scoreUnit}) }}</span>
               </div>
             </div>
           </div>
@@ -57,10 +61,15 @@
             <div v-if="!isHighest">
               <Arrow :gradient-id="shortName + 'rightArrow'" :color-start="gaugeUpper" :color-end="gaugeUpper"></Arrow>
               <div class="text-center">
-                <span v-if="upperBound - value !== 0">+{{ round(upperBound - value) }}{{ unit }} von {{
-                    nextScore
-                  }}{{ scoreUnit }} entfernt</span>
-                <span v-else>an der Grenze zu {{ nextScore }}{{ scoreUnit }}</span>
+                <span v-if="lowerBound - value !== 0">
+                  {{
+                    trans('diff_from_points', {
+                      diff: '+' + round(upperBound - value).toString() + unit,
+                      points: (nextScore).toString() + scoreUnit
+                    })
+                  }}
+                </span>
+                <span v-else>{{ trans('bordering_on', {points: (nextScore).toString() + scoreUnit}) }}</span>
               </div>
             </div>
           </div>
@@ -72,7 +81,7 @@
 
 <script>
 
-import {GetInfoTexts} from "@/libs/Strings";
+import {GetInfoTexts, trans} from "@/libs/str_functions";
 
 const TotalLength = 300
 
@@ -250,6 +259,7 @@ export default {
     this.detailsSelectedScoreIndex = -1
   },
   methods: {
+    trans,
     toHexCode(red, green, blue) {
       red = (red > 255) ? 255 : red
       blue = (red > 255) ? 255 : blue
@@ -297,8 +307,8 @@ export default {
       return `${greater} ${lowerBound}${this.unit}`
     },
 
-    round(v){
-      return  Math.round(v * 100) / 100
+    round(v) {
+      return Math.round(v * 100) / 100
     },
     toggleDetailsOfScore(i) {
       if (this.detailsSelectedScoreIndex === i) {
@@ -373,7 +383,7 @@ export default {
   z-index: 1001;
 }
 
-.details-container  > .score {
+.details-container > .score {
   font-size: 1.3rem;
   line-height: 1.3rem;
 }

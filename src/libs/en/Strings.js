@@ -1,29 +1,72 @@
-import {ProteinReasonNotApplied, ProteinReasonLowBadScore, ProteinReasonHighGoodStuffScore, ProteinReasonIsCheese} from '@/libs/tables'
+import {
+    ProteinReasonNotApplied,
+    ProteinReasonLowBadScore,
+    ProteinReasonHighGoodStuffScore,
+    ProteinReasonIsCheese
+} from '@/libs/tables'
 
 
 const DisplayNames = {
     kJ: 'kJ',
-    kcal: 'kalories',
-    sugar: 'sugar',
-    satFats: 'saturated fat',
-    totalFats: 'fat (total)',
-    ratioSatFats: 'percentage saturated fats',
-    sodium: 'sodium',
-    salt: 'salt',
-    protein: 'protein',
-    fiber: 'fiber',
+    kcal: 'Calories',
+    sugar: 'Sugar',
+    satFats: 'Saturated Fat',
+    totalFats: 'Fat (total)',
+    ratioSatFats: 'Percentage of Saturated Fats',
+    sodium: 'Sodium',
+    salt: 'Salt',
+    protein: 'Protein',
+    fiber: 'Fiber',
     goodStuff: 'Vegetables, fruit, nuts',
-    cheese: 'dairy products',
-    general: 'solid foods',
-    fats: 'fats',
-    drinks: 'drinks',
+    cheese: 'Dairy Products',
+    general: 'Solid Foods',
+    fats: 'Fats',
+    drinks: 'Drinks',
     cheesePlaceholder: 'a dairy product',
     generalPlaceholder: 'a solid food',
-    fatsPlaceholder: 'an fat',
+    fatsPlaceholder: 'a fat',
     drinksPlaceholder: 'a drink',
     name: 'name',
-    letterScore: 'total score',
+    letterScore: 'Total Score',
     share: 'Share result',
+
+
+    heading: 'Nutri Score Calculator',
+    calculate_now: 'Calculate now',
+    calculate_score: 'Calculate Score',
+
+    last_updated: 'Last updated',
+    sources_used: 'Sources used',
+
+    calculate: 'Calculate',
+    calculate_for: 'Calculate for ',
+    negative_inputs: 'Negative Ingredients',
+    positive_inputs: 'Positive Ingredients',
+    result_for: 'Result for',
+    category: 'Category',
+
+    score: 'Score',
+    distribution_points: 'Distribution of Points',
+    explanation: 'Explanation',
+
+    details: 'Details',
+    score_limits: 'Score/Scale',
+    higher_is: 'more is',
+    better: 'better',
+    worse: 'worse',
+    show_limits: 'Show Scale',
+    hide_limits: 'Hide Scale',
+    score_limits_info: 'This scale shows the limits for the different scores',
+    tendency: 'Trend',
+    tendency_info: 'This diagram shows the tendency of the score. The assignment of points is done step by step. Therefore, it is shown here whether the value tends to the better or worse score..',
+
+    diff_from_points: 'diff away from points',
+    bordering_on: 'bordering on points',
+
+    share_result: 'Share Result',
+
+    de: 'german',
+    en: 'english'
 }
 const ProteinAppliedDisplayNames = new Map([
     [ProteinReasonNotApplied, 'because it is not a dairy product, the number of negative points is greater than 11 and the product consists of less than 80% fruit,vegetables or nuts.'],
@@ -46,34 +89,9 @@ const InputInfoTexts = {
     goodStuff: 'Umfasst Obst, Gemüse, Hülsenfüchte, Vollkorn'
 }
 
-
-function GetInfoTexts(prop) {
-    return InfoTexts[prop] ?? 'Lorem Ipsum sit dolor amet...'
-}
-
-function GetInputInfoTexts(prop) {
-    return InputInfoTexts[prop] ?? '';
-}
-
-function GetPlaceholderText(prop) {
-    return GetDisplayNames(prop + 'Placeholder')
-}
-
-function GetDisplayNames(prop, wasUsed = true) {
-    if (!wasUsed) {
-        return DisplayNames[prop] + '(not counted)'
-    }
-    return DisplayNames[prop] ?? prop
-}
-
-function GetProteinAppliedReason(reason) {
-    return ProteinAppliedDisplayNames.get(reason) ?? 'invalid value'
-}
-
 export {
-    GetDisplayNames,
-    GetInfoTexts,
-    GetInputInfoTexts,
-    GetPlaceholderText,
-    GetProteinAppliedReason
+    InfoTexts,
+    ProteinAppliedDisplayNames,
+    DisplayNames,
+    InputInfoTexts
 };

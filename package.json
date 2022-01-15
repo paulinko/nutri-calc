@@ -4,8 +4,9 @@
   "homepage": "./",
   "private": true,
   "scripts": {
-    "serve": "switch_to_lc.sh en && vue-cli-service serve",
+    "serve": "./switch_to_lc.sh en && vue-cli-service serve",
     "build": "rm -rf docs/de && switch_to_lc.sh de && vue-cli-service build && build_for_lc.sh de",
+    "build de": "rm -rf docs/de && switch_to_lc.sh de && vue-cli-service build && build_for_lc.sh de",
     "build en": "rm -rf docs/en && switch_to_lc.sh en && vue-cli-service build && build_for_lc.sh en",
     "lint": "vue-cli-service lint"
   },

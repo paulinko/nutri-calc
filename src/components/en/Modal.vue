@@ -9,7 +9,7 @@
       <div class="modal-body">
         <div v-if="mode === 'goodStuff'">
           <p>
-            Here, the amounts of fruits, vegetables and legumes as well as nuts and nuts are counted.
+            Here the amounts of fruits, vegetables and legumes as well as nuts and nuts are counted.
           </p>
           <h5>Limits</h5>
           <p class=" text-success">

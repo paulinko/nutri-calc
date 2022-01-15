@@ -3,10 +3,19 @@ echo "Changing components to $lc"
 cd src/components || exit 1
 
 if [ ! -d "$lc" ]; then
+  echo "dir $lc does not exist in $(pwd), exiting"
   exit 255
 fi
-ln -sf localized "$lc"
+rm localized 2> /dev/null
+ln -sf "$lc" localized
 
-echo "Changing libs to Lc"
+echo "Changing libs to $lc"
 cd ../libs || exit 2
-ln -sf localized "$lc"
+pwd
+if [ ! -d "$lc" ]; then
+  echo "dir $lc does not exist in $(pwd), exiting"
+  exit 255
+fi
+rm localized 2> /dev/null
+ln -sf "$lc" localized
+echo "Done"

@@ -1,6 +1,7 @@
 import {ProteinReasonNotApplied, ProteinReasonLowBadScore, ProteinReasonHighGoodStuffScore, ProteinReasonIsCheese} from '@/libs/tables'
 
 
+
 const DisplayNames = {
     kJ: 'kJ',
     kcal: 'Kalorien',
@@ -24,6 +25,43 @@ const DisplayNames = {
     name: 'Name',
     letterScore: 'Gesamtpunktzahl',
     share: 'Ergebnis teilen',
+
+    heading: 'Der Nutri-Score-Berechner',
+    calculate_now: 'Jetzt berechnen',
+    calculate_score: 'Score berechnen',
+
+    last_updated: 'Letzte Aktualisierung',
+    sources_used: 'Verwendete Quellen',
+
+    calculate: 'Berechnen',
+    calculate_for: 'Berechnung für ',
+    negative_inputs: 'Negative Inhaltsstoffe',
+    positive_inputs: 'Positive Inhaltsstoffe',
+    result_for: 'Ergebnis für',
+    category: 'Kategorie',
+
+    score: 'Score',
+    distribution_points: 'Punkteverteilung',
+    explanation: 'Erklärung',
+
+    details: 'Details',
+    score_limits: 'Score/Grenzwerte',
+    higher_is: 'je höher desto',
+    better: 'besser',
+    worse: 'schlechter',
+    show_limits: 'Grenzwerte anzeigen',
+    hide_limits: 'Grenzwerte ausblenden',
+    score_limits_info: 'Diese Skala zeigt die Grenzwerte für die verschiedenen zu erreichenden Punktzahlen',
+    tendency: 'Tendenz',
+    tendency_info: 'Dieses Diagramm zeigt die Tendenz der Punktzahl an. Die Zuordnung von Punkten erfolgt stufenweise. Daher wird hier gezeigt, ob der Wert eher zur besseren oder schlechteren Punktzahl tendiert.',
+
+    diff_from_points: 'diff von points entfernt',
+    bordering_on: 'an der Grenze zu points',
+
+    share_result: 'Ergebnis teilen',
+
+    de: 'deutsch',
+    en: 'englisch'
 }
 const ProteinAppliedDisplayNames = new Map([
     [ProteinReasonNotApplied, 'weil es sich um kein Milchprodukt handelt, die Anzahl der Negativpunkte größer als 11 ist und das Produkt zu weniger als 80% aus Obst,Gemüse oder Nüssen besteht.'],
@@ -47,33 +85,10 @@ const InputInfoTexts = {
 }
 
 
-function GetInfoTexts(prop) {
-    return InfoTexts[prop] ?? 'Lorem Ipsum sit dolor amet...'
-}
-
-function GetInputInfoTexts(prop) {
-    return InputInfoTexts[prop] ?? '';
-}
-
-function GetPlaceholderText(prop) {
-    return GetDisplayNames(prop + 'Placeholder')
-}
-
-function GetDisplayNames(prop, wasUsed = true) {
-    if (!wasUsed) {
-        return DisplayNames[prop] + '(nicht gewertet)'
-    }
-    return DisplayNames[prop] ?? prop
-}
-
-function GetProteinAppliedReason(reason) {
-    return ProteinAppliedDisplayNames.get(reason) ?? 'ungültiger Wert'
-}
 
 export {
-    GetDisplayNames,
-    GetInfoTexts,
-    GetInputInfoTexts,
-    GetPlaceholderText,
-    GetProteinAppliedReason
+    InfoTexts,
+    ProteinAppliedDisplayNames,
+    DisplayNames,
+    InputInfoTexts
 };
