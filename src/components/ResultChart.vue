@@ -6,7 +6,7 @@
 
 <script>
 import Chart from 'chart.js/auto';
-import {GetDisplayNames} from "@/libs/Strings";
+import {GetDisplayNames} from "@/libs/localized/Strings";
 import {WasPropUsedInCalculation} from "@/libs/tables";
 
 const verySmallValue = 0.25

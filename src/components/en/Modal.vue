@@ -9,56 +9,55 @@
       <div class="modal-body">
         <div v-if="mode === 'goodStuff'">
           <p>
-            Hier werden die Anteile von Obst, Gemüse und Hülsenfrüchten sowie Nüsse und Schalenfrüchte bewertet.
+            Here, the amounts of fruits, vegetables and legumes as well as nuts and nuts are counted.
           </p>
-          <h5>Einschränkungen</h5>
+          <h5>Limits</h5>
           <p class=" text-success">
             <inline-icon type="check"></inline-icon>
-            Obst, Gemüse und Hülsenfrüchte sowie Nüsse und Schalenfrüchte zählen in die Berechnung, aber
+            Fruits, vegetables and legumes, as well as nuts count in the calculation, but
             ...
           </p>
           <p class=" text-danger">
             <inline-icon type="times"></inline-icon>
-            <span class="fw-bolder"> stärkereiche Knollen (z.B Kartoffeln und Süßkartoffeln), Quinoa und
-            Gewürze</span>, Mehl aus Mais oder Hülsenfrüchten zählen nicht.
+            <span class="fw-bolder"> starchy tubers (e.g. potatoes and sweet potatoes),, Quinoa und
+              spices, flour from corn or legumes </span> do not count.
           </p>
           <hr>
-          <h5>Wichtige Berechnunginfos</h5>
+          <h5>Important infos</h5>
           <p>
-            <span class="fw-bolder">Eingelegte Lebensmittel</span> Die Flüssigkeit kann nur in die Berechnung einbezogen
-            werden, wenn sie verzehrt werden soll.
+            <span class="fw-bolder">Pickled foods</span> The liquid can only be included in the calculation
+            if it is to be consumed.
           </p>
           <p>
-            <span class="fw-bolder">Gekochte/Getrocknetes Lebensmittel</span> Der Hersteller kann selbst entscheiden, ob
-            er das Gewicht der gekochten oder ungekochten Zutat einberechnet.
+            <span class="fw-bolder">Cooked/Dried fruits/vegetables</span> The manufacturer can decide for himself whether
+            to include the weight of the cooked or uncooked ingredient.
 
           </p>
           <hr>
-          <h5>Verarbeitung</h5>
+          <h5>Processing/Preparation</h5>
           <p class=" text-success">
             <inline-icon type="check"></inline-icon>
-            im Ganzen enthalten, geschnitten und geschält
+            contained whole, cut and peeled
           </p>
           <p class=" text-success">
             <inline-icon type="check"></inline-icon>
-            gefroren, getrocknet, gegart und in Dosen konserviert sind
+            are frozen, dried, cooked and preserved in cans
           </p>
           <p class=" text-warning">
             <inline-icon type="check"></inline-icon>
-            Säfte und Pürees, falls das Obst und Gemüse nur gepresst, püriert oder anders zerkleinert wurde
+            Juices and purees, if the fruit and vegetables have only been pressed, pureed or otherwise chopped up
           </p>
           <p class="text-danger">
             <inline-icon type="times"></inline-icon>
-            kein konzentrierter Sirup oder hoch verarbeitetes Obst und Gemüse.
+            not concentrated syrup or highly processed fruits and vegetables.
           </p>
         </div>
         <div v-else-if="mode === 'salt'">
           <p>
             <!--            TODO-->
-            Der Salzgehalt eines Nahrungsmittels ist auf der Rückseite der Verpackung in der Nährwert-
-            tabelle zu finden. Ungefähr 40 Prozent der Masse von Salz, die in einem Produkt enthalten ist,
-            besteht aus Natrium. Um den Natriumgehalt zu berechnen, der in die Wertung des Nutri-Score
-            eingeht, wird daher der vom Hersteller angegebene Salzgehalt durch 2,5 geteilt.
+            Bei der Berechnung des Nutri-Scores wird der Natriumgehalt negativ gewertet.
+            Dieser kann aus dem Salzgehalt berechnet werden.
+            Geben Sie in dem Eingabefeld den von Hersteller angegebenen Salzgehalt an, die Anwendung berechnet dafür den Natriumgehalt (40% des enthaltenden Salzes).
           </p>
         </div>
         <div v-else-if="mode === 'share'">

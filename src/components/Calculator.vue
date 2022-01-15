@@ -193,12 +193,11 @@
 </template>
 
 <script>
-
 import Scale from "@/components/Scale";
 import Badge from "@/components/Badge";
 import ResultChart from "@/components/ResultChart";
-import ScoreExplanation from "@/components/ScoreExplanation";
-import Modal from "@/components/Modal";
+import ScoreExplanation from "@/components/localized/ScoreExplanation";
+import Modal from "@/components/localized/Modal";
 import InputRow from "@/components/InputRow";
 import InlineIcon from "@/components/InlineIcon";
 
@@ -207,7 +206,7 @@ import {
   GetInputInfoTexts,
   GetInfoTexts,
   GetPlaceholderText
-} from "@/libs/Strings";
+} from "@/libs/localized/Strings";
 
 import {
   Sources,
