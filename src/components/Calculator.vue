@@ -323,6 +323,7 @@ export default {
     };
   },
   mounted() {
+    document.title = trans('heading')
     const url = new URL(window.location.href);
     const mode = url.searchParams.get("mode");
     if (mode) {
