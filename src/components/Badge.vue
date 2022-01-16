@@ -3,6 +3,9 @@
 </template>
 
 <script>
+
+import {trans} from "@/libs/str_functions";
+
 export default {
   name: "Badge",
   props: {
@@ -42,13 +45,14 @@ export default {
 
     title() {
       if (this.superscript) {
-        let tendency = (this.isPositive) ? 'besseren' : 'schlechteren'
-        let direction = 'höheren'
+        let tendency = (this.isPositive) ? trans('better_dat') : trans('worse_dat')
+        let direction = trans('higher_dat')
         if (this.superscript === this.low) {
-          tendency = (!this.isPositive) ? 'besseren' : 'schlechteren'
-          direction = 'niedrigeren'
+          tendency = (!this.isPositive) ? trans('better_dat') : trans('worse_dat')
+          direction = trans('lower_dat')
         }
-        return `Das "${this.superscript}" bedeutet, dass der Wert dieses Inhaltstoffes eher zur ${direction} bzw. ${tendency} Punktzahl tendiert.`
+
+        return trans('badge_explanation', {superscript: this.superscript, direction, tendency})
       }
       return null
     }

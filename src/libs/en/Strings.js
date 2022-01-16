@@ -58,13 +58,19 @@ const DisplayNames = {
     hide_limits: 'Hide Scale',
     score_limits_info: 'This scale shows the limits for the different scores',
     tendency: 'Trend',
-    tendency_info: 'This diagram shows the tendency of the score. The assignment of points is done step by step. Therefore, it is shown here whether the value tends to the better or worse score..',
+    tendency_info: 'This diagram shows the tendency of the score. The assignment of points is done step by step. Therefore, it is shown here whether the value tends to the better or worse score.',
 
     diff_from_points: 'diff away from points',
     bordering_on: 'bordering on points',
 
     share_result: 'Share Result',
     calculate_new: 'Calculate another Score',
+
+    badge_explanation: `The "superscript" means the value of this ingredient is near the direction and tendency score.`,
+    better_dat: 'better',
+    worse_dat: 'worse',
+    higher_dat: 'higher',
+    lower_dat: 'lower',
 
     actions: 'Actions',
 

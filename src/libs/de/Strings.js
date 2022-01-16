@@ -61,6 +61,13 @@ const DisplayNames = {
     share_result: 'Ergebnis teilen',
     calculate_new: 'Neue Berechnung',
 
+
+    badge_explanation: `Das "superscript" bedeutet, dass der Wert dieses Inhaltstoffes eher zur direction bzw. tendency Punktzahl tendiert.`,
+    better_dat: 'besseren',
+    worse_dat: 'schlechteren',
+    higher_dat: 'höheren',
+    lower_dat: 'niedrigeren',
+
     actions: 'Aktionen',
 
     de: 'deutsch',
