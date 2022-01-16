@@ -59,6 +59,7 @@ const DisplayNames = {
     bordering_on: 'an der Grenze zu points',
 
     share_result: 'Ergebnis teilen',
+    calculate_new: 'Neue Berechnung',
 
     de: 'deutsch',
     en: 'englisch'

@@ -6,7 +6,7 @@
           <div class="" id="navbarNav">
             <ul class="navbar-nav flex-row  ms-sm-auto">
               <li class="nav-item">
-                <a class="nav-link" :href="otherLangLink">{{otherLang}}</a>
+                <a class="nav-link" :href="otherLangLink">{{ otherLang }}</a>
               </li>
               <li class="nav-item">
                 <a class="nav-link" href="https://github.com/paulinko/nutri-calc" target="_blank">
@@ -160,6 +160,10 @@
               <inline-icon type="share"></inline-icon>
               {{ trans('share_result') }}
             </a>
+            <a class="nav-link link-success clickable" href="#calculate">
+              <inline-icon type="redo"></inline-icon>
+              {{ trans('calculate_new') }}
+            </a>
           </div>
           <div class="col-md-9 results-content" data-bs-spy="scroll" data-bs-target="#list-example" data-bs-offset="0">
             <Scale :data="result.letterScore.points" :fractal="result.letterScore.fractal"
@@ -196,6 +200,9 @@
                    :details-shown-initial="resultNavVisible"
                    score-unit="P"
             />
+            <a class="btn btn-lg btn-success mb-5 mx-auto d-flex justify-content-center" href="#calculate">
+              {{ trans('calculate_new') }}
+            </a>
           </div>
         </div>
       </div>
@@ -551,7 +558,7 @@ p {
 }
 
 .result-nav-text {
-  max-width: 22ch;
+  max-width: 21ch;
   display: inline-block;
 }
 </style>

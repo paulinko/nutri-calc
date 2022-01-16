@@ -64,6 +64,7 @@ const DisplayNames = {
     bordering_on: 'bordering on points',
 
     share_result: 'Share Result',
+    calculate_new: 'Calculate another Score',
 
     de: 'german',
     en: 'english'
