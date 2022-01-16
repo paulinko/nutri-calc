@@ -8,8 +8,8 @@
       Ziel dieses Rechners ist es, die Berechnung des Nutri-Scores zu veranschaulichen.
     </p>
     <div>
-      <a href="#calculate" class="btn btn-success ms-1">Jetzt berechnen</a>
-      <a href="?kJ=1590+&sugar=22%2C4&satFats=0%2C6&sodium=0&protein=8%2C5&fiber=8%2C6&oil=0&goodStuff=53%2C1&totalFats=100&salt=0%2C22&mode=general&name=Schoko+Cerealien" class="btn btn-primary">
+      <a href="#calculate" class="btn btn-success ">Jetzt berechnen</a>
+      <a href="?kJ=1590+&sugar=22%2C4&satFats=0%2C6&sodium=0&protein=8%2C5&fiber=8%2C6&oil=0&goodStuff=53%2C1&totalFats=100&salt=0%2C22&mode=general&name=Schoko+Cerealien" class="btn btn-primary ms-1">
         Beispiel ansehen
       </a>
     </div>
