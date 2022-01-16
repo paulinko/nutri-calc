@@ -10,4 +10,4 @@ RUN npm install && npm audit fix && npm run build
 
 FROM nginx:alpine
 
-COPY --from=builder /app/dist /usr/share/nginx/html/
+COPY --from=builder /app/docs /usr/share/nginx/html/
