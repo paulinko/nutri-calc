@@ -26,7 +26,7 @@ const DisplayNames = {
     letterScore: 'Gesamtpunktzahl',
     share: 'Ergebnis teilen',
 
-    heading: 'Der Nutri-Score-Berechner',
+    heading: 'Nutri-Score-Berechner',
     calculate_now: 'Jetzt berechnen',
     calculate_score: 'Score berechnen',
 

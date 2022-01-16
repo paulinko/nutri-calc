@@ -1,5 +1,9 @@
 # nutri-score
 
+## Demo
+
+https://paulinko.github.io/nutri-calc/en/
+
 ## Project setup
 ```
 npm install
