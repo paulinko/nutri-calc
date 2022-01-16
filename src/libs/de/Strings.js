@@ -61,6 +61,8 @@ const DisplayNames = {
     share_result: 'Ergebnis teilen',
     calculate_new: 'Neue Berechnung',
 
+    actions: 'Aktionen',
+
     de: 'deutsch',
     en: 'englisch'
 }

@@ -156,6 +156,7 @@
                        :is-positive="true"></Badge>
               </a>
             </nav>
+            <h5 class="mt-2">{{ trans('actions') }}</h5>
             <a class="nav-link link-dark clickable" @click="initModal('share', {shareUrl})">
               <inline-icon type="share"></inline-icon>
               {{ trans('share_result') }}
@@ -377,7 +378,11 @@ export default {
       return (window.location.protocol + '//' + window.location.host + window.location.pathname + '?' + params.toString())
     },
     normalizeFloat(val) {
-      return parseFloat((val).toString().replace(',', '.'))
+      if (CurrentLocale === 'de') {
+        return parseFloat((val).toString().replace(',', '.'))
+      } else {
+        return parseFloat((val).toString())
+      }
     },
     inputDisplayNames(prop) {
       return GetDisplayNames(prop, true)

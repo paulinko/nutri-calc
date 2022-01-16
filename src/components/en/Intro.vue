@@ -9,7 +9,7 @@
     </p>
     <div>
       <a href="#calculate" class="btn btn-success">Calculate now</a>
-      <a href="?kJ=1590+&sugar=22%2C6&satFats=0%2C6&sodium=0&protein=8%2C5&fiber=8%2C6&oil=0&goodStuff=53%2C1&totalFats=100&salt=0%2C22&mode=general&name=Chocolate+Cereal"
+      <a href="?kJ=1590+&sugar=22.4&satFats=0.6&sodium=0&protein=8.5&fiber=8.6&oil=0&goodStuff=53.1&totalFats=100&salt=0.22&mode=general&name=Chocolate+Cereal"
          class="btn btn-primary ms-1">
         View example
       </a>

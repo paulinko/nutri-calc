@@ -8,7 +8,8 @@
     "build": "npm run build-en && npm run build-de",
     "build-de": "rm -rf docs/de; ./switch_to_lc.sh de && vue-cli-service build && ./build_for_lc.sh de",
     "build-en": "rm -rf docs/en; ./switch_to_lc.sh en && vue-cli-service build && ./build_for_lc.sh en",
-    "lint": "vue-cli-service lint"
+    "lint": "vue-cli-service lint",
+    "test": " ./node_modules/mocha/bin/mocha --recursive"
   },
   "dependencies": {
     "chart.js": "^3.7.0",
@@ -23,6 +24,7 @@
     "babel-eslint": "^10.1.0",
     "eslint": "^6.7.2",
     "eslint-plugin-vue": "^7.20.0",
+    "mocha": "^9.1.4",
     "vue-loader-v16": "^16.0.0-beta.5.4"
   },
   "eslintConfig": {

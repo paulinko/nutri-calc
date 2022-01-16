@@ -51,7 +51,7 @@ const ProteinReasonHighGoodStuffScore = 2;
 const ProteinReasonIsCheese = 3;
 
 function getApplyProtein(badScore, goodStuffValue) {
-    let applyProtein = (badScore < 11 || (badScore >= 11 && goodStuffValue.points === 5));
+    let applyProtein = (badScore < 11 || (badScore >= 11 && goodStuffValue.value >= 80));
     let reason = ProteinReasonNotApplied
     if (applyProtein) {
         reason = (badScore < 11) ? ProteinReasonLowBadScore : ProteinReasonHighGoodStuffScore;
@@ -478,5 +478,7 @@ export {
     ProteinReasonNotApplied,
     ProteinReasonLowBadScore,
     ProteinReasonHighGoodStuffScore,
-    WasPropUsedInCalculation
+    WasPropUsedInCalculation,
+    getPoints,
+    Prop
 };

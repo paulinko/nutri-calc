@@ -66,6 +66,8 @@ const DisplayNames = {
     share_result: 'Share Result',
     calculate_new: 'Calculate another Score',
 
+    actions: 'Actions',
+
     de: 'german',
     en: 'english'
 }
