@@ -1,7 +1,7 @@
-function getResult(value, row, representativeSpan) {
+function getResult(value, row, representativeSpan, lowest=0) {
     let fractal = null
     let upper = row[1]
-    let lower = (row[0] === -Infinity) ? 0 : row[0]
+    let lower = (row[0] === -Infinity) ? lowest : row[0]
     let relativeValue = value - lower
 
     let diff = representativeSpan;
@@ -23,13 +23,13 @@ function calculateFractal(relativeValue, diff) {
     return (fractal < 1) ? fractal : 1;
 }
 
-function getPoints(scale, value) {
+function getPoints(scale, value, lowest=0) {
     let representativeSpanRow = scale[scale.length - 2]
     let representativeSpan = representativeSpanRow[1] - representativeSpanRow[0]
     for (const row of scale) {
         if (row.length === 3) {
             if (value > row[0] && value <= row[1]) {
-                return getResult(value, row, representativeSpan)
+                return getResult(value, row, representativeSpan, lowest)
             }
         }
         if (row.length === 2) {
@@ -160,7 +160,7 @@ const StdPointsToScore = [
     [-1, 2, 'B'],
     [2, 10, 'C'],
     [10, 18, 'D'],
-    [18, Infinity, 'E']
+    [18, 41, 'E']
 ];
 
 class Table {
@@ -247,7 +247,7 @@ class GeneralTable extends Table {
             applyProtein: pCalc.applyProtein,
             proteinAppliedReason: pCalc.reason,
             totalScore,
-            letterScore: getPoints(this.pointsToScore, totalScore)
+            letterScore: getPoints(this.pointsToScore, totalScore, -15)
         }
     }
 }
@@ -280,7 +280,7 @@ class CheeseTable extends Table {
             applyProtein: true,
             proteinAppliedReason: ProteinReasonIsCheese,
             totalScore,
-            letterScore: getPoints(this.pointsToScore, totalScore)
+            letterScore: getPoints(this.pointsToScore, totalScore, -15)
         }
     }
 }
@@ -355,7 +355,7 @@ class FatsTable extends Table {
             applyProtein: pCalc.applyProtein,
             proteinAppliedReason: pCalc.reason,
             totalScore,
-            letterScore: getPoints(this.pointsToScore, totalScore)
+            letterScore: getPoints(this.pointsToScore, totalScore, -15)
         }
     }
 }
@@ -444,7 +444,7 @@ class DrinksTable extends Table {
             applyProtein: pCalc.applyProtein,
             proteinAppliedReason: pCalc.reason,
             totalScore,
-            letterScore: getPoints(this.pointsToScore, totalScore)
+            letterScore: getPoints(this.pointsToScore, totalScore, -20, )
         }
     }
 }

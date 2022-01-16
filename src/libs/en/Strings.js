@@ -72,7 +72,7 @@ const DisplayNames = {
     en: 'english'
 }
 const ProteinAppliedDisplayNames = new Map([
-    [ProteinReasonNotApplied, 'because it is not a dairy product, the number of negative points is greater than 11 and the product consists of less than 80% fruit,vegetables or nuts.'],
+    [ProteinReasonNotApplied, 'because it is not a dairy product, the number of negative points is greater than 11 and the product consists of less than 80% fruit,vegetables or nuts'],
     [ProteinReasonLowBadScore, 'because the number of negative points is less than 11 points'],
     [ProteinReasonHighGoodStuffScore, 'because the negative sum is greater than 11 points, but the product consists of more than 80% fruit, vegetables or nuts'],
     [ProteinReasonIsCheese, 'because the protein content of dairy products is always included']

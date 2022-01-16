@@ -251,7 +251,7 @@ export default {
       return !isFinite(this.lowerBound)
     },
     isHighest() {
-      return !isFinite(this.upperBound)
+      return !isFinite(this.upperBound) || !this.nextScore
     }
 
   },

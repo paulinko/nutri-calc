@@ -149,7 +149,7 @@
             <nav class="nav flex-column result-nav positive">
               <a v-for="name in result.positives.keys()" :key="name" class="nav-link link-success"
                  aria-current="page" :href="'#' + name + 'Result'">
-              <span class="result-nav-text">{{ trans(name) }}:
+              <span class="result-nav-text">{{ displayNames(name) }}:
               {{ result.positives.get(name).value.toLocaleString() }}{{ getUnit(name) }}
               </span>
                 <Badge v-if="getColorForProp(name)" :classes="'float-end'" :badge-data="getColorForProp(name)"
