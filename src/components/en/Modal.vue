@@ -70,6 +70,35 @@
                     @click="copy($refs.shareUrl, $event.target)">Kopieren
             </button>
           </div>
+          <div v-else-if="mode === 'imprint'">
+            <span class="fw-bold">Contact</span>
+            <p>
+              E-Mail: info(at)nutrirechner.xyz
+            </p>
+          </div>
+          <div v-else-if="mode === 'privacy'">
+            <span class="fw-bold">Server/Log Files</span>
+            <p>
+              The provider (or its web space provider) collects data about each access to the offer (so-called
+              so-called server log files). The access data includes:
+              Name of the accessed website, file, date and time of access, amount of data transferred, message about
+              successful retrieval, browser type and version, the operating system of the user, referrer URL (the
+              previously visited
+              visited page), IP address and the requesting provider.
+            </p>
+            <p>
+              The provider uses the log data only for statistical analysis for the purpose of the operation, security
+              and
+              security and optimization of the offer. The provider reserves the right, however, to review the log data
+              to check the log data retrospectively if there is a justified suspicion of unlawful use due to specific
+              illegal use exists.
+            </p>
+            <span class="fw-bold">Contact</span>
+            <p>
+              When contacting the provider (for example, by e-mail), the user's information is stored for the purpose of
+              processing the request and in the event that follow-up questions arise.
+            </p>
+          </div>
           <div v-else>
 
           </div>

@@ -207,8 +207,11 @@
           </div>
         </div>
       </div>
+        <div class="footer">
+      <div class="me-3 clickable" @click="initModal('imprint', {shareUrl})">{{trans('imprint')}}</div>
+      <div class="clickable" @click="initModal('privacy', {shareUrl})">{{trans('privacy')}}</div>
     </div>
-
+    </div>
   </div>
 </template>
 
@@ -567,5 +570,10 @@ p {
 .result-nav-text {
   max-width: 21ch;
   display: inline-block;
+}
+
+.footer {
+  display: flex;
+  justify-content: flex-end;
 }
 </style>

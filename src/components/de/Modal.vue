@@ -64,12 +64,39 @@
           </div>
           <div v-else-if="mode === 'share'">
             <p>
-              With this URL you can show others your calculation:
+              Mit dieser URL kannst du anderen deine Berechnung zeigen:
             </p>
             <input type="text" class="form-control" ref="shareUrl" :value="vars.shareUrl">
             <button class="btn btn-primary btn-copy btn-lg mx-auto d-block my-1"
                     @click="copy($refs.shareUrl, $event.target)">Copy
             </button>
+          </div>
+
+          <div v-else-if="mode === 'imprint'">
+            <span class="fw-bold">Kontakt</span>
+            <p>
+              E-Mail: info(at)nutrirechner.xyz
+            </p>
+          </div>
+          <div v-else-if="mode === 'privacy'">
+            <h2>Server/Log-Files</h2>
+            <p>
+              Der Anbieter (beziehungsweise sein Webspace-Provider) erhebt Daten über jeden Zugriff auf das Angebot (so
+              genannte Serverlogfiles). Zu den Zugriffsdaten gehören:
+              Name der abgerufenen Webseite, Datei, Datum und Uhrzeit des Abrufs, übertragene Datenmenge, Meldung über
+              erfolgreichen Abruf, Browsertyp nebst Version, das Betriebssystem des Nutzers, Referrer URL (die zuvor
+              besuchte Seite), IP-Adresse und der anfragende Provider.
+            </p>
+            <p>
+              Der Anbieter verwendet die Protokolldaten nur für statistische Auswertungen zum Zweck des Betriebs, der
+              Sicherheit und der Optimierung des Angebotes. Der Anbieterbehält sich jedoch vor, die Protokolldaten
+              nachträglich zu überprüfen, wenn aufgrund konkreter Anhaltspunkte der berechtigte Verdacht einer
+              rechtswidrigen Nutzung besteht.
+            </p>
+            <h2>Kontakt</h2>
+            <p>
+              Bei der Kontaktaufnahme mit dem Anbieter (zum Beispiel per E-Mail) werden die Angaben des Nutzers zwecks Bearbeitung der Anfrage sowie für den Fall, dass Anschlussfragen entstehen, gespeichert.
+            </p>
           </div>
           <div v-else>
 

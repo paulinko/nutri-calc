@@ -71,7 +71,10 @@ const DisplayNames = {
     actions: 'Aktionen',
 
     de: 'deutsch',
-    en: 'englisch'
+    en: 'englisch',
+
+    privacy: 'Datenschutzerklärung',
+    imprint: 'Kontakt',
 }
 const ProteinAppliedDisplayNames = new Map([
     [ProteinReasonNotApplied, 'weil es sich um kein Milchprodukt handelt, die Anzahl der Negativpunkte größer als 11 ist und das Produkt zu weniger als 80% aus Obst,Gemüse oder Nüssen besteht.'],
