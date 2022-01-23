@@ -80,7 +80,7 @@
             </p>
           </div>
           <div v-else-if="mode === 'privacy'">
-            <h2>Server/Log-Files</h2>
+            <span class="fw-bold">Server/Log Files</span>
             <p>
               Der Anbieter (beziehungsweise sein Webspace-Provider) erhebt Daten über jeden Zugriff auf das Angebot (so
               genannte Serverlogfiles). Zu den Zugriffsdaten gehören:
@@ -94,7 +94,7 @@
               nachträglich zu überprüfen, wenn aufgrund konkreter Anhaltspunkte der berechtigte Verdacht einer
               rechtswidrigen Nutzung besteht.
             </p>
-            <h2>Kontakt</h2>
+            <span class="fw-bold">Kontakt</span>
             <p>
               Bei der Kontaktaufnahme mit dem Anbieter (zum Beispiel per E-Mail) werden die Angaben des Nutzers zwecks Bearbeitung der Anfrage sowie für den Fall, dass Anschlussfragen entstehen, gespeichert.
             </p>
