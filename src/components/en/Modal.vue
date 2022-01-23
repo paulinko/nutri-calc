@@ -63,17 +63,18 @@
           </div>
           <div v-else-if="mode === 'share'">
             <p>
-              Mit dieser URL kannst du anderen deine Berechnung zeigen:
+              Show others your calculation with this link
             </p>
             <input type="text" class="form-control" ref="shareUrl" :value="vars.shareUrl">
-            <button class="btn btn-primary btn-copy btn-lg mx-auto d-block my-1"
-                    @click="copy($refs.shareUrl, $event.target)">Kopieren
+            <button class="btn btn-primary btn-copy btn-lg mx-auto d-block my-1 mb-2"
+                    @click="copy($refs.shareUrl, $event.target)">Copy
             </button>
           </div>
           <div v-else-if="mode === 'imprint'">
             <span class="fw-bold">Contact</span>
             <p>
-              E-Mail: info(at)nutrirechner.xyz
+              E-Mail: info(at)nutrirechner.xyz <br>
+              <a href="https://github.com/paulinko/nutri-calc" target="_blank">Source Code on Github</a>
             </p>
           </div>
           <div v-else-if="mode === 'privacy'">
@@ -135,11 +136,8 @@ export default {
   emits: ['close-modal'],
   methods: {
     closeModal() {
-      this.classes = 'fade-out'
-      setTimeout(() => {
         this.$emit('close-modal')
         this.classes = 'fade-in'
-      }, 450);
     },
     copy(textInput, btn) {
       textInput.select();
@@ -148,7 +146,7 @@ export default {
       let initialClassList = btn.classList.toString()
       let initialText = btn.innerText
 
-      btn.innerText = 'Kopiert'
+      btn.innerText = 'Copied'
       btn.classList = initialClassList + ' btn-success'
       setTimeout(() => {
         btn.classList = initialClassList

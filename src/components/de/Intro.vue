@@ -9,7 +9,7 @@
     </p>
     <p>
       <span class="fw-bold">Wichtiger Hinweis:</span> Diese App ist ein inoffizielles Projekt, alle Berechnungen und Angaben sind ohne Gewähr.
-      Die offiziellen Berechnungsmaterilien des BMEL, auf denen dieses Projekt basiert, finden Sie <a href="https://www.bmel.de/SharedDocs/Downloads/DE/_Ernaehrung/Lebensmittel-Kennzeichnung/nutri-score-dt-excel-berechnungstabelle.html">hier</a>.
+      Die offiziellen Berechnungsmaterialien des BMEL, auf denen dieses Projekt basiert, finden Sie <a href="https://www.bmel.de/SharedDocs/Downloads/DE/_Ernaehrung/Lebensmittel-Kennzeichnung/nutri-score-dt-excel-berechnungstabelle.html">hier</a>.
     </p>
     <div>
       <a href="#calculate" class="btn btn-success ">Jetzt berechnen</a>

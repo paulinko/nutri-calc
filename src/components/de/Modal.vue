@@ -67,15 +67,16 @@
               Mit dieser URL kannst du anderen deine Berechnung zeigen:
             </p>
             <input type="text" class="form-control" ref="shareUrl" :value="vars.shareUrl">
-            <button class="btn btn-primary btn-copy btn-lg mx-auto d-block my-1"
-                    @click="copy($refs.shareUrl, $event.target)">Copy
+            <button class="btn btn-primary btn-copy btn-lg mx-auto d-block my-1 mb-2"
+                    @click="copy($refs.shareUrl, $event.target)">Kopieren
             </button>
           </div>
 
           <div v-else-if="mode === 'imprint'">
             <span class="fw-bold">Kontakt</span>
             <p>
-              E-Mail: info(at)nutrirechner.xyz
+              E-Mail: info(at)nutrirechner.xyz <br>
+              <a href="https://github.com/paulinko/nutri-calc" target="_blank">Quellcode auf Github</a>
             </p>
           </div>
           <div v-else-if="mode === 'privacy'">
