@@ -7,6 +7,7 @@ COPY src/ ./src
 COPY .env.de .env.en babel.config.js vue.config.js package.json package-lock.json switch_to_lc.sh build_for_lc.sh ./
 COPY docs/ ./docs
 
+RUN npm install -g npm@8.3.2
 RUN npm install && npm audit fix --only=prod && npm run build
 
 FROM nginx:alpine
