@@ -78,7 +78,9 @@ const DisplayNames = {
     en: 'english',
 
     imprint: 'Contact',
-    privacy: 'Privacy'
+    privacy: 'Privacy',
+
+    enterName: "Enter a name for this food"
 }
 const ProteinAppliedDisplayNames = new Map([
     [ProteinReasonNotApplied, 'because it is not a dairy product, the number of negative points is greater than 11 and the product consists of less than 80% fruit,vegetables or nuts'],

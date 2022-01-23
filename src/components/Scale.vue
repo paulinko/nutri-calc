@@ -15,9 +15,11 @@
           class="fw-bolder">{{ trans((isPositive) ? 'better' : 'worse') }}</span>)</small></h5>
       <p>{{ trans('score_limits_info') }}</p>
       <div>
-        <span class="toggler text-primary float-end" @click="showAllDetails()"
-              v-if="!showAll">{{ trans('show_limits') }}</span>
-        <span class="toggler text-primary float-end" @click="hideAllDetails()" v-else>{{ trans('hide_limits') }}</span>
+        <div class="d-flex justify-content-end">
+                  <span class="toggler text-primary float-end" @click="showAllDetails()"
+                        v-if="!showAll">{{ trans('show_limits') }}</span>
+          <span class="toggler text-primary" @click="hideAllDetails()" v-else>{{ trans('hide_limits') }}</span>
+        </div>
         <div :class="'scale ' + scaleClasses">
           <div class="scale-child" v-for="n in totalSections" :key="n"
                :style="'background-color: ' + colorCodes[n]" @click="toggleDetailsOfScore(n)">

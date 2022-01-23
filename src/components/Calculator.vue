@@ -5,7 +5,7 @@
         <div class=" flex-row ms-auto">
           <div class="" id="navbarNav">
             <ul class="navbar-nav flex-row  ms-sm-auto">
-              <li class="nav-item">
+              <li class="nav-item me-2">
                 <a class="nav-link" :href="otherLangLink">{{ otherLang }}</a>
               </li>
               <li class="nav-item">
@@ -41,7 +41,7 @@
       </div>
       <hr>
       <div>
-        <h2 id="calculate">{{ trans('calculate') }}</h2>
+        <h2 id="calculate" ref="calculationForm">{{ trans('calculate') }}</h2>
         <ul class="nav nav-tabs" id="myTab" role="tablist">
           <li class="nav-item" role="presentation" v-for="tableName in tableNames" :key="tableName">
             <button :class="'nav-link px-2 ' + ((mode === tableName) ? 'active' : '')" id="general-tab"
@@ -53,7 +53,7 @@
         <div class="tab-content">
           <div class="tab-pane fade show active py-3">
             <h4>{{ displayNames('calculate_for') }} &nbsp;<input class="form-control  w-50 d-inline"
-                                                                 title="Gib einen Namen für das Lebensmittel an"
+                                                                 :title="trans('enterName')"
                                                                  type="text" name="name"
                                                                  id="productName"
                                                                  v-model="name"
@@ -161,7 +161,7 @@
               <inline-icon type="share"></inline-icon>
               {{ trans('share_result') }}
             </a>
-            <a class="nav-link link-success clickable" href="#calculate">
+            <a class="nav-link link-success clickable" @click="newCalculation()">
               <inline-icon type="redo"></inline-icon>
               {{ trans('calculate_new') }}
             </a>
@@ -201,15 +201,15 @@
                    :details-shown-initial="resultNavVisible"
                    score-unit="P"
             />
-            <a class="btn btn-lg btn-success mb-5 mx-auto d-flex justify-content-center" href="#calculate">
+            <a class="btn btn-lg btn-success mb-5 mx-auto d-flex justify-content-center" @click="newCalculation()">
               {{ trans('calculate_new') }}
             </a>
           </div>
         </div>
       </div>
       <div class="footer">
-        <div class="me-3 clickable" @click="initModal('imprint', {shareUrl})">{{ trans('imprint') }}</div>
-        <div class="clickable" @click="initModal('privacy', {shareUrl})">{{ trans('privacy') }}</div>
+        <div class="me-3 clickable" @click="initModal('imprint')">{{ trans('imprint') }}</div>
+        <div class="clickable" @click="initModal('privacy')">{{ trans('privacy') }}</div>
       </div>
     </div>
   </div>
@@ -367,12 +367,41 @@ export default {
       window.history.pushState(
           '',
           '',
-          '?' + this.buildQuery(this.nutritionalInfo, this.mode, this.name)
+          '?'
       )
     },
     resetModal() {
       this.showModalInfoFor = null;
       this.modalParams = {}
+    },
+
+    newCalculation() {
+      this.nutritionalInfo = {
+        kJ: 0,
+        sugar: 0,
+        satFats: 0,
+        sodium: 0,
+        protein: 0,
+        fiber: 0,
+        oil: 0,
+        goodStuff: 0,
+        totalFats: 100,
+        salt: 0
+      };
+      this.mode = 'general'
+      this.name = this.getPlaceholderText(this.mode)
+      scrollTo({
+        top: window.scrollY + this.$refs.calculationForm.getBoundingClientRect().top,
+        behavior: 'smooth'
+      })
+      // this.$nextTick(() => {
+      //   setTimeout(() => {
+      //     scrollTo({
+      //       top: window.scrollY + this.$refs.resultContainer.getBoundingClientRect().top,
+      //       behavior: 'smooth'
+      //     })
+      //   }, 25)
+      // })
     },
     initModal(name, modalParams) {
       this.showModalInfoFor = name;
@@ -457,7 +486,6 @@ export default {
 
       return (validators[prop] || defaultvalidator)(value)
     },
-
 
     allFieldsValid() {
       let isValid = true;

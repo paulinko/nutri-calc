@@ -75,6 +75,8 @@ const DisplayNames = {
 
     privacy: 'Datenschutzerklärung',
     imprint: 'Kontakt',
+
+    enterName: "Gib einen Namen für das Lebensmittel an"
 }
 const ProteinAppliedDisplayNames = new Map([
     [ProteinReasonNotApplied, 'weil es sich um kein Milchprodukt handelt, die Anzahl der Negativpunkte größer als 11 ist und das Produkt zu weniger als 80% aus Obst,Gemüse oder Nüssen besteht.'],
