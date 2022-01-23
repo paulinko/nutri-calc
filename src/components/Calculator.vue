@@ -207,10 +207,10 @@
           </div>
         </div>
       </div>
-        <div class="footer">
-      <div class="me-3 clickable" @click="initModal('imprint', {shareUrl})">{{trans('imprint')}}</div>
-      <div class="clickable" @click="initModal('privacy', {shareUrl})">{{trans('privacy')}}</div>
-    </div>
+      <div class="footer">
+        <div class="me-3 clickable" @click="initModal('imprint', {shareUrl})">{{ trans('imprint') }}</div>
+        <div class="clickable" @click="initModal('privacy', {shareUrl})">{{ trans('privacy') }}</div>
+      </div>
     </div>
   </div>
 </template>
@@ -339,7 +339,6 @@ export default {
         }
       }
       this.calculateScore()
-      window.history.replaceState('','', '?')
     }
   },
   methods: {
@@ -365,6 +364,11 @@ export default {
         }, 25)
       })
       this.shareUrl = this.buildUrl(this.nutritionalInfo, this.mode, this.name)
+      window.history.pushState(
+          '',
+          '',
+          '?' + this.buildQuery(this.nutritionalInfo, this.mode, this.name)
+      )
     },
     resetModal() {
       this.showModalInfoFor = null;
@@ -374,13 +378,16 @@ export default {
       this.showModalInfoFor = name;
       this.modalParams = modalParams
     },
-    buildUrl(nutriInfo, mode, name) {
+    buildQuery(nutriInfo, mode, name) {
       let params = new URLSearchParams({
         ...nutriInfo,
         mode,
         name
       })
-      return (window.location.protocol + '//' + window.location.host + window.location.pathname + '?' + params.toString())
+      return params.toString()
+    },
+    buildUrl(nutriInfo, mode, name) {
+      return (window.location.protocol + '//' + window.location.host + window.location.pathname + '?' + this.buildQuery(nutriInfo, mode, name))
     },
     normalizeFloat(val) {
       if (CurrentLocale === 'de') {
