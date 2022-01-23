@@ -10,7 +10,7 @@ COPY docs/ ./docs
 RUN npm install -g npm@8.3.2
 RUN npm -v
 
-RUN npm install -g npm@8.3.2 && npm -v && npm install -g @vue/cli && npm install && npm audit fix --only=prod && npm run build
+RUN npm install && npm audit fix --only=prod && npm run build
 
 FROM nginx:alpine
 
