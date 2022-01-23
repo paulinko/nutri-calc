@@ -2,17 +2,29 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Nutri-Score Berechner</title>
+    <title>Nutri-Score Calculator</title>
+    <meta name="og:title"></meta>
 </head>
 <body>
-<script>
-     let lang = navigator.language || navigator.userLanguage
 
-     if (lang.match(/de/)) {
-         window.location.href = "./de";
-     } else {
-         window.location.href = "./en"
-     }
+<h1>Nutri-Score Berechner / Nutri-Score Calculator</h1>
+<ul>
+    <li>
+        <a href="./de">English version</a>
+    </li>
+    <li>
+        <a href="./de">German version</a>
+    </li>
+</ul>
+
+<script>
+    let lang = navigator.language || navigator.userLanguage
+
+    if (lang.match(/de/)) {
+        window.location.href = "./de";
+    } else {
+        window.location.href = "./en"
+    }
 </script>
 </body>
 </html>

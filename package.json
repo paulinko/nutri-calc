@@ -5,11 +5,12 @@
   "private": true,
   "scripts": {
     "serve": "./switch_to_lc.sh en && vue-cli-service serve",
+    "serve-de": "./switch_to_lc.sh de && vue-cli-service serve",
     "build": "npm run build-en && npm run build-de",
-    "build-de": "rm -rf docs/de; ./switch_to_lc.sh de && vue-cli-service build && ./build_for_lc.sh de",
-    "build-en": "rm -rf docs/en; ./switch_to_lc.sh en && vue-cli-service build && ./build_for_lc.sh en",
+    "build-de": "rm -rf docs/de; ./switch_to_lc.sh de && vue-cli-service build --mode de && ./build_for_lc.sh de",
+    "build-en": "rm -rf docs/en; ./switch_to_lc.sh en && vue-cli-service build --mode en && ./build_for_lc.sh en",
     "lint": "vue-cli-service lint",
-    "test": " ./node_modules/mocha/bin/mocha --recursive"
+    "test": "./node_modules/mocha/bin/mocha --recursive"
   },
   "dependencies": {
     "chart.js": "^3.7.0",

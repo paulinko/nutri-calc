@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="">
+<html lang="<%= VUE_APP_LANG %>">
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -7,12 +7,16 @@
     <link rel="icon" href="<%= BASE_URL %>favicon.ico">
     <link href="<%= BASE_URL %>bootstrap.css" rel="stylesheet">
     <link href="<%= BASE_URL %>nutricalc.css" rel="stylesheet">
-
-    <title><%= htmlWebpackPlugin.options.title %></title>
+    <meta property="og:title" content="<%= VUE_APP_TITLE %>" />
+    <meta property="og:description" content="<%= VUE_APP_DESCRIPTION %>" />
+    <title><%= VUE_APP_TITLE %></title>
   </head>
   <body>
     <noscript>
-      <strong>We're sorry but <%= htmlWebpackPlugin.options.title %> doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
+        <p>
+            <%= VUE_APP_NOSCRIPT %>
+        </p>
+      <strong><%= VUE_APP_ENABLE_JS %></strong>
     </noscript>
     <div id="app"></div>
     <!-- built files will be auto injected -->
