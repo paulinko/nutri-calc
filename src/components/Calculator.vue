@@ -394,14 +394,6 @@ export default {
         top: window.scrollY + this.$refs.calculationForm.getBoundingClientRect().top,
         behavior: 'smooth'
       })
-      // this.$nextTick(() => {
-      //   setTimeout(() => {
-      //     scrollTo({
-      //       top: window.scrollY + this.$refs.resultContainer.getBoundingClientRect().top,
-      //       behavior: 'smooth'
-      //     })
-      //   }, 25)
-      // })
     },
     initModal(name, modalParams) {
       this.showModalInfoFor = name;
@@ -450,6 +442,7 @@ export default {
       switch (prop) {
         case 'goodStuff':
         case 'salt':
+        case 'fiber':
           return true
         default:
           return false;

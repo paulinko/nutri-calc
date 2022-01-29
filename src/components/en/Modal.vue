@@ -70,6 +70,15 @@
                     @click="copy($refs.shareUrl, $event.target)">Copy
             </button>
           </div>
+          <div v-else-if="mode === 'fiber'">
+            <p>
+             When calculating the Nutri-Score, the dietary fiber content is rated positively.
+              Unfortunately, the declaration of the dietary fiber content on the packaging is voluntary in Germany.
+            </p>
+            <p>
+            If the dietary fiber content has not been indicated, it may be possible to ask the manufacturer.
+            </p>
+          </div>
           <div v-else-if="mode === 'imprint'">
             <span class="fw-bold">Contact</span>
             <p>

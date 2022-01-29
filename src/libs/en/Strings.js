@@ -18,11 +18,11 @@ const DisplayNames = {
     protein: 'Protein',
     fiber: 'Fiber',
     goodStuff: 'Vegetables, fruit, nuts',
-    cheese: 'Dairy Products',
+    cheese: 'Cheese',
     general: 'Solid Foods',
     fats: 'Fats',
     drinks: 'Drinks',
-    cheesePlaceholder: 'a dairy product',
+    cheesePlaceholder: 'a cheese',
     generalPlaceholder: 'a solid food',
     fatsPlaceholder: 'a fat',
     drinksPlaceholder: 'a drink',
@@ -83,17 +83,17 @@ const DisplayNames = {
     enterName: "Enter a name for this food"
 }
 const ProteinAppliedDisplayNames = new Map([
-    [ProteinReasonNotApplied, 'because it is not a dairy product, the number of negative points is greater than 11 and the product consists of less than 80% fruit,vegetables or nuts'],
+    [ProteinReasonNotApplied, 'because it is not a cheese, the number of negative points is greater than 11 and the product consists of less than 80% fruit,vegetables or nuts'],
     [ProteinReasonLowBadScore, 'because the number of negative points is less than 11 points'],
     [ProteinReasonHighGoodStuffScore, 'because the negative sum is greater than 11 points, but the product consists of more than 80% fruit, vegetables or nuts'],
-    [ProteinReasonIsCheese, 'because the protein content of dairy products is always included']
+    [ProteinReasonIsCheese, 'because the protein content of cheese is always included']
 ]);
 
 
 const InfoTexts = {
     kJ: 'Beschreibt die Energie eines Lebensmittels und wird negativ gewertet.',
     drinks: 'Here the Nutri-Score can be calculated for beverages such as teas, lemonades and juices. Dairy drinks are not calculated here, but via the "Dairy products" category. The Nutri-Score for water is an exception: it is always A. Water is the only beverage that can achieve the score A.',
-    cheese: 'Here the Nutri-Score can be calculated for dairy products such as milk drinks, cheese or yogurt. Cream and butter are calculated with the category "Fats".',
+    cheese: 'Here the Nutri-Score can be calculated for cheese. Cream and butter are calculated with the category "Fats". Quark is not calculated here but in the general tab',
     fats: 'Here the Nutri-Score can be calculated for foods with high fat content like cream, oils or butter.',
     general: 'The "General" category is used to calculate the Nutri-Score for solid foods. There are separate calculation types for dairy products, fats and beverages.'
 }

@@ -62,6 +62,15 @@
               den Natriumgehalt (40% des enthaltenden Salzes).
             </p>
           </div>
+          <div v-else-if="mode === 'fiber'">
+            <p>
+              Bei der Berechnung des Nutri-Scores wird der Ballaststoffgehalt positiv gewertet.
+              Leider ist die Angabe des Ballaststoffgehalt auf der Verpackung  in Deutschland freiwillig.
+            </p>
+            <p>
+              Wenn der Ballaststoffgehalt nicht angegeben wurde, kann er möglicherweise beim Hersteller erfragt werden.
+            </p>
+          </div>
           <div v-else-if="mode === 'share'">
             <p>
               Mit dieser URL kannst du anderen deine Berechnung zeigen:
@@ -71,7 +80,6 @@
                     @click="copy($refs.shareUrl, $event.target)">Kopieren
             </button>
           </div>
-
           <div v-else-if="mode === 'imprint'">
             <span class="fw-bold">Kontakt</span>
             <p>

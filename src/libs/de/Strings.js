@@ -11,14 +11,14 @@ const DisplayNames = {
     ratioSatFats: 'Anteil gesättigter Fette',
     sodium: 'Natrium',
     salt: 'Salz',
-    protein: 'Protein',
+    protein: 'Eiweiß',
     fiber: 'Ballaststoffe',
     goodStuff: 'Gemüse, Obst, Nüsse',
     cheese: 'Käse',
     general: 'Allgemein',
     fats: 'Fette',
     drinks: 'Getränke',
-    cheesePlaceholder: 'ein Milchprodukt',
+    cheesePlaceholder: 'ein Käse',
     generalPlaceholder: 'ein Lebensmittel',
     fatsPlaceholder: 'ein Öl',
     drinksPlaceholder: 'ein Getränk',
@@ -79,17 +79,17 @@ const DisplayNames = {
     enterName: "Gib einen Namen für das Lebensmittel an"
 }
 const ProteinAppliedDisplayNames = new Map([
-    [ProteinReasonNotApplied, 'weil es sich um kein Milchprodukt handelt, die Anzahl der Negativpunkte größer als 11 ist und das Produkt zu weniger als 80% aus Obst,Gemüse oder Nüssen besteht.'],
+    [ProteinReasonNotApplied, 'weil es sich nicht um Käse handelt, die Anzahl der Negativpunkte größer als 11 ist und das Produkt zu weniger als 80% aus Obst,Gemüse oder Nüssen besteht.'],
     [ProteinReasonLowBadScore, 'weil die Negativsumme weniger als 11 Punkte ist'],
     [ProteinReasonHighGoodStuffScore, 'weil die Negativsumme zwar größer als 11 Punkte ist, das Produkt aber zu mehr als 80% aus Obst,Gemüse oder Nüssen besteht'],
-    [ProteinReasonIsCheese, 'weil bei Milchprodukten der Proteingehalt immer in die Bewertung einfließt']
+    [ProteinReasonIsCheese, 'weil bei Käse der Proteingehalt immer in die Bewertung einfließt']
 ]);
 
 
 const InfoTexts = {
     kJ: 'Beschreibt die Energie eines Lebensmittels und wird negativ gewertet.',
     drinks: 'Hier kann der Nutri-Score für Getränke wie Tees, Limonaden und Säfte berechnet werden. Milchgetränke werden nicht hier, sondern über die Kategorie "Allgemein" berechnet. Der Nutri-Score für Wasser ist eine Ausnahme: Er ist immer A. Wasser ist das einzige Getränk, das den Score A erreichen kann.',
-    cheese: 'Hier kann der Nutri-Score für Käse berechnet werden. Sahne und Butter werden mit der Kategorie "Fette" berechnet.',
+    cheese: 'Hier kann der Nutri-Score für Käse berechnet werden. Quark wird in der Kategorie Allgemein berechnet. Sahne und Butter werden mit der Kategorie "Fette" berechnet.',
     fats: 'Hier kann der Nutri-Score für Lebensmittel mit hohen Fettanteil wie Sahne, Öle oder Butter berechnet werden.',
     general: 'Die Kategorie "Allgemein" dient zur Berechnung des Nutri-Scores für die meisten Lebensmittel. Für Käse, Fette und Getränke gibt es eigene Berechnungsarten.'
 }
