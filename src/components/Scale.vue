@@ -331,7 +331,7 @@ export default {
       let badgeData = {
         value: this.data + this.scoreUnit,
         percentage: this.fractal * 100,
-        color: this.colorCodes[this.currentScoreIndex] + ((this.wasUsedInCalculation) ? 'FF' : '77')
+        color: this.colorCodes[this.currentScoreIndex + 1] + ((this.wasUsedInCalculation) ? 'FF' : '77')
       }
       console.log(badgeData)
       this.$emit('colors-calculated', badgeData)
