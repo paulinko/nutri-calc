@@ -67,6 +67,7 @@ const DisplayNames = {
     worse_dat: 'schlechteren',
     higher_dat: 'höheren',
     lower_dat: 'niedrigeren',
+    not_counted: 'nicht gewerted',
 
     actions: 'Aktionen',
 

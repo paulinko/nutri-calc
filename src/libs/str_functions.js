@@ -30,7 +30,7 @@ function GetPlaceholderText(prop) {
 
 function GetDisplayNames(prop, wasUsed = true) {
     if (!wasUsed) {
-        return DisplayNames[prop] + '(not counted)'
+        return DisplayNames[prop] + ' (' + DisplayNames['not_counted'] + ') '
     }
     return DisplayNames[prop] ?? prop
 }
