@@ -1,6 +1,12 @@
 <template>
   <div>
     <p>
+      Der Nutri-Sore wird berechnet, indem für die schlechten Inhaltsstoffe Punkte hinzugerechnet und für die guten Inhaltsstoffe Punkte abzogen werden.
+      Je mehr Punkte ein Lebensmittel insgesamt hat, desto ungesünder ist es.
+      Abhängig von der Punktzahl wird dem Lebensmittel eine Note von A-E zugeordnet.
+      Dabei ist A die beste Bewertung und E ist die schlechteste.
+    </p>
+    <p>
       Zuerst werden die Punkte für die negativen Inhaltsstoffe berechnet: <br>
       <span class="fst-italic">{{ negativesSum }} = {{ result.badScore }}P</span>
     </p>

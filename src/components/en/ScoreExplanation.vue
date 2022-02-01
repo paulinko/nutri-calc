@@ -1,6 +1,13 @@
 <template>
   <div>
     <p>
+      The Nutri-Sore is calculated by adding points for the bad ingredients and subtracting points for the good
+      ingredients.
+      The more points a food has in total, the unhealthier it is.
+      Depending on the score, the food is assigned a grade from A-E.
+      A is the best score and E is the worst.
+    </p>
+    <p>
       First the points for the negative ingredients are calculated: <br>
       <span class="fst-italic">{{ negativesSum }} = {{ result.badScore }}P</span>
     </p>
@@ -17,7 +24,7 @@
       <span class="fst-italic">{{ result.badScore }}P - {{ goodScore }}P = {{ result.totalScore }}P</span>
     </p>
     <p>
-      This results in {{ result.letterScore.value }}  and thus corresponds to a Nutri-Score of
+      This results in {{ result.letterScore.value }} and thus corresponds to a Nutri-Score of
       {{ result.letterScore.points }}.
     </p>
   </div>
