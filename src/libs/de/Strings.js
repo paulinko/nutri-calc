@@ -103,10 +103,21 @@ const InputInfoTexts = {
 
 const CurrentLocale = 'de';
 
+const AvailableModalInfos = {
+    salt: true,
+    fiber: true,
+    goodStuff: true,
+    kJ: true,
+    protein: true,
+    sugar: true,
+    satFats: true
+}
+
 export {
     InfoTexts,
     ProteinAppliedDisplayNames,
     DisplayNames,
     InputInfoTexts,
-    CurrentLocale
+    CurrentLocale,
+    AvailableModalInfos
 };

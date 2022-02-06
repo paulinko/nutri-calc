@@ -17,7 +17,7 @@
           </div>
         </div>
       </nav>
-      <modal v-if="showModalInfoFor" :title="displayNames(showModalInfoFor)" :mode="showModalInfoFor"
+      <modal v-if="showModalInfoFor" :title="inputDisplayNames(showModalInfoFor)" :mode="showModalInfoFor"
              :params="modalParams" :vars="modalParams"
              @close-modal="resetModal()">
       </modal>
@@ -231,6 +231,7 @@ import {
   GetInfoTexts,
   GetPlaceholderText,
   trans,
+  AvailableModalInfos,
   CurrentLocale,
 } from "@/libs/str_functions";
 
@@ -322,7 +323,8 @@ export default {
         year: 'numeric',
         month: '2-digit',
         day: '2-digit'
-      })
+      }),
+      availableModalInfos: {},
     };
   },
   mounted() {
@@ -439,14 +441,7 @@ export default {
       return this.colors[prop] ?? null
     },
     hasInfoModal(prop) {
-      switch (prop) {
-        case 'goodStuff':
-        case 'salt':
-        case 'fiber':
-          return true
-        default:
-          return false;
-      }
+      return !!(AvailableModalInfos[prop])
     },
     wasUsedInCalculation(prop) {
       return (prop !== 'protein' || this.result.applyProtein)

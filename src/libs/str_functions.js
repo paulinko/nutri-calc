@@ -3,7 +3,8 @@ import {
     ProteinAppliedDisplayNames,
     DisplayNames,
     InputInfoTexts,
-    CurrentLocale
+    CurrentLocale,
+    AvailableModalInfos
 } from "@/libs/localized/Strings";
 
 function trans(prop, args= null){
@@ -46,5 +47,6 @@ export {
     GetInputInfoTexts,
     GetPlaceholderText,
     GetProteinAppliedReason,
-    CurrentLocale
+    CurrentLocale,
+    AvailableModalInfos
 };

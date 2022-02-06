@@ -61,15 +61,45 @@
               Geben Sie in dem Eingabefeld den von Hersteller angegebenen Salzgehalt an, die Anwendung berechnet dafür
               den Natriumgehalt (40% des enthaltenden Salzes).
             </p>
+            <ImageComponent name="Salz" prop="salt"></ImageComponent>
+          </div>
+          <div v-else-if="mode === 'kJ'">
+            <p>
+              KiloJoule (kJ) geben den Energiegehalt eines Lebensmittels an.
+              Er ist auf der Verpackung des Lebensmittels in der Nährwerttabelle zu finden.
+            </p>
+            <ImageComponent name="KiloJoule" prop="kJ"></ImageComponent>
+          </div>
+          <div v-else-if="mode === 'satFats'">
+            <p>
+              Gesättigte Fette werden beim Nutri-Score negativ bewertet.
+              Der Anteil gesättigter Fette ist auf der Verpackung des Lebensmittels in der Nährwerttabelle zu finden.
+            </p>
+            <ImageComponent name="gesättigte Fette" prop="satFats"></ImageComponent>
+          </div>
+          <div v-else-if="mode === 'sugar'">
+            <p>
+              Zucker wird beim Nutri-Score negativ bewertet.
+              Zu Zucker zählen alle Arten von Zucker, also auch Fruchtzucker und Milchzucker, aber keine Süßstoffe.
+              Der Zuckergehalt ist auf der Verpackung des Lebensmittels in der Nähwerttabelle zu finden.
+              <ImageComponent name="Zucker" prop="sugar"></ImageComponent>
+            </p>
           </div>
           <div v-else-if="mode === 'fiber'">
             <p>
               Bei der Berechnung des Nutri-Scores wird der Ballaststoffgehalt positiv gewertet.
-              Leider ist die Angabe des Ballaststoffgehalt auf der Verpackung  in Deutschland freiwillig.
+              <span class="fw-bold">Leider ist die Angabe des Ballaststoffgehalt auf der Verpackung in Deutschland freiwillig.</span>
             </p>
             <p>
               Wenn der Ballaststoffgehalt nicht angegeben wurde, kann er möglicherweise beim Hersteller erfragt werden.
             </p>
+            <ImageComponent name="Ballaststoff" prop="fiber"></ImageComponent>
+          </div>
+          <div v-else-if="mode === 'protein'">
+            <p>
+              Bei der Berechnung des Nutri-Scores wird Eiweiß (oder auch Protein genannt) positiv gewertet.
+            </p>
+            <ImageComponent name="Eiweiß" prop="protein"></ImageComponent>
           </div>
           <div v-else-if="mode === 'share'">
             <p>
@@ -104,7 +134,8 @@
             </p>
             <span class="fw-bold">Kontakt</span>
             <p>
-              Bei der Kontaktaufnahme mit dem Anbieter (zum Beispiel per E-Mail) werden die Angaben des Nutzers zwecks Bearbeitung der Anfrage sowie für den Fall, dass Anschlussfragen entstehen, gespeichert.
+              Bei der Kontaktaufnahme mit dem Anbieter (zum Beispiel per E-Mail) werden die Angaben des Nutzers zwecks
+              Bearbeitung der Anfrage sowie für den Fall, dass Anschlussfragen entstehen, gespeichert.
             </p>
           </div>
           <div v-else>
@@ -120,10 +151,25 @@
 <script>
 
 import InlineIcon from "@/components/InlineIcon";
+import {h} from "vue";
+
+const ImageComponent = (props, context) => {
+  return h(
+      'div', {}, [
+        h('h6', {class: 'fw-bold'}, `Nährwerttabelle mit ${props.name} hervorgehoben:`),
+        h('img', {
+          class: 'nutri-table',
+          src: `./img/table_de/table_de_${props.prop}.webp`,
+          alt: `Nährwerttabelle mit ${props.name} markiert`
+        })
+      ])
+}
+
+import styles from './TableImage.css';
 
 export default {
   name: "modal",
-  components: {InlineIcon},
+  components: {InlineIcon, ImageComponent},
   props: {
     title: {
       type: String,
@@ -143,11 +189,8 @@ export default {
   emits: ['close-modal'],
   methods: {
     closeModal() {
-      this.classes = 'fade-out'
-      setTimeout(() => {
-        this.$emit('close-modal')
-        this.classes = 'fade-in'
-      }, 450);
+      this.$emit('close-modal')
+      this.classes = 'fade-in'
     },
     copy(textInput, btn) {
       textInput.select();
