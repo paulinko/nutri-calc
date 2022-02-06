@@ -77,7 +77,8 @@ const DisplayNames = {
     privacy: 'Datenschutzerklärung',
     imprint: 'Kontakt',
 
-    enterName: "Gib einen Namen für das Lebensmittel an"
+    enterName: "Gib einen Namen für das Lebensmittel an",
+    per100: "pro 100g/100ml"
 }
 const ProteinAppliedDisplayNames = new Map([
     [ProteinReasonNotApplied, 'weil es sich nicht um Käse handelt, die Anzahl der Negativpunkte größer als 11 ist und das Produkt zu weniger als 80% aus Obst,Gemüse oder Nüssen besteht.'],

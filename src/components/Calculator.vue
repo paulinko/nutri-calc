@@ -64,8 +64,8 @@
             </p>
             <form>
               <div class="row nutriprops-row">
-                <div class="col-lg-4 col-md-6">
-                  <h4>{{ displayNames('negative_inputs') }}</h4>
+                <div class="col-lg-4 col-md-6 py-1">
+                  <h4>{{ displayNames('negative_inputs') }} <small>{{ displayNames('per100') }}</small></h4>
                   <InputRow v-for="[name, ] in currentTable.negativeInputs()" :key="name" class="row g-2"
                             :name="name" :has-info-modal="hasInfoModal(name)" :label-name="inputDisplayNames(name)"
                             @open-modal="showModalInfoFor = name">
@@ -77,8 +77,8 @@
                     <span class="input-group-text col-4">{{ getUnit(name) }}</span>
                   </InputRow>
                 </div>
-                <div class="col-lg-4 col-md-6">
-                  <h4>{{ displayNames('positive_inputs') }}</h4>
+                <div class="col-lg-4 col-md-6 py-1">
+                  <h4>{{ displayNames('positive_inputs') }} <small>{{ displayNames('per100') }}</small></h4>
                   <InputRow v-for="[name, ] in currentTable.positiveInputs()" :key="name" class="row g-2"
                             :name="name" :has-info-modal="hasInfoModal(name)" :label-name="inputDisplayNames(name)"
                             @open-modal="showModalInfoFor = name">

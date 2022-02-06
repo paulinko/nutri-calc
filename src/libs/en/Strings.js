@@ -81,7 +81,8 @@ const DisplayNames = {
     imprint: 'Contact',
     privacy: 'Privacy',
 
-    enterName: "Enter a name for this food"
+    enterName: "Enter a name for this food",
+    per100: "per 100g/100ml"
 }
 const ProteinAppliedDisplayNames = new Map([
     [ProteinReasonNotApplied, 'because it is not a cheese, the number of negative points is greater than 11 and the product consists of less than 80% fruit,vegetables or nuts'],
