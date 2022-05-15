@@ -1,7 +1,7 @@
 <template>
   <div>
     <p>
-      Der Nutri-Sore wird berechnet, indem für die schlechten Inhaltsstoffe Punkte hinzugerechnet und für die guten Inhaltsstoffe Punkte abzogen werden.
+      Der Nutri-Score wird berechnet, indem für die schlechten Inhaltsstoffe Punkte hinzugerechnet und für die guten Inhaltsstoffe Punkte abzogen werden.
       Je mehr Punkte ein Lebensmittel insgesamt hat, desto ungesünder ist es.
       Abhängig von der Punktzahl wird dem Lebensmittel eine Note von A-E zugeordnet.
       Dabei ist A die beste Bewertung und E ist die schlechteste.

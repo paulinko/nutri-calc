@@ -1,7 +1,7 @@
 <template>
   <div>
     <p>
-      The Nutri-Sore is calculated by adding points for the bad ingredients and subtracting points for the good
+      The Nutri-Score is calculated by adding points for the bad ingredients and subtracting points for the good
       ingredients.
       The more points a food has in total, the unhealthier it is.
       Depending on the score, the food is assigned a grade from A-E.
