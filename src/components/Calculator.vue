@@ -319,7 +319,7 @@ export default {
       resultTable: Object,
       showModalInfoFor: null,
       shareUrl: null,
-      updateTime: (new Date('2021-01-02')).toLocaleString(undefined, {
+      updateTime: (new Date('2022-01-02')).toLocaleString(undefined, {
         year: 'numeric',
         month: '2-digit',
         day: '2-digit'

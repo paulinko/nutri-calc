@@ -46,7 +46,7 @@
                 <span v-if="lowerBound - value !== 0">
                   {{
                     trans('diff_from_points', {
-                      diff: round(lowerBound - value).toString() + unit,
+                      diff: '-' + diffToLower,
                       points: (previousScore).toString() + scoreUnit
                     })
                   }}
@@ -63,10 +63,10 @@
             <div v-if="!isHighest">
               <Arrow :gradient-id="shortName + 'rightArrow'" :color-start="gaugeUpper" :color-end="gaugeUpper"></Arrow>
               <div class="text-center">
-                <span v-if="lowerBound - value !== 0">
+                <span v-if="upperBound - value !== 0">
                   {{
                     trans('diff_from_points', {
-                      diff: '+' + round(upperBound - value).toString() + unit,
+                      diff: '+' + diffToUpper,
                       points: (nextScore).toString() + scoreUnit
                     })
                   }}
@@ -196,6 +196,28 @@ export default {
 
     nextScore() {
       return this.scores[this.currentScoreIndex + 1]
+    },
+
+    scoreOffset() {
+      switch (this.unit) {
+        case 'P':
+        case 'kJ':
+          return 1;
+        case 'g':
+          return 0.01
+        case 'mg':
+          return 1
+        default:
+          return 0
+      }
+    },
+
+    diffToLower() {
+      return this.round( this.value - this.lowerBound).toString() + this.unit
+    },
+
+    diffToUpper() {
+      return this.round(this.upperBound - this.value + this.scoreOffset).toString() + this.unit
     },
 
     currentScoreIndex() {

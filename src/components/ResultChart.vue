@@ -6,7 +6,7 @@
 
 <script>
 import Chart from 'chart.js/auto';
-import {GetDisplayNames} from "@/libs/str_functions";
+import {GetDisplayNames, trans} from "@/libs/str_functions";
 import {WasPropUsedInCalculation} from "@/libs/tables";
 
 const verySmallValue = 0.25
@@ -49,13 +49,13 @@ export default {
         ],
       },
       options: {
-        title: 'Punkteverteilung',
+        title: trans('distribution_of_points'),
         responsive: true,
         scales: {
           y: {
             min: -5,
             max: 10,
-            label: 'Punkte'
+            label: trans('points')
           }
         },
         plugins: {
@@ -69,7 +69,7 @@ export default {
                 }
                 if (context.parsed.y !== null) {
                   let val = (Math.abs(context.parsed.y) === verySmallValue) ? 0 : context.parsed.y
-                  label = `${label}${val} Punkte`;
+                  label = `${label}${val} ${trans('points')}`;
                 }
                 return label;
               }

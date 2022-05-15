@@ -42,6 +42,7 @@ const DisplayNames = {
 
     score: 'Score',
     distribution_points: 'Punkteverteilung',
+    points: 'Points',
     explanation: 'Erklärung',
 
     details: 'Details',
