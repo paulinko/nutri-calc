@@ -1,8 +1,8 @@
 # nutri-score
 
-## Demo
+## Website
 
-https://paulinko.github.io/nutri-calc/en/
+https://paulinko.github.io/nutri-calc/en/ or https://nutrirechner.xyz
 
 ## Project setup
 ```
