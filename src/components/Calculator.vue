@@ -467,9 +467,10 @@ export default {
         return false
       }
       value = this.normalizeFloat(value)
-      const defaultvalidator = (v) => (v >= 0 && v <= 100);
+      const defaultvalidator = (v) => (v >= 0 && v <= 100)
+      const kjValidator = (v) => (v >= 0 && v <= 10000)
       const validators = {
-        kJ: (v) => (v >= 0 && v <= 10_000),
+        kJ: kjValidator
       };
 
       return (validators[prop] || defaultvalidator)(value)
@@ -598,5 +599,9 @@ p {
 .footer {
   display: flex;
   justify-content: flex-end;
+}
+
+.input-group-text ·{
+  font-family: monospace;
 }
 </style>

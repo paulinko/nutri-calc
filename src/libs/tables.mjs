@@ -459,6 +459,8 @@ function getUnit(nutriProp) {
             return '%'
         case 'letterScore':
             return 'P'
+        case 'goodStuff':
+            return '%'
         default:
             return 'g'
     }

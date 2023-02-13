@@ -9,29 +9,25 @@
         <div class="modal-body">
           <div v-if="mode === 'goodStuff'">
             <p>
-              Here the amounts of fruits, vegetables and legumes as well as nuts and nuts are counted.
+              The percentage of fruits, vegetables and legumes as well as nuts is scored as follows:
             </p>
             <h5>Limits</h5>
             <p class=" text-success">
               <inline-icon type="check"></inline-icon>
-              Fruits, vegetables and legumes, as well as nuts count in the calculation, but
+              Fruits, vegetables and legumes as well as nuts count in the calculation, but
               ...
             </p>
             <p class=" text-danger">
               <inline-icon type="times"></inline-icon>
-              <span class="fw-bolder"> starchy tubers (e.g. potatoes and sweet potatoes),, Quinoa und
-              spices, flour from corn or legumes </span> do not count.
+              Exclude starchy tubers (e.g., potatoes and sweet potatoes), quinoa, spices, and flour made from corn or legumes from the calculation.
             </p>
             <hr>
             <h5>Important infos</h5>
             <p>
-              <span class="fw-bolder">Pickled foods</span> The liquid can only be included in the calculation
-              if it is to be consumed.
+              <span class="fw-bolder">For pickled foods</span>, only include the liquid if it is intended to be consumed.
             </p>
             <p>
-              <span class="fw-bolder">Cooked/Dried fruits/vegetables</span> The manufacturer can decide for himself
-              whether
-              to include the weight of the cooked or uncooked ingredient.
+              <span class="fw-bolder">For cooked or dried fruits/vegetables</span>, the manufacturer can decide whether to include the weight of the cooked or uncooked ingredient.
 
             </p>
             <hr>
@@ -50,15 +46,15 @@
             </p>
             <p class="text-danger">
               <inline-icon type="times"></inline-icon>
-              not concentrated syrup or highly processed fruits and vegetables.
+              Do not include concentrated syrup or highly processed fruits and vegetables in the calculation.
             </p>
           </div>
           <div v-else-if="mode === 'salt'">
             <p>
               When calculating the Nutri-Score, the sodium content is rated negative.
               The sodium content can be calculated from the amount of salt .
-              Enter the salt content specified by the manufacturer in the input field, and the application calculates
-              the sodium content (40% of the salt contained).
+              Simply input the salt content provided by the manufacturer into the designated field,
+              and the application will calculate the corresponding sodium content (which is 40% of the amount of salt listed).
             </p>
           </div>
           <div v-else-if="mode === 'share'">
