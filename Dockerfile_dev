@@ -1,7 +1,0 @@
-FROM node:16.13.2
-VOLUME /project
-RUN ls -la
-RUN npm install -g @vue/cli
-WORKDIR /project/nutri-score
-RUN ls -la
-CMD npm install && npm run serve

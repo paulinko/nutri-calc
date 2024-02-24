@@ -17,7 +17,7 @@
 
 <script>
 
-import Gradient from "@/components/Gradient";
+import Gradient from "@/components/Gradient.vue";
 export default {
   name: "Arrow",
   components: {Gradient},

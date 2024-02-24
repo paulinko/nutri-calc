@@ -6,8 +6,8 @@
 
 <script>
 import Chart from 'chart.js/auto';
-import {GetDisplayNames, trans} from "@/libs/str_functions";
-import {WasPropUsedInCalculation} from "@/libs/tables";
+import {GetDisplayNames, trans} from "@/libs/str_functions.js";
+import {WasPropUsedInCalculation} from "@/libs/tables.mjs";
 
 const verySmallValue = 0.25
 export default {

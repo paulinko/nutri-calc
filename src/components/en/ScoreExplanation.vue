@@ -32,8 +32,8 @@
 
 <script>
 
-import {GetProteinAppliedReason, GetDisplayNames} from '@/libs/str_functions'
-import {WasPropUsedInCalculation} from "@/libs/tables";
+import {GetProteinAppliedReason, GetDisplayNames} from '@/libs/str_functions.js'
+import {WasPropUsedInCalculation} from "@/libs/tables.mjs";
 
 export default {
   name: "ScoreExplanation",

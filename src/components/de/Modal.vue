@@ -150,7 +150,7 @@
 
 <script>
 
-import InlineIcon from "@/components/InlineIcon";
+import InlineIcon from "@/components/InlineIcon.vue";
 import {h} from "vue";
 
 const ImageComponent = (props, context) => {
@@ -159,13 +159,13 @@ const ImageComponent = (props, context) => {
         h('h6', {class: 'fw-bold'}, `Nährwerttabelle mit ${props.name} hervorgehoben:`),
         h('img', {
           class: 'nutri-table',
-          src: `./img/table_de/table_de_${props.prop}.webp`,
+          src: `/img/table_de/table_de_${props.prop}.webp`,
           alt: `Nährwerttabelle mit ${props.name} markiert`
         })
       ])
 }
 
-import styles from './TableImage.css';
+import './TableImage.css';
 
 export default {
   name: "modal",
