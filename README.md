@@ -1,5 +1,7 @@
 # nutri-score
 
+⚠️ This project is currently offline while its being changed to the new nutri score calculation method.
+
 ## Website
 
 https://paulinko.github.io/nutri-calc/en/ or https://nutrirechner.xyz
