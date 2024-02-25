@@ -150,7 +150,7 @@
 
 <script>
 
-import InlineIcon from "@/components/InlineIcon";
+import InlineIcon from "@/components/InlineIcon.vue";
 import {h} from "vue";
 
 const ImageComponent = (props, context) => {
@@ -165,7 +165,7 @@ const ImageComponent = (props, context) => {
       ])
 }
 
-import styles from './TableImage.css';
+import './TableImage.css';
 
 export default {
   name: "modal",

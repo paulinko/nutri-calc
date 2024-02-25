@@ -1,30 +1,37 @@
 # nutri-score
 
-⚠️ This project is currently offline while its being changed to the new nutri score calculation method.
-
 ## Website
 
 https://paulinko.github.io/nutri-calc/en/ or https://nutrirechner.xyz
 
-## Project setup
-```
+## Recommended IDE Setup
+
+[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin).
+
+## Customize configuration
+
+See [Vite Configuration Reference](https://vitejs.dev/config/).
+
+## Project Setup
+
+```sh
 npm install
 ```
 
-### Compiles and hot-reloads for development
-```
-npm run serve
+### Compile and Hot-Reload for Development
+
+```sh
+npm run dev
 ```
 
-### Compiles and minifies for production
-```
+### Compile and Minify for Production
+
+```sh
 npm run build
 ```
 
-### Lints and fixes files
-```
+### Lint with [ESLint](https://eslint.org/)
+
+```sh
 npm run lint
 ```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).

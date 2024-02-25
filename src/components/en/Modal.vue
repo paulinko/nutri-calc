@@ -117,7 +117,7 @@
 
 <script>
 
-import InlineIcon from "@/components/InlineIcon";
+import InlineIcon from "@/components/InlineIcon.vue";
 
 export default {
   name: "modal",

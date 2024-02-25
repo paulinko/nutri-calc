@@ -1,5 +1,11 @@
 <template>
   <div>
+    <div class="alert alert-danger">
+      Achtung: Die auf dieser Seite bereitgestellte Berechnungsmethode gilt nur für Produkte, die vor dem 1.1.2024 auf den Markt gekommen sind.
+      Die neue Berechnungsmethode für Produkte, die ab dem 1.1.2024 gilt, wird demnächst zu dieser Seite hinzugefügt.
+      Die Details zur aktualisierten Berechnungsmethode können in diese Dokument eingesehen werden: <a href="file:///home/pauline/Downloads/FAQ-updatedAlgo-EN_20231222.pdf"> Updated Nutri-Score Technical and Scientific FAQ </a>
+    </div>
+
     <p>
       Der Nutri-Score ist ein freiwilliges Siegel, das einen schnellen und vereinfachten
       Vergleich von gleichartigen Lebensmitteln ermöglichen soll.

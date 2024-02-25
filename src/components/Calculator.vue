@@ -216,14 +216,14 @@
 </template>
 
 <script>
-import Scale from "@/components/Scale";
-import Badge from "@/components/Badge";
-import ResultChart from "@/components/ResultChart";
-import ScoreExplanation from "@/components/localized/ScoreExplanation";
-import Modal from "@/components/localized/Modal";
-import Intro from "@/components/localized/Intro";
-import InputRow from "@/components/InputRow";
-import InlineIcon from "@/components/InlineIcon";
+import Scale from "./Scale.vue";
+import Badge from "./Badge.vue";
+import ResultChart from "./ResultChart.vue";
+import ScoreExplanation from "./localized/ScoreExplanation.vue";
+import Modal from "./localized/Modal.vue";
+import Intro from "./localized/Intro.vue";
+import InputRow from "./InputRow.vue";
+import InlineIcon from "./InlineIcon.vue";
 
 import {
   GetDisplayNames,
@@ -240,7 +240,7 @@ import {
   FurtherReadings
 } from '@/libs/literature_references'
 
-import {GeneralTable, FatsTable, CheeseTable, DrinksTable, getUnit, WasPropUsedInCalculation} from "@/libs/tables";
+import {GeneralTable, FatsTable, CheeseTable, DrinksTable, getUnit, WasPropUsedInCalculation} from "@/libs/tables.mjs";
 
 export default {
   name: 'Calculator',

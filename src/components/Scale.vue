@@ -83,13 +83,13 @@
 
 <script>
 
-import {GetInfoTexts, trans} from "@/libs/str_functions";
+import {GetInfoTexts, trans} from "@/libs/str_functions.js";
 
 const TotalLength = 300
 
-import Arrow from "@/components/Arrow";
-import Gauge from "@/components/Gauge";
-import Badge from "@/components/Badge";
+import Arrow from "@/components/Arrow.vue";
+import Gauge from "@/components/Gauge.vue";
+import Badge from "@/components/Badge.vue";
 
 const green = '#67ff00'
 const yellow = '#ffd200'

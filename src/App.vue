@@ -3,6 +3,8 @@
 </template>
 
 <script>
+import '@/nutricalc.css'
+import '@/bootstrap.css'
 import Calculator from './components/Calculator.vue'
 
 export default {
