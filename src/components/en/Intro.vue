@@ -3,7 +3,7 @@
     <div class="alert alert-danger">
       Attention: The calculation method provided on this page is only applicable to products that were introduced to the market before January 1, 2024. 
       The new calculation method for products applicable from January 1, 2024, will be added to this page soon.
-      Informations regarding the new calculation method: <a href="https://www.santepubliquefrance.fr/media/files/02-determinants-de-sante/nutrition-et-activite-physique/nutri-score/q-a-en"> Updated Nutri-Score Technical and Scientific FAQ </a>
+      Further information regarding the new calculation method: <a href="https://www.santepubliquefrance.fr/media/files/02-determinants-de-sante/nutrition-et-activite-physique/nutri-score/q-a-en"> Updated Nutri-Score Technical and Scientific FAQ </a>
     </div>
 
     <p>
