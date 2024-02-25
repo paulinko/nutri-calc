@@ -447,7 +447,7 @@ export default {
       return (prop !== 'protein' || this.result.applyProtein)
     },
     getImageForMode(mode) {
-      const PATH = '/img/';
+      const PATH = './img/';
       switch (mode) {
         case 'general':
           return `${PATH}sandwich.svg`

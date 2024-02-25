@@ -159,7 +159,7 @@ const ImageComponent = (props, context) => {
         h('h6', {class: 'fw-bold'}, `Nährwerttabelle mit ${props.name} hervorgehoben:`),
         h('img', {
           class: 'nutri-table',
-          src: `/img/table_de/table_de_${props.prop}.webp`,
+          src: `./img/table_de/table_de_${props.prop}.webp`,
           alt: `Nährwerttabelle mit ${props.name} markiert`
         })
       ])
