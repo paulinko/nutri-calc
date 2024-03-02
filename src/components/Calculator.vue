@@ -42,6 +42,13 @@
       <hr>
       <div>
         <h2 id="calculate" ref="calculationForm">{{ trans('calculate') }}</h2>
+        <div>
+          <label>Algorithmus {{algorithm}}</label>
+          <select class="form-select" ref="algorithm" v-model="algorithm" aria-label="Default select example">
+            <option value="updated2023" selected>Berechnungsmethode ab 31.12.23</option>
+            <option value="original_algorithm">Originaler Algorithmus</option>
+          </select>
+        </div>
         <ul class="nav nav-tabs" id="myTab" role="tablist">
           <li class="nav-item" role="presentation" v-for="tableName in tableNames" :key="tableName">
             <button :class="'nav-link px-2 ' + ((mode === tableName) ? 'active' : '')" id="general-tab"
@@ -240,7 +247,7 @@ import {
   FurtherReadings
 } from '@/libs/literature_references'
 
-import {GeneralTable, FatsTable, CheeseTable, DrinksTable, getUnit, WasPropUsedInCalculation} from "@/libs/tables.mjs";
+import {GetLegacyTable, GetUpdated2023Table, getUnit, WasPropUsedInCalculation} from "@/libs/tables.mjs";
 
 export default {
   name: 'Calculator',
@@ -249,18 +256,20 @@ export default {
     resultNavVisible() {
       return document.getElementsByTagName('body')[0].getBoundingClientRect().width >= 576;
     },
+    tableNames() {
+      if (this.algorithm == 'updated2023') {
+        return ['general', 'red_meat', 'fats', 'drinks', 'cheese']
+      }
+      else {
+        return ['general', 'fats', 'drinks', 'cheese']
+      }
+    },
     currentTable() {
-      switch (this.mode) {
-        case 'general':
-          return GeneralTable
-        case 'fats':
-          return FatsTable
-        case 'cheese':
-          return CheeseTable
-        case 'drinks':
-          return DrinksTable
+      switch (this.algorithm) {
+        case 'updated2023':
+          return GetUpdated2023Table(this.mode)
         default:
-          return GeneralTable
+          return GetLegacyTable(this.mode)
       }
     },
     otherLang() {
@@ -299,6 +308,7 @@ export default {
         kJ: 0,
         sugar: 0,
         satFats: 0,
+        saturates: 0,
         sodium: 0,
         protein: 0,
         fiber: 0,
@@ -307,13 +317,14 @@ export default {
         totalFats: 100,
         salt: 0
       },
+      algorithm: "updated2023",
       modalParams: {},
       name: GetPlaceholderText('general'),
       originalScoreColors: ['#008043', '#85b931', '#f2c011', '#e37c13', '#d9411a'],
       colors: {},
       result: null,
       mode: 'general',
-      tableNames: ['general', 'fats', 'drinks', 'cheese'],
+      tableNamesS: ['general', 'fats', 'drinks', 'cheese'],
       sources: Sources,
       furtherReadings: FurtherReadings,
       resultTable: Object,
