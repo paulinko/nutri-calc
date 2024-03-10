@@ -360,8 +360,8 @@ export default {
 
       return badgeData
     },
-    getInfoText(prop) {
-      return GetInfoTexts(prop)
+    getInfoText(prop, algorithm) {
+      return GetInfoTexts(prop, algorithm)
     }
   }
 }

@@ -33,8 +33,23 @@ function getPoints(scale, value, lowest=0) {
             }
         }
         if (row.length === 2) {
-            if (value < row[0]) {
-                return row[1]
+            debugger
+            if (typeof row[0] === 'string' ||  row[0] instanceof String) {
+                if (value == row[0]) {
+                    return {
+                        value,
+                        fractal: 0,
+                        points: row[1]
+                    }
+                }
+            } else {
+                if (value < row[0]) {
+                    return {
+                        value,
+                        fractal: 0,
+                        points: row[1]
+                    }
+                }
             }
         }
     }
@@ -437,7 +452,7 @@ class RedMeatTableUpdated2023 extends TableUpdated2023 {
         const {kjValue, sugarValue, satFatsValue, saltValue} = this.getBadValues(nutriInfo)
         let {protValue, fiberValue, goodStuffValue} = this.getGoodValues(nutriInfo)
 
-        const badScore = kjValue.points + sugarValue.points + satFatsValue.points + sodiumValue.points;
+        const badScore = kjValue.points + sugarValue.points + satFatsValue.points + saltValue.points;
         const pCalc = getApplyProtein(badScore, goodStuffValue);
 
         let totalScore = badScore - goodStuffValue.points - fiberValue.points;
@@ -517,7 +532,7 @@ class CheeseTableUpdated2023 extends TableUpdated2023 {
         const {kjValue, sugarValue, satFatsValue, saltValue} = this.getBadValues(nutriInfo)
         const {protValue, fiberValue, goodStuffValue} = this.getGoodValues(nutriInfo)
 
-        const badScore = kjValue.points + sugarValue.points + satFatsValue.points + sodiumValue.points;
+        const badScore = kjValue.points + sugarValue.points + satFatsValue.points + saltValue.points;
         const goodScore = protValue.points + goodStuffValue.points + fiberValue.points
         const totalScore = badScore - goodScore;
 
@@ -527,7 +542,7 @@ class CheeseTableUpdated2023 extends TableUpdated2023 {
                     ['kJ', kjValue],
                     ['sugar', sugarValue],
                     ['satFats', satFatsValue],
-                    ['sodium', saltValue],
+                    ['salt', saltValue],
                 ]
             ),
             positives: new Map([
@@ -551,7 +566,7 @@ class FatsTableUpdated2023 extends TableUpdated2023 {
         n: {
             sugar: StdSugarUpdated2023,
             salt: StdSaltUpdated2023,
-            saturates: new Prop([
+            satFats: new Prop([
                 [-Infinity, 10, 0],
                 [10, 16, 1],
                 [16, 22, 2],
@@ -586,20 +601,20 @@ class FatsTableUpdated2023 extends TableUpdated2023 {
     };
 
     static getBadValues(nutriInfo) {
-        const energyFromSaturates = nutriInfo.saturates / 100 * 37 
+        const energyFromSaturates = nutriInfo.satFats  * 37 
         return {
-            saturates: getPoints(this.nutriprops.n.saturates.scale, nutriInfo.saturates),
+            satFatsValue: getPoints(this.nutriprops.n.satFats.scale, nutriInfo.satFats),
             sugarValue: getPoints(this.nutriprops.n.sugar.scale, nutriInfo.sugar),
             energyFromSaturatesValue: getPoints(this.nutriprops.n.energyFromSaturates.scale, energyFromSaturates),
-            sodiumValue: getPoints(this.nutriprops.n.salt.scale, nutriInfo.salt),
+            saltValue: getPoints(this.nutriprops.n.salt.scale, nutriInfo.salt),
         }
     }
 
     static calculateScore(data) {
-        const {saturatesValue, sugarValue, energyFromSaturatesValue, saltValue} = this.getBadValues(data)
+        const {satFatsValue, sugarValue, energyFromSaturatesValue, saltValue} = this.getBadValues(data)
         const {protValue, fiberValue, goodStuffValue} = this.getGoodValues(data)
 
-        const badScore = kjValue.points + sugarValue.points + energyFromSaturatesValue.points + saltValue.points;
+        const badScore = energyFromSaturatesValue.points + sugarValue.points + satFatsValue.points + saltValue.points;
 
         const pCalc = getApplyProtein(badScore, goodStuffValue)
         const goodScore = goodStuffValue.points + fiberValue.points + ((pCalc.applyProtein) ? protValue.points : 0)
@@ -609,10 +624,10 @@ class FatsTableUpdated2023 extends TableUpdated2023 {
         return {
             negatives: new Map(
                 [
-                    ['kJ', kjValue],
+                    ['satFats', satFatsValue],
                     ['sugar', sugarValue],
-                    ['ratioSatFats', ratioValue],
-                    ['sodium', sodiumValue],
+                    ['energyFromSaturates', energyFromSaturatesValue],
+                    ['salt', saltValue],
                 ]
             ),
             positives: new Map([
@@ -795,7 +810,7 @@ class DrinksTable extends Table {
 }
 
 
-class DrinksTableUpdated2023 extends Table {
+class DrinksTableUpdated2023 extends TableUpdated2023 {
     static nutriprops = {
         n: {
             kJ: new Prop([
@@ -827,6 +842,10 @@ class DrinksTableUpdated2023 extends Table {
             ]),
             salt: StdSaltUpdated2023,
             satFats: StdSatFatsUpdated2023,
+            hasSweeteners: new Prop([
+                ['false', 0],
+                ['true', 4],
+            ])
         },
         p: {
             protein: new Prop([
@@ -855,14 +874,25 @@ class DrinksTableUpdated2023 extends Table {
         }
     };
 
+    static getBadValues(nutriInfo) {
+        return {
+            kjValue: getPoints(this.nutriprops.n.kJ.scale, nutriInfo.kJ),
+            sugarValue: getPoints(this.nutriprops.n.sugar.scale, nutriInfo.sugar),
+            satFatsValue: getPoints(this.nutriprops.n.satFats.scale, nutriInfo.satFats),
+            saltValue: getPoints(this.nutriprops.n.salt.scale, nutriInfo.salt),
+            hasSweetenersValue: getPoints(this.nutriprops.n.hasSweeteners.scale, nutriInfo.hasSweeteners),
+        }
+    }
+
     static calculateScore(nutriInfo) {
-        const {kjValue, sugarValue, satFatsValue, sodiumValue} = this.getBadValues(nutriInfo)
+        const {kjValue, sugarValue, satFatsValue, saltValue, hasSweetenersValue} = this.getBadValues(nutriInfo)
         const {protValue, fiberValue, goodStuffValue} = this.getGoodValues(nutriInfo)
 
 
-        const badScore = kjValue.points + sugarValue.points + satFatsValue.points + sodiumValue.points;
+        const badScore = kjValue.points + sugarValue.points + satFatsValue.points + saltValue.points + hasSweetenersValue.points;
         const goodScore = goodStuffValue.points + fiberValue.points + protValue.points
 
+        debugger
         const totalScore = badScore - goodScore;
 
         return {
@@ -871,7 +901,8 @@ class DrinksTableUpdated2023 extends Table {
                     ['kJ', kjValue],
                     ['sugar', sugarValue],
                     ['satFats', satFatsValue],
-                    ['salt', sodiumValue],
+                    ['hasSweeteners', hasSweetenersValue],
+                    ['salt', saltValue],
                 ]
             ),
             positives: new Map([
@@ -892,6 +923,7 @@ class DrinksTableUpdated2023 extends Table {
 function getUnit(nutriProp) {
     switch (nutriProp) {
         case 'kJ':
+        case 'energyFromSaturates':
             return 'kJ'
         case 'sodium':
             return 'mg'
@@ -901,6 +933,8 @@ function getUnit(nutriProp) {
             return 'P'
         case 'goodStuff':
             return '%'
+        case 'hasSweeteners':
+            return ' '
         default:
             return 'g'
     }
@@ -931,7 +965,7 @@ function GetUpdated2023Table(mode) {
     switch (mode) {
         case 'general':
           return GeneralTableUpdated2023
-        case 'red_meat':
+        case 'redMeat':
             return RedMeatTableUpdated2023
         case 'fats':
           return FatsTableUpdated2023   

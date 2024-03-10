@@ -18,10 +18,13 @@ const DisplayNames = {
     general: 'Allgemein',
     fats: 'Fette',
     drinks: 'Getränke',
+    redMeat: 'rotes Fleisch',
+    hasSweeteners: 'enthält Süßstoffe',
     cheesePlaceholder: 'ein Käse',
     generalPlaceholder: 'ein Lebensmittel',
     fatsPlaceholder: 'ein Öl',
     drinksPlaceholder: 'ein Getränk',
+    redMeatPlaceholder: 'rotes Fleisch',
     name: 'Name',
     letterScore: 'Gesamtpunktzahl',
     share: 'Ergebnis teilen',
@@ -89,12 +92,22 @@ const ProteinAppliedDisplayNames = new Map([
 ]);
 
 
-const InfoTexts = {
+const InfoTextsOriginal = {
     kJ: 'Beschreibt die Energie eines Lebensmittels und wird negativ gewertet.',
     drinks: 'Hier kann der Nutri-Score für Getränke wie Tees, Limonaden und Säfte berechnet werden. Milchgetränke werden nicht hier, sondern über die Kategorie "Allgemein" berechnet. Der Nutri-Score für Wasser ist eine Ausnahme: Er ist immer A. Wasser ist das einzige Getränk, das den Score A erreichen kann.',
     cheese: 'Hier kann der Nutri-Score für Käse berechnet werden. Quark wird in der Kategorie Allgemein berechnet. Sahne und Butter werden mit der Kategorie "Fette" berechnet.',
     fats: 'Hier kann der Nutri-Score für Lebensmittel mit hohen Fettanteil wie Sahne, Öle oder Butter berechnet werden.',
-    general: 'Die Kategorie "Allgemein" dient zur Berechnung des Nutri-Scores für die meisten festen Lebensmittel, Milchgetränke und pflanzliche Milchalternativen. Für Käse, Fette und Getränke gibt es eigene Berechnungsarten.'
+    general: 'Die Kategorie "Allgemein" dient zur Berechnung des Nutri-Scores für die meisten festen Lebensmittel, Milchgetränke und pflanzliche Milchalternativen. Für Käse, Fette und Getränke gibt es eigene Berechnungsarten.',
+}
+
+const InfoTextsUpdated2023 = {
+    ...InfoTextsOriginal,
+    redMeat: 'Der Algorithmus für rotes Fleisch gilt für Fleisch, Fleischerzeugnisse und Fleischkonserven, deren Haupt- oder erste Zutat auf der Zutatenliste Fleisch ist und der Fleischanteil zu min. 20% aus rotem Fleisch besteht. Er betrifft Fleischprodukte, die in einem Gericht / auf einem Teller die Rolle der Fleischkomponente einnehmen könnten, wie z.B. Hackfleisch, Fleischbällchen oder Wurst. Rotes Fleisch umfässt unter anderem Rind, Kalb, Schwein, Lamm sowie Wild, Pferd, Esel, Ziege, Kamel und Känguru',
+}
+
+const InfoTexts = {
+    'original_algorithm': InfoTextsOriginal,
+    'updated2023': InfoTextsUpdated2023
 }
 
 const InputInfoTexts = {
@@ -113,6 +126,7 @@ const AvailableModalInfos = {
     sugar: true,
     satFats: true
 }
+
 
 export {
     InfoTexts,

@@ -76,12 +76,27 @@
                   <InputRow v-for="[name, ] in currentTable.negativeInputs()" :key="name" class="row g-2"
                             :name="name" :has-info-modal="hasInfoModal(name)" :label-name="inputDisplayNames(name)"
                             @open-modal="showModalInfoFor = name">
-                    <input :class="'form-control ' + (isValid(name) ? '' : 'is-invalid')" required type="text"
+                    
+                    <select v-if="name == 'hasSweeteners'"
+                           :class="'form-control ' + (isValid(name) ? '' : 'is-invalid')" required
+                           :name="name" :id="name"
+                           
+                           v-model="nutritionalInfo[name]"
+                           @focus="$event.target.setSelectionRange(0, $event.target.value.length)" >
+                           <option value="false">Nein</option>
+                           <option value="true">Ja</option>
+                      </select>
+
+
+                    
+                        <input v-else
+                          :class="'form-control ' + (isValid(name) ? '' : 'is-invalid')" required type="text"
                            :name="name" :id="name"
                            v-model="nutritionalInfo[name]"
                            @focus="$event.target.setSelectionRange(0, $event.target.value.length)"
                     >
                     <span class="input-group-text col-4">{{ getUnit(name) }}</span>
+                  
                   </InputRow>
                 </div>
                 <div class="col-lg-4 col-md-6 py-1">
@@ -258,7 +273,7 @@ export default {
     },
     tableNames() {
       if (this.algorithm == 'updated2023') {
-        return ['general', 'red_meat', 'fats', 'drinks', 'cheese']
+        return ['general', 'redMeat', 'fats', 'drinks', 'cheese']
       }
       else {
         return ['general', 'fats', 'drinks', 'cheese']
@@ -299,7 +314,7 @@ export default {
       return null;
     },
     modeInfoText() {
-      return GetInfoTexts(this.mode)
+      return GetInfoTexts(this.mode, this.algorithm)
     },
   },
   data() {
@@ -315,7 +330,8 @@ export default {
         oil: 0,
         goodStuff: 0,
         totalFats: 100,
-        salt: 0
+        salt: 0,
+        hasSweeteners: 'false'
       },
       algorithm: "updated2023",
       modalParams: {},
@@ -361,7 +377,11 @@ export default {
       this.colors = {}
       let normalizedNutriInfo = {}
       for (const [prop, val] of Object.entries(this.nutritionalInfo)) {
-        normalizedNutriInfo[prop] = this.normalizeFloat(val)
+        if ( prop != 'hasSweeteners') {
+          normalizedNutriInfo[prop] = this.normalizeFloat(val)
+        } else {
+          normalizedNutriInfo[prop] = val
+        }
       }
       this.result = this.currentTable.calculateScore(normalizedNutriInfo)
       console.log('result', this.result)
@@ -473,6 +493,9 @@ export default {
       }
     },
     isValid(prop) {
+      if (prop === 'hasSweeteners') {
+        return true
+      }
       let value = this.nutritionalInfo[prop];
       if (value === '') {
         return false

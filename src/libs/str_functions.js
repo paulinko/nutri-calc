@@ -17,8 +17,8 @@ function trans(prop, args= null){
     return s
 }
 
-function GetInfoTexts(prop) {
-    return InfoTexts[prop] ?? 'Lorem Ipsum sit dolor amet...'
+function GetInfoTexts(prop,algorithm) {
+    return InfoTexts[algorithm][prop] ?? 'Lorem Ipsum sit dolor amet...'
 }
 
 function GetInputInfoTexts(prop) {
