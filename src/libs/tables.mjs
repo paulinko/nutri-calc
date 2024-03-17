@@ -33,7 +33,6 @@ function getPoints(scale, value, lowest=0) {
             }
         }
         if (row.length === 2) {
-            debugger
             if (typeof row[0] === 'string' ||  row[0] instanceof String) {
                 if (value == row[0]) {
                     return {
@@ -53,7 +52,6 @@ function getPoints(scale, value, lowest=0) {
             }
         }
     }
-    console.log(scale, value)
     return null;
 }
 
@@ -892,7 +890,6 @@ class DrinksTableUpdated2023 extends TableUpdated2023 {
         const badScore = kjValue.points + sugarValue.points + satFatsValue.points + saltValue.points + hasSweetenersValue.points;
         const goodScore = goodStuffValue.points + fiberValue.points + protValue.points
 
-        debugger
         const totalScore = badScore - goodScore;
 
         return {

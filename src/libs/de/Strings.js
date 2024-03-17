@@ -19,7 +19,7 @@ const DisplayNames = {
     fats: 'Fette',
     drinks: 'Getränke',
     redMeat: 'rotes Fleisch',
-    hasSweeteners: 'enthält Süßstoffe',
+    hasSweeteners: 'Süßstoffe enthalten?',
     cheesePlaceholder: 'ein Käse',
     generalPlaceholder: 'ein Lebensmittel',
     fatsPlaceholder: 'ein Öl',
@@ -84,6 +84,13 @@ const DisplayNames = {
     enterName: "Gib einen Namen für das Lebensmittel an",
     per100: "pro 100g/100ml"
 }
+
+const DisplayValues = {
+    hasSweeteners: {
+        true: 'Ja',
+        false: 'Nein'
+    }
+}
 const ProteinAppliedDisplayNames = new Map([
     [ProteinReasonNotApplied, 'weil es sich nicht um Käse handelt, die Anzahl der Negativpunkte größer als 11 ist und das Produkt zu weniger als 80% aus Obst,Gemüse oder Nüssen besteht.'],
     [ProteinReasonLowBadScore, 'weil die Negativsumme weniger als 11 Punkte ist'],
@@ -132,6 +139,7 @@ export {
     InfoTexts,
     ProteinAppliedDisplayNames,
     DisplayNames,
+    DisplayValues,
     InputInfoTexts,
     CurrentLocale,
     AvailableModalInfos

@@ -2,6 +2,7 @@ import {
     InfoTexts,
     ProteinAppliedDisplayNames,
     DisplayNames,
+    DisplayValues,
     InputInfoTexts,
     CurrentLocale,
     AvailableModalInfos
@@ -36,12 +37,22 @@ function GetDisplayNames(prop, wasUsed = true) {
     return DisplayNames[prop] ?? prop
 }
 
+function GetDisplayValue(prop, value) {
+    if (DisplayValues[prop] && DisplayValues[prop][value]) {
+
+        return DisplayValues[prop][value]
+    }
+
+    return value.toLocaleString()
+}
+
 function GetProteinAppliedReason(reason) {
     return ProteinAppliedDisplayNames.get(reason) ?? 'invalid value'
 }
 
 export {
     GetDisplayNames,
+    GetDisplayValue,
     GetInfoTexts,
     trans,
     GetInputInfoTexts,

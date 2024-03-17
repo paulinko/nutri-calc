@@ -13,6 +13,7 @@ export default {
       value: Number,
       color: String,
       percentage: Number,
+      showSuperscript: Boolean
     },
     classes: String,
     isPositive: Boolean
@@ -34,6 +35,9 @@ export default {
       return  'badge fs-6 text-black-50 score-badge ' + (this.classes ??'')
     },
     superscript() {
+      if (!this.badgeData.showSuperscript) {
+        return null
+      }
       if (this.badgeData.percentage < 25) {
         return this.low
       } else if (this.badgeData.percentage > 75) {

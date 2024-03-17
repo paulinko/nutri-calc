@@ -2,7 +2,7 @@
   <div class="result">
     <div>
       <a :id="shortName + 'Result'">
-        <h4>{{ name }}: {{ value }}{{ unit }}
+        <h4>{{ name }}: {{ displayValue(shortName, value) }}{{ unit }}
           <Badge :badge-data="getBadgeData()" :is-positive="isPositive" v-if="!hideBadge"></Badge>
           <span @click="detailsShown = !detailsShown" class="float-end clickable">{{
               (detailsShown ? '-' : '+')
@@ -10,7 +10,7 @@
         </h4>
       </a>
     </div>
-    <div class="details fade-in" v-if="detailsShown">
+    <div class="details fade-in" v-if="detailsShown && isScale">
       <h5>{{ trans('score_limits') }} <small>({{ trans('higher_is') }} <span
           class="fw-bolder">{{ trans((isPositive) ? 'better' : 'worse') }}</span>)</small></h5>
       <p>{{ trans('score_limits_info') }}</p>
@@ -83,7 +83,7 @@
 
 <script>
 
-import {GetInfoTexts, trans} from "@/libs/str_functions.js";
+import {GetInfoTexts, GetDisplayValue, trans} from "@/libs/str_functions.js";
 
 const TotalLength = 300
 
@@ -154,6 +154,10 @@ export default {
     },
     totalSections() {
       return this.scale.length
+    },
+
+    isScale() {
+      return this.shortName != 'hasSweeteners'
     },
 
     colorCodes() {
@@ -295,6 +299,11 @@ export default {
       return this.data === this.scores[i]
     },
 
+
+    displayValue(prop, value) {
+      return GetDisplayValue(prop, value)
+    },
+
     classes(i) {
       let classList = 'scale-item-score'
       if (this.isActualScore(i)) {
@@ -318,8 +327,6 @@ export default {
         return 'n/a'
       }
 
-      // const greater = 'über'
-      // const lower = 'unter'
       const greater = '>'
       const lower = '<'
       if (lowerBound === -Infinity) {
@@ -353,7 +360,8 @@ export default {
       let badgeData = {
         value: this.data + this.scoreUnit,
         percentage: this.fractal * 100,
-        color: this.colorCodes[this.currentScoreIndex + 1] + ((this.wasUsedInCalculation) ? 'FF' : '77')
+        color: this.colorCodes[this.currentScoreIndex + 1] + ((this.wasUsedInCalculation) ? 'FF' : '77'),
+        showSuperscript: this.isScale
       }
       console.log(badgeData)
       this.$emit('colors-calculated', badgeData)

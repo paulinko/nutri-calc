@@ -161,7 +161,7 @@
                  :href="'#' + name + 'Result'">
               <span class="result-nav-text">
                 {{ displayNames(name) }}:
-              {{ result.negatives.get(name).value.toLocaleString() }}{{ getUnit(name) }}
+              {{  displayValue(result.negatives, name)  }}{{ getUnit(name) }}
               </span>
                 <Badge v-if="getColorForProp(name)" classes="float-end" :badge-data="getColorForProp(name)"
                        :is-positive="false"></Badge>
@@ -172,7 +172,7 @@
               <a v-for="name in result.positives.keys()" :key="name" class="nav-link link-success"
                  aria-current="page" :href="'#' + name + 'Result'">
               <span class="result-nav-text">{{ displayNames(name) }}:
-              {{ result.positives.get(name).value.toLocaleString() }}{{ getUnit(name) }}
+              {{ displayValue(result.positives, name) }}{{ getUnit(name) }}
               </span>
                 <Badge v-if="getColorForProp(name)" :classes="'float-end'" :badge-data="getColorForProp(name)"
                        :is-positive="true"></Badge>
@@ -249,6 +249,7 @@ import InlineIcon from "./InlineIcon.vue";
 
 import {
   GetDisplayNames,
+  GetDisplayValue,
   GetInputInfoTexts,
   GetInfoTexts,
   GetPlaceholderText,
@@ -455,6 +456,10 @@ export default {
     },
     displayNames(prop) {
       return GetDisplayNames(prop, WasPropUsedInCalculation(prop, this.result))
+    },
+    displayValue(result, prop) {
+      const value = result.get(prop).value
+      return GetDisplayValue(prop, value)
     },
     getUnit(nutriProp) {
       return getUnit(nutriProp)
