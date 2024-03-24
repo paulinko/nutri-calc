@@ -32,6 +32,7 @@ const DisplayNames = {
     heading: 'Nutri-Score-Berechner',
     calculate_now: 'Jetzt berechnen',
     calculate_score: 'Score berechnen',
+    algorithm: 'Algorithmus',
 
     last_updated: 'Letzte Aktualisierung',
     sources_used: 'Verwendete Quellen',
@@ -131,7 +132,8 @@ const AvailableModalInfos = {
     kJ: true,
     protein: true,
     sugar: true,
-    satFats: true
+    satFats: true,
+    algorithm: true
 }
 
 

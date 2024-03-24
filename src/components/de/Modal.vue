@@ -55,11 +55,14 @@
             </p>
           </div>
           <div v-else-if="mode === 'salt'">
-            <p>
+            <p v-if="algorithm === 'original_algorithm'">
               Bei der Berechnung des Nutri-Scores wird der Natriumgehalt negativ gewertet.
               Dieser kann aus dem Salzgehalt berechnet werden.
               Geben Sie in dem Eingabefeld den von Hersteller angegebenen Salzgehalt an, die Anwendung berechnet dafür
               den Natriumgehalt (40% des enthaltenden Salzes).
+            </p>
+            <p v-else-if="algorithm === 'updated2023'">
+              Bei der Berechnung des Nutri-Scores wird der Salzgehalt negativ gewertet.
             </p>
             <ImageComponent name="Salz" prop="salt"></ImageComponent>
           </div>
@@ -178,6 +181,10 @@ export default {
     mode: {
       type: String,
       default: 'info'
+    },
+    algorithm: {
+      type: String,
+      default: 'updated2023'
     },
     vars: Object
   },

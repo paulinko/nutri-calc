@@ -379,10 +379,10 @@ export default {
 .scale {
   display: flex;
   width: 100%;
-  max-width: 800px;
   margin: auto;
   align-items: normal;
   overflow-y: auto;
+  margin-bottom: 10px;
 }
 
 
@@ -393,13 +393,13 @@ export default {
   align-items: center;
   align-content: center;
   justify-content: center;
-  height: 6ch;
   color: #0000007F;
-  max-width: 10%;
   cursor: pointer;
   font-size: 16pt;
   position: relative;
-  min-width: 6ch;
+  max-width: 6ch;
+  min-width: 4ch;
+  padding: 18px 1px;
 }
 
 .details-container {

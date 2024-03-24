@@ -18,7 +18,7 @@
         </div>
       </nav>
       <modal v-if="showModalInfoFor" :title="inputDisplayNames(showModalInfoFor)" :mode="showModalInfoFor"
-             :params="modalParams" :vars="modalParams"
+             :params="modalParams" :vars="modalParams" :algorithm="algorithm"
              @close-modal="resetModal()">
       </modal>
       <div class="row">
@@ -42,13 +42,18 @@
       <hr>
       <div>
         <h2 id="calculate" ref="calculationForm">{{ trans('calculate') }}</h2>
-        <div>
-          <label>Algorithmus {{algorithm}}</label>
+        <InputRow 
+                  class="row g-2 pb-3 col-6"
+                  label-classes="col-auto"
+                  input-classes="col-auto flex-grow-1"
+                            name="algorithm" :has-info-modal="true" :label-name="inputDisplayNames('algorithm')"
+                            @open-modal="showModalInfoFor = 'algorithm'"
+        >
           <select class="form-select" ref="algorithm" v-model="algorithm" aria-label="Default select example">
             <option value="updated2023" selected>Berechnungsmethode ab 31.12.23</option>
             <option value="original_algorithm">Originaler Algorithmus</option>
           </select>
-        </div>
+        </InputRow>
         <ul class="nav nav-tabs" id="myTab" role="tablist">
           <li class="nav-item" role="presentation" v-for="tableName in tableNames" :key="tableName">
             <button :class="'nav-link px-2 ' + ((mode === tableName) ? 'active' : '')" id="general-tab"
@@ -315,7 +320,9 @@ export default {
       return null;
     },
     modeInfoText() {
-      return GetInfoTexts(this.mode, this.algorithm)
+      if (this.mode && this.algorithm) {
+        return GetInfoTexts(this.mode, this.algorithm)
+      }
     },
   },
   data() {
@@ -360,6 +367,7 @@ export default {
     const url = new URL(window.location.href);
     const mode = url.searchParams.get("mode");
     if (mode) {
+      this.algorithm = url.searchParams.get("algorithm") || 'original_algorithm'
       this.mode = mode;
       this.name = url.searchParams.get("name");
       for (const [prop,] of Object.entries(this.nutritionalInfo)) {
@@ -397,7 +405,7 @@ export default {
           })
         }, 25)
       })
-      this.shareUrl = this.buildUrl(this.nutritionalInfo, this.mode, this.name)
+      this.shareUrl = this.buildUrl(this.nutritionalInfo, this.mode, this.name, this.algorithm)
       window.history.pushState(
           '',
           '',
@@ -433,16 +441,17 @@ export default {
       this.showModalInfoFor = name;
       this.modalParams = modalParams
     },
-    buildQuery(nutriInfo, mode, name) {
+    buildQuery(nutriInfo, mode, name, algorithm) {
       let params = new URLSearchParams({
         ...nutriInfo,
         mode,
-        name
+        name,
+        algorithm
       })
       return params.toString()
     },
-    buildUrl(nutriInfo, mode, name) {
-      return (window.location.protocol + '//' + window.location.host + window.location.pathname + '?' + this.buildQuery(nutriInfo, mode, name))
+    buildUrl(nutriInfo, mode, name, algorithm) {
+      return (window.location.protocol + '//' + window.location.host + window.location.pathname + '?' + this.buildQuery(nutriInfo, mode, name,algorithm))
     },
     normalizeFloat(val) {
       if (CurrentLocale === 'de') {
